@@ -26,6 +26,7 @@ class TextMelLoader(torch.utils.data.Dataset):
             hparams.mel_fmax)
         random.seed(1234)
         random.shuffle(self.audiopaths_and_text)
+        self._normalize()
 
     def get_mel_text_pair(self, audiopath_and_text):
         # separate filename and text
@@ -57,8 +58,26 @@ class TextMelLoader(torch.utils.data.Dataset):
         text_norm = torch.IntTensor(text_to_sequence(text, self.text_cleaners))
         return text_norm
 
-    def __getitem__(self, index):
+    def _getitem(self, index):
         return self.get_mel_text_pair(self.audiopaths_and_text[index])
+
+    def __getitem__(self, index):
+        return self.data[index]
+
+    def _normalize(self):
+        self.data = []
+        s, s2, c = 0., 0., 0.
+        for i in range(len(self.audiopaths_and_text)):
+            self.data.append(self._getitem(i))
+            s = s + self.data[-1][1].sum(dim=1, keepdim=True).data
+            s2 = s2 + self.data[-1][1].pow(2).sum(dim=1, keepdim=True).data
+            c = c + self.data[-1][1].shape[1]
+
+        self.mean = s/c
+        self.std  = (s2/c - self.mean.pow(2)).pow(0.5)
+        for i in range(len(self.audiopaths_and_text)):
+            self.data[i][1].sub_(self.mean)
+            self.data[i][1].div_(self.std)
 
     def __len__(self):
         return len(self.audiopaths_and_text)
