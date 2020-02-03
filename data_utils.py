@@ -14,7 +14,7 @@ class TextMelLoader(torch.utils.data.Dataset):
         2) normalizes text and converts them to sequences of one-hot vectors
         3) computes mel-spectrograms from audio files.
     """
-    def __init__(self, audiopaths_and_text, hparams):
+    def __init__(self, audiopaths_and_text, hparams, max_len=100):
         self.audiopaths_and_text = load_filepaths_and_text(audiopaths_and_text)
         self.text_cleaners = hparams.text_cleaners
         self.max_wav_value = hparams.max_wav_value
@@ -26,7 +26,19 @@ class TextMelLoader(torch.utils.data.Dataset):
             hparams.mel_fmax)
         random.seed(1234)
         random.shuffle(self.audiopaths_and_text)
-        self._normalize()
+        self._max_len = max_len
+        self._epoch = 0
+        # self._normalize()
+
+    def _double_max_len(self):
+        self._max_len = self._max_len * 2
+        print("new max len", self._max_len)
+
+    def epoch_step(self):
+        self._epoch = self._epoch + 1
+        if self._epoch % 10 == 0:
+            self._double_max_len()
+
 
     def get_mel_text_pair(self, audiopath_and_text):
         # separate filename and text
@@ -62,7 +74,13 @@ class TextMelLoader(torch.utils.data.Dataset):
         return self.get_mel_text_pair(self.audiopaths_and_text[index])
 
     def __getitem__(self, index):
-        return self.data[index]
+        # return self.data[index]
+        t, m = self._getitem(index)
+        # print(m.shape)
+        if m.shape[1] > self._max_len:
+            m = m[:, :self._max_len]
+
+        return t, m
 
     def _normalize(self):
         self.data = []

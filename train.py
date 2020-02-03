@@ -205,8 +205,13 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     model.train()
     is_overflow = False
+
+    for epoch in range(0, epoch_offset):
+        train_loader.dataset.epoch_step()
+
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
+        train_loader.dataset.epoch_step()
         print("Epoch: {}".format(epoch))
         for i, batch in enumerate(train_loader):
             start = time.perf_counter()
