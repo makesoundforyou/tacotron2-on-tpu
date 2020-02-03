@@ -71,6 +71,7 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
 
 
 dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(dev)
 
 def load_model(hparams):
     model = Tacotron2(hparams).to(dev)
