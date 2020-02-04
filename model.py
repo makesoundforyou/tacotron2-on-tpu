@@ -26,6 +26,80 @@ class LocationLayer(nn.Module):
         return processed_attention
 
 
+class GMMAttention(nn.Module):
+    def __init__(self, num_mixtures, attention_rnn_dim, embedding_dim, attention_dim,
+                 attention_location_n_filters, attention_location_kernel_size):
+        super(GMMAttention, self).__init__()
+        self.num_mixtures = num_mixtures
+        lin = nn.Linear(attention_dim, 3*num_mixtures, bias=True)
+        lin.weight.data.mul_(0.01)
+        lin.bias.data.mul_(0.01)
+        lin.bias.data.sub_(2)
+
+        self.F = nn.Sequential(
+                LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='tanh'),
+                nn.Tanh(),
+                lin)
+                # LinearNorm(attention_dim, 3*num_mixtures, bias=False, w_init_gain='linear'))
+
+        self.score_mask_value = 0 # -float("inf")
+        self.register_buffer('pos', torch.arange(
+            0, 2000, dtype=torch.float).view(1, -1, 1).data)
+
+
+    def get_alignment_energies(self, attention_hidden_state, memory, previous_location):
+        """
+        PARAMS
+        ------
+        query: decoder output (batch, n_mel_channels * n_frames_per_step)
+        memory: encoder outputs (B, T_in, attention_dim)
+        attention_weights_cat: cumulative and prev. att weights (B, 2, max_time)
+
+        RETURNS
+        -------
+        alignment (batch, max_time)
+        """
+
+        w, delta, scale = self.F(attention_hidden_state.unsqueeze(1)).chunk(3, dim=-1)
+        delta = delta.sigmoid()
+        # print(previous_location.shape, delta.shape)
+        loc = previous_location + delta
+        scale = scale.sigmoid() * 2 + 1
+        # print(self.pos.shape)
+        pos = self.pos[:, :memory.shape[1], :]
+        # print(pos.shape)
+        # print(loc.shape)
+        z1 = torch.erf((loc-pos+0.5)*scale)
+        z2 = torch.erf((loc-pos-0.5)*scale)
+        z = (z1 - z2)*0.5
+        # print(w.shape)
+        w = torch.softmax(w, dim=-1)
+        # print(z.shape, w.shape)
+        z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)
+        # z = z.sum(dim=-1)
+        return z, loc
+
+    def forward(self, attention_hidden_state, memory, previous_location, mask):
+        """
+        PARAMS
+        ------
+        attention_hidden_state: attention rnn last output
+        memory: encoder outputs
+        attention_weights_cat: previous and cummulative attention weights
+        mask: binary mask for padded data
+        """
+        alignment, loc = self.get_alignment_energies(attention_hidden_state, memory, previous_location)
+
+        if mask is not None:
+            alignment.data.masked_fill_(mask, self.score_mask_value)
+
+        attention_weights = alignment # F.softmax(alignment, dim=1)
+        attention_context = torch.bmm(attention_weights.unsqueeze(1), memory)
+        attention_context = attention_context.squeeze(1)
+
+        return attention_context, attention_weights, loc
+
+
 class Attention(nn.Module):
     def __init__(self, attention_rnn_dim, embedding_dim, attention_dim,
                  attention_location_n_filters, attention_location_kernel_size):
@@ -214,16 +288,18 @@ class Decoder(nn.Module):
         self.gate_threshold = hparams.gate_threshold
         self.p_attention_dropout = hparams.p_attention_dropout
         self.p_decoder_dropout = hparams.p_decoder_dropout
+        self.num_att_mixtures = hparams.num_att_mixtures
 
         self.prenet = Prenet(
             hparams.n_mel_channels * hparams.n_frames_per_step,
             [hparams.prenet_dim, hparams.prenet_dim])
 
         self.attention_rnn = nn.LSTMCell(
-            hparams.prenet_dim + hparams.encoder_embedding_dim,
+            hparams.prenet_dim + hparams.encoder_embedding_dim + hparams.decoder_rnn_dim,
             hparams.attention_rnn_dim)
 
-        self.attention_layer = Attention(
+        self.attention_layer = GMMAttention(
+            hparams.num_att_mixtures,
             hparams.attention_rnn_dim, hparams.encoder_embedding_dim,
             hparams.attention_dim, hparams.attention_location_n_filters,
             hparams.attention_location_kernel_size)
@@ -277,6 +353,9 @@ class Decoder(nn.Module):
         self.decoder_cell = Variable(memory.data.new(
             B, self.decoder_rnn_dim).zero_())
 
+        self.previous_location = Variable(memory.data.new(
+            B, 1, self.num_att_mixtures).zero_())
+
         self.attention_weights = Variable(memory.data.new(
             B, MAX_TIME).zero_())
         self.attention_weights_cum = Variable(memory.data.new(
@@ -285,7 +364,7 @@ class Decoder(nn.Module):
             B, self.encoder_embedding_dim).zero_())
 
         self.memory = memory
-        self.processed_memory = self.attention_layer.memory_layer(memory)
+        self.processed_memory = None#self.attention_layer.memory_layer(memory)
         self.mask = mask
 
     def parse_decoder_inputs(self, decoder_inputs):
@@ -349,7 +428,7 @@ class Decoder(nn.Module):
         gate_output: gate output energies
         attention_weights:
         """
-        cell_input = torch.cat((decoder_input, self.attention_context), -1)
+        cell_input = torch.cat((decoder_input, self.attention_context, self.decoder_hidden), -1)
         self.attention_hidden, self.attention_cell = self.attention_rnn(
             cell_input, (self.attention_hidden, self.attention_cell))
         self.attention_hidden = F.dropout(
@@ -358,9 +437,8 @@ class Decoder(nn.Module):
         attention_weights_cat = torch.cat(
             (self.attention_weights.unsqueeze(1),
              self.attention_weights_cum.unsqueeze(1)), dim=1)
-        self.attention_context, self.attention_weights = self.attention_layer(
-            self.attention_hidden, self.memory, self.processed_memory,
-            attention_weights_cat, self.mask)
+        self.attention_context, self.attention_weights, self.previous_location = self.attention_layer(
+            self.attention_hidden, self.memory, self.previous_location, self.mask)
 
         self.attention_weights_cum += self.attention_weights
         decoder_input = torch.cat(
@@ -510,6 +588,7 @@ class Tacotron2(nn.Module):
         mel_outputs_postnet = self.postnet(mel_outputs)
         mel_outputs_postnet = mel_outputs + mel_outputs_postnet
 
+        print(alignments.shape)
         return self.parse_output(
             [mel_outputs, mel_outputs_postnet, gate_outputs, alignments],
             output_lengths)

@@ -13,6 +13,7 @@ def create_hparams(hparams_string=None, verbose=False):
         epochs=500,
         iters_per_checkpoint=1000,
         seed=1234,
+        num_att_mixtures=8,
         dynamic_loss_scaling=False,
         fp16_run=False,
         distributed_run=False,

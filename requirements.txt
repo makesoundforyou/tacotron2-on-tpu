@@ -5,3 +5,4 @@ librosa==0.6.0
 scipy
 Unidecode==1.0.22
 pillow
+wandb
