@@ -12,13 +12,13 @@ class GMMAttention(nn.Module):
                  attention_location_n_filters, attention_location_kernel_size):
         super(GMMAttention, self).__init__()
         self.num_mixtures = num_mixtures
-        lin = nn.Linear(attention_rnn_dim, 3*num_mixtures, bias=True)
-        lin.weight.data.mul_(0.01)
-        lin.bias.data.mul_(0.01)
-        lin.bias.data.sub_(3)
+        lin = nn.Linear(attention_dim, 3*num_mixtures, bias=True)
+        lin.weight.data.mul_(0.001)
+        lin.bias.data.mul_(0.001)
+        lin.bias.data.sub_(2.)
 
         self.F = nn.Sequential(
-                LinearNorm(attention_rnn_dim, attention_rnn_dim, bias=True, w_init_gain='tanh'),
+                LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='tanh'),
                 nn.Tanh(),
                 lin)
                 # LinearNorm(attention_dim, 3*num_mixtures, bias=False, w_init_gain='linear'))
