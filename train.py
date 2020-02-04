@@ -212,6 +212,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     model.train()
     is_overflow = False
 
+    valset._max_len=100000
     for epoch in range(0, epoch_offset):
         train_loader.dataset.epoch_step()
 

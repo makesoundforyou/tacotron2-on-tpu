@@ -588,7 +588,6 @@ class Tacotron2(nn.Module):
         mel_outputs_postnet = self.postnet(mel_outputs)
         mel_outputs_postnet = mel_outputs + mel_outputs_postnet
 
-        print(alignments.shape)
         return self.parse_output(
             [mel_outputs, mel_outputs_postnet, gate_outputs, alignments],
             output_lengths)
