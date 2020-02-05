@@ -54,7 +54,7 @@ class GMMAttention(nn.Module):
         z2 = torch.erf((loc-pos-0.5)*scale)
         z = (z1 - z2)*0.5
         # print(w.shape)
-        w = torch.softmax(w, dim=-1)
+        w = torch.sigmoid(w) # torch.softmax(w, dim=-1)
         # print(z.shape, w.shape)
         z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)
         # z = z.sum(dim=-1)
@@ -348,7 +348,7 @@ class Decoder(nn.Module):
         gate_output: gate output energies
         attention_weights:
         """
-        cell_input = torch.cat((decoder_input, self.attention_context, self.decoder_hidden), -1)
+        cell_input = torch.cat((decoder_input, self.attention_context, self.decoder_hidden), -1).tanh()
         self.attention_hidden, self.attention_cell = self.attention_rnn(
             cell_input, (self.attention_hidden, self.attention_cell))
         self.attention_hidden = F.dropout(
