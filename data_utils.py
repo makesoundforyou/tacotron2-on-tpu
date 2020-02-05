@@ -52,7 +52,7 @@ class TextMelLoader(torch.utils.data.Dataset):
 
     def epoch_step(self):
         self._epoch = self._epoch + 1
-        if self._epoch % 5 == 0:
+        if self._epoch % 2 == 0:
             self._double_max_len()
 
 
