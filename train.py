@@ -180,12 +180,12 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     if hparams.distributed_run:
         model = apply_gradient_allreduce(model)
 
-    criterion = Tacotron2Loss()
-
     logger = prepare_directories_and_logger(
         output_directory, log_directory, rank)
 
     train_loader, valset, collate_fn = prepare_dataloaders(hparams)
+
+    criterion = Tacotron2Loss(valset.maxlen)
 
     # Load checkpoint if one exists
     iteration = 0
