@@ -26,12 +26,39 @@ class TextMelLoader(torch.utils.data.Dataset):
             hparams.mel_fmax)
         random.seed(1234)
         random.shuffle(self.audiopaths_and_text)
+        self.mean, self.std, self.maxlen = 0., 1., 1000
+        if hparams.normalize_input: self.normalize_input_init()
+    
+    def normalize_input_init(self):
+            import os.path
+            file = './.stats.pt'
+            if os.path.isfile(file): 
+                print("Loading statistics (mean, std, maxlen) from file {}. Delete this file if your dataset has changed since the last time this file was created.".format(file))
+                info = torch.load(file)
+            else:
+                print("Creating file {} which stores statistics (mean, std, maxlen) of the dataset. It will take a few minutes to load the dataset.".format(file))
+                info = self.get_dataset_mean_std_maxlen()
+                torch.save(info, file)
+            self.mean, self.std, self.maxlen = info
+
+    def get_dataset_mean_std_maxlen(self):
+        sumall, sumallsq, maxlen, total_len = 0., 0., 0, 0
+        for audiopath, _ in self.audiopaths_and_text:
+            mel = self.get_mel(audiopath)
+            sumall = sumall + mel.sum(dim=1, keepdim=True)
+            sumallsq = sumallsq + (mel**2).sum(dim=1, keepdim=True)
+            total_len += mel.shape[1]
+            maxlen = max(maxlen, mel.shape[1])
+        mean = sumall / total_len
+        std  = (sumallsq / total_len - mean**2)**0.5
+        return mean, std, maxlen
+
 
     def get_mel_text_pair(self, audiopath_and_text):
         # separate filename and text
         audiopath, text = audiopath_and_text[0], audiopath_and_text[1]
         text = self.get_text(text)
-        mel = self.get_mel(audiopath)
+        mel = self.get_mel(audiopath).sub(self.mean).div(self.std)
         return (text, mel)
 
     def get_mel(self, filename):
