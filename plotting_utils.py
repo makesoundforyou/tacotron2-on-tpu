@@ -12,7 +12,7 @@ def save_figure_to_numpy(fig):
 
 
 def plot_alignment_to_numpy(alignment, info=None):
-    fig, ax = plt.subplots(figsize=(6, 4))
+    fig, ax = plt.subplots(figsize=(20, 4))
     im = ax.imshow(alignment, aspect='auto', origin='lower',
                    interpolation='none')
     fig.colorbar(im, ax=ax)

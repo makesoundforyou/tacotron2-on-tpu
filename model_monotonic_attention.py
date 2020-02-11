@@ -13,13 +13,17 @@ class GMMAttention(nn.Module):
                  attention_location_n_filters, attention_location_kernel_size):
         super(GMMAttention, self).__init__()
         self.num_mixtures = num_mixtures
+        lin = nn.Linear(attention_dim, 3*num_mixtures, bias=True)
+        lin.weight.data.mul_(0.001)
+        lin.bias.data.mul_(0.001)
+        lin.bias.data.sub_(1.5)
 
         self.F = nn.Sequential(
-                nn.Linear(attention_rnn_dim, attention_dim, bias=True),
+                LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='tanh'),
                 nn.Tanh(),
-                nn.Linear(attention_dim, 3*num_mixtures, bias=False))
+                lin)
 
-        self.score_mask_value = 0
+        self.score_mask_value = 0 # -float("inf")
         self.register_buffer('pos', torch.arange(
             0, 2000, dtype=torch.float).view(1, -1, 1).data)
 
@@ -37,14 +41,13 @@ class GMMAttention(nn.Module):
         alignment (batch, max_time)
         """
 
-        w, delta, scale = self.F(attention_hidden_state.unsqueeze(1)).chunk(3, dim=-1)
-        delta = delta - 1.5
-        delta = delta.sigmoid()
+        _t = self.F(attention_hidden_state.unsqueeze(1))
+        w, delta, scale = _t.sigmoid().chunk(3, dim=-1)
         loc = previous_location + delta
-        std = torch.nn.functional.softplus(scale + 5.) 
+        scale = scale * 2 + 0.1
         pos = self.pos[:, :memory.shape[1], :]
-        z1 = torch.erf((loc-pos+0.5) / std)
-        z2 = torch.erf((loc-pos-0.5) / std)
+        z1 = torch.erf((loc-pos+0.5)*scale)
+        z2 = torch.erf((loc-pos-0.5)*scale)
         z = (z1 - z2)*0.5
         w = torch.softmax(w, dim=-1)
         z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)

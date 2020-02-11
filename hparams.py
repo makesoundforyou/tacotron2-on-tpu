@@ -10,9 +10,9 @@ def create_hparams(hparams_string=None, verbose=False):
         # Experiment Parameters        #
         ################################
         epochs=500,
-        iters_per_checkpoint=1000,
+        iters_per_checkpoint=100,
         seed=1234,
-        dynamic_loss_scaling=True,
+        dynamic_loss_scaling=False,
         fp16_run=False,
         distributed_run=False,
         dist_backend="nccl",
@@ -20,8 +20,8 @@ def create_hparams(hparams_string=None, verbose=False):
         cudnn_enabled=True,
         cudnn_benchmark=False,
         ignore_layers=['embedding.weight'],
-        use_monotonic_attention=False,
-        num_att_mixtures=5,
+        use_monotonic_attention=True,
+        num_att_mixtures=1,
 
         ################################
         # Data Parameters             #
@@ -83,7 +83,7 @@ def create_hparams(hparams_string=None, verbose=False):
         learning_rate=1e-3,
         weight_decay=1e-6,
         grad_clip_thresh=1.0,
-        batch_size=64,
+        batch_size=512,
         mask_padding=True  # set model's padded outputs to padded values
     )
 

@@ -43,7 +43,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
     trainset = TextMelLoader(hparams.training_files, hparams)
-    valset = TextMelLoader(hparams.validation_files, hparams)
+    valset = TextMelLoader(hparams.validation_files, hparams, start_len=900)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
     if hparams.distributed_run:
@@ -184,7 +184,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     if hparams.distributed_run:
         model = apply_gradient_allreduce(model)
 
-    criterion = Tacotron2Loss()
+
 
     logger = prepare_directories_and_logger(
         output_directory, log_directory, rank)
@@ -208,9 +208,19 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     model.train()
     is_overflow = False
+    for epoch in range(epoch_offset): train_loader.dataset.step()
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
+        train_loader.dataset.step()
+        criterion = Tacotron2Loss(train_loader.dataset.len)
+        batch_size = hparams.batch_size * 50 // train_loader.dataset.len
+        train_loader = DataLoader(train_loader.dataset, num_workers=1,
+                                  shuffle=(train_loader.sampler is None),
+                                  sampler=train_loader.sampler,
+                                  batch_size=batch_size, pin_memory=False,
+                                  drop_last=True, collate_fn=collate_fn)
+        print("batch size ", batch_size)
         for i, batch in enumerate(train_loader):
             start = time.perf_counter()
             for param_group in optimizer.param_groups:
@@ -249,7 +259,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                     reduced_loss, grad_norm, learning_rate, duration, iteration)
 
             if not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
-                validate(model, criterion, valset, iteration,
+                validate(model, Tacotron2Loss(900), valset, iteration,
                          hparams.batch_size, n_gpus, collate_fn, logger,
                          hparams.distributed_run, rank)
                 if rank == 0:
