@@ -20,6 +20,8 @@ def create_hparams(hparams_string=None, verbose=False):
         cudnn_enabled=True,
         cudnn_benchmark=False,
         ignore_layers=['embedding.weight'],
+        use_monotonic_attention=False,
+        num_att_mixtures=5,
 
         ################################
         # Data Parameters             #

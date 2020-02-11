@@ -11,6 +11,7 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 
 from model import Tacotron2
+from model_monotonic_attention import MonotonicTacotron2
 from data_utils import TextMelLoader, TextMelCollate
 from loss_function import Tacotron2Loss
 from logger import Tacotron2Logger
@@ -71,7 +72,10 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
 
 
 def load_model(hparams):
-    model = Tacotron2(hparams)
+    if hparams.use_monotonic_attention:
+        model = MonotonicTacotron2(hparams)
+    else:
+        model = Tacotron2(hparams)
     if torch.cuda.is_available(): model = model.cuda()
 
     if hparams.fp16_run:
