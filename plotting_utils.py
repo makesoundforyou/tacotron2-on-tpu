@@ -12,7 +12,7 @@ def save_figure_to_numpy(fig):
 
 
 def plot_alignment_to_numpy(alignment, info=None):
-    fig, ax = plt.subplots(figsize=(20, 4))
+    fig, ax = plt.subplots(figsize=(50, 10))
     im = ax.imshow(alignment, aspect='auto', origin='lower',
                    vmin=0., vmax=1.,
                    interpolation='none')
@@ -25,6 +25,7 @@ def plot_alignment_to_numpy(alignment, info=None):
     plt.tight_layout()
 
     fig.canvas.draw()
+    plt.savefig("att.png")
     data = save_figure_to_numpy(fig)
     plt.close()
     return data

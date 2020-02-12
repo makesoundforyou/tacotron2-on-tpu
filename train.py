@@ -42,7 +42,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
 def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
-    trainset = TextMelLoader(hparams.training_files, hparams, start_len=900)
+    trainset = TextMelLoader(hparams.training_files, hparams, start_len=200)
     valset = TextMelLoader(hparams.validation_files, hparams, start_len=900)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
@@ -181,12 +181,12 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     optimizer = torch.optim.Adam([
         {"params": model.embedding.parameters()},
         {"params": model.encoder.parameters()},
-        {"params": model.encoder.postnet()},
-        {"params": model.decoder.prenet()},
-        {"params": model.decoder.decoder_rnn()},
-        {"params": model.decoder.linear_projection()},
-        {"params": model.decoder.attention_rnn(), 'lr':  learning_rate/10.},
-        {"params": model.decoder.attention_layer(), 'lr':  learning_rate/10.},
+        {"params": model.postnet.parameters()},
+        {"params": model.decoder.prenet.parameters()},
+        {"params": model.decoder.decoder_rnn.parameters()},
+        {"params": model.decoder.linear_projection.parameters()},
+        {"params": model.decoder.attention_rnn.parameters(),   'lr':  learning_rate/10.},
+        {"params": model.decoder.attention_layer.parameters(), 'lr':  learning_rate/10.},
     ], lr=learning_rate, weight_decay=hparams.weight_decay)
 
     if hparams.fp16_run:
@@ -225,17 +225,19 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         print("Epoch: {}".format(epoch))
         train_loader.dataset.step()
         criterion = Tacotron2Loss(train_loader.dataset.len)
-        batch_size = hparams.batch_size * 50 // train_loader.dataset.len
-        train_loader = DataLoader(train_loader.dataset, num_workers=2,
-                                  shuffle=(train_loader.sampler is None),
-                                  sampler=train_loader.sampler,
-                                  batch_size=batch_size, pin_memory=False,
-                                  drop_last=True, collate_fn=collate_fn)
-        print("batch size ", batch_size)
+        # batch_size = hparams.batch_size * 50 // train_loader.dataset.len
+        # train_loader = DataLoader(train_loader.dataset, num_workers=2,
+        #                           shuffle=(train_loader.sampler is None),
+        #                           sampler=train_loader.sampler,
+        #                           batch_size=batch_size, pin_memory=False,
+        #                           drop_last=True, collate_fn=collate_fn)
+        # print("batch size ", batch_size)
         for i, batch in enumerate(train_loader):
             start = time.perf_counter()
-            for param_group in optimizer.param_groups:
+            for param_group in optimizer.param_groups[:-2]:
                 param_group['lr'] = learning_rate
+            for param_group in optimizer.param_groups[-2:]:
+                param_group['lr'] = learning_rate/10.
 
             model.zero_grad()
             x, y = model.parse_batch(batch)
