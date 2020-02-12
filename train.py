@@ -42,7 +42,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
 def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
-    trainset = TextMelLoader(hparams.training_files, hparams)
+    trainset = TextMelLoader(hparams.training_files, hparams, start_len=900)
     valset = TextMelLoader(hparams.validation_files, hparams, start_len=900)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
@@ -76,7 +76,8 @@ def load_model(hparams):
         model = MonotonicTacotron2(hparams)
     else:
         model = Tacotron2(hparams)
-    if torch.cuda.is_available(): model = model.cuda()
+    if torch.cuda.is_available():
+        model = model.cuda()
 
     if hparams.fp16_run:
         model.decoder.attention_layer.score_mask_value = finfo('float16').min
@@ -110,18 +111,21 @@ def load_checkpoint(checkpoint_path, model, optimizer):
     optimizer.load_state_dict(checkpoint_dict['optimizer'])
     learning_rate = checkpoint_dict['learning_rate']
     iteration = checkpoint_dict['iteration']
+    epoch = checkpoint_dict['epoch']
     print("Loaded checkpoint '{}' from iteration {}" .format(
         checkpoint_path, iteration))
-    return model, optimizer, learning_rate, iteration
+    return model, optimizer, learning_rate, iteration, epoch
 
 
-def save_checkpoint(model, optimizer, learning_rate, iteration, filepath):
+def save_checkpoint(model, optimizer, learning_rate, iteration, filepath, epoch):
     print("Saving model and optimizer state at iteration {} to {}".format(
         iteration, filepath))
     torch.save({'iteration': iteration,
                 'state_dict': model.state_dict(),
                 'optimizer': optimizer.state_dict(),
-                'learning_rate': learning_rate}, filepath)
+                'learning_rate': learning_rate,
+                'epoch':  epoch
+                }, filepath)
 
 
 def validate(model, criterion, valset, iteration, batch_size, n_gpus,
@@ -173,8 +177,17 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     model = load_model(hparams)
     learning_rate = hparams.learning_rate
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate,
-                                 weight_decay=hparams.weight_decay)
+
+    optimizer = torch.optim.Adam([
+        {"params": model.embedding.parameters()},
+        {"params": model.encoder.parameters()},
+        {"params": model.encoder.postnet()},
+        {"params": model.decoder.prenet()},
+        {"params": model.decoder.decoder_rnn()},
+        {"params": model.decoder.linear_projection()},
+        {"params": model.decoder.attention_rnn(), 'lr':  learning_rate/10.},
+        {"params": model.decoder.attention_layer(), 'lr':  learning_rate/10.},
+    ], lr=learning_rate, weight_decay=hparams.weight_decay)
 
     if hparams.fp16_run:
         from apex import amp
@@ -183,8 +196,6 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     if hparams.distributed_run:
         model = apply_gradient_allreduce(model)
-
-
 
     logger = prepare_directories_and_logger(
         output_directory, log_directory, rank)
@@ -199,23 +210,23 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             model = warm_start_model(
                 checkpoint_path, model, hparams.ignore_layers)
         else:
-            model, optimizer, _learning_rate, iteration = load_checkpoint(
+            model, optimizer, _learning_rate, iteration, epoch_offset = load_checkpoint(
                 checkpoint_path, model, optimizer)
             if hparams.use_saved_learning_rate:
                 learning_rate = _learning_rate
             iteration += 1  # next iteration is iteration + 1
-            epoch_offset = max(0, int(iteration / len(train_loader)))
-
+            # epoch_offset = max(0, int(iteration / len(train_loader)))
     model.train()
     is_overflow = False
-    for epoch in range(epoch_offset): train_loader.dataset.step()
+    for epoch in range(epoch_offset):
+        train_loader.dataset.step()
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
         train_loader.dataset.step()
         criterion = Tacotron2Loss(train_loader.dataset.len)
         batch_size = hparams.batch_size * 50 // train_loader.dataset.len
-        train_loader = DataLoader(train_loader.dataset, num_workers=1,
+        train_loader = DataLoader(train_loader.dataset, num_workers=2,
                                   shuffle=(train_loader.sampler is None),
                                   sampler=train_loader.sampler,
                                   batch_size=batch_size, pin_memory=False,
@@ -266,7 +277,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                     checkpoint_path = os.path.join(
                         output_directory, "checkpoint_{}".format(iteration))
                     save_checkpoint(model, optimizer, learning_rate, iteration,
-                                    checkpoint_path)
+                                    checkpoint_path, epoch)
 
             iteration += 1
 

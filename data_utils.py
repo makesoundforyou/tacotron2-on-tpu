@@ -41,10 +41,11 @@ class TextMelLoader(torch.utils.data.Dataset):
                 [1.8312], [1.8427], [1.8756], [1.9143], [1.9503], [2.0072], [2.0761], [2.1519], [2.1848], [2.1574], [2.1386], [2.1442], [2.1601],
                 [2.1547], [2.1208]]).float()
 
-        self.len = start_len-50
+        self.len = start_len-step
+        self._step = step
 
     def step(self):
-        self.len += 50
+        self.len += self._step
         if self.len >= 900: self.len = 900
         print("data len ", self.len)
 
