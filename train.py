@@ -18,6 +18,9 @@ from logger import Tacotron2Logger
 from hparams import create_hparams
 
 
+import wandb
+wandb.init(project="tts")
+
 def reduce_tensor(tensor, n_gpus):
     rt = tensor.clone()
     dist.all_reduce(rt, op=dist.reduce_op.SUM)
@@ -65,7 +68,7 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
         if not os.path.isdir(output_directory):
             os.makedirs(output_directory)
             os.chmod(output_directory, 0o775)
-        logger = Tacotron2Logger(os.path.join(output_directory, log_directory))
+        logger = Tacotron2Logger(os.path.join(output_directory, log_directory), wandb=wandb)
     else:
         logger = None
     return logger
@@ -216,6 +219,9 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 learning_rate = _learning_rate
             iteration += 1  # next iteration is iteration + 1
             # epoch_offset = max(0, int(iteration / len(train_loader)))
+
+    wandb.watch(model)
+
     model.train()
     is_overflow = False
     for epoch in range(epoch_offset):

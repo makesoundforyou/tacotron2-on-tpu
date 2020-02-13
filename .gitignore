@@ -1,0 +1,7 @@
+filelists/*
+LJSpeech-1.1/*
+LJSpeech-1.1/wavs/*
+.mypy_cache
+*.pyc
+outdir
+filelists/*
