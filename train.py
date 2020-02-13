@@ -223,6 +223,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
+        train_loader.dataset.step()
         criterion = Tacotron2Loss(train_loader.dataset.len)
         batch_size = hparams.batch_size * 50 // train_loader.dataset.len
         train_loader = DataLoader(train_loader.dataset, num_workers=2,
