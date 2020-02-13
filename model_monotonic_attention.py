@@ -15,12 +15,12 @@ class GMMAttention(nn.Module):
         self.num_mixtures = num_mixtures
 
         self.F = nn.Sequential(
-            LinearNorm(attention_rnn_dim, attention_dim,
-                       bias=True, w_init_gain='relu'),
+            LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='relu'), 
+            nn.ReLU(), 
+            nn.Dropout(0.1),
+            LinearNorm(attention_dim, attention_dim, bias=True, w_init_gain='relu'), 
             nn.ReLU(),
-            LinearNorm(attention_dim, attention_dim,
-                       bias=True, w_init_gain='relu'),
-            nn.ReLU(),
+            nn.Dropout(0.1),
             LinearNorm(attention_dim, 3*num_mixtures, bias=False)
         )
 
@@ -41,13 +41,13 @@ class GMMAttention(nn.Module):
         alignment (batch, max_time)
         """
 
-        w, delta, scale = self.F(
-            attention_hidden_state.unsqueeze(1)).chunk(3, dim=-1)
+        _t = self.F(attention_hidden_state.unsqueeze(1))
+        w, delta, scale = _t.chunk(3, dim=-1)
 
         delta = torch.sigmoid(delta)
         loc = previous_location + delta
 
-        std = scale.sigmoid() * 5 + 0.2
+        std = scale.sigmoid() * 5 + 0.2 # torch.nn.functional.softplus(scale + 5)
 
         pos = self.pos[:, :memory.shape[1], :]
         z1 = torch.erf((loc-pos+0.5) / std)
@@ -168,7 +168,7 @@ class MonotonicDecoder(Decoder):
         attention_weights:
         """
         cell_input = torch.cat(
-            (decoder_input, self.attention_context, self.attention_hidden), -1)
+            (decoder_input, self.attention_context, self.attention_hidden), -1).tanh()
         self.attention_hidden, self.attention_cell = self.attention_rnn(
             cell_input, (self.attention_hidden, self.attention_cell))
         self.attention_hidden = F.dropout(

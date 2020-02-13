@@ -223,7 +223,6 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
-        train_loader.dataset.step()
         criterion = Tacotron2Loss(train_loader.dataset.len)
         batch_size = hparams.batch_size * 50 // train_loader.dataset.len
         train_loader = DataLoader(train_loader.dataset, num_workers=2,
@@ -278,7 +277,11 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 logger.log_training(
                     reduced_loss, grad_norm, learning_rate, duration, iteration)
 
-            if not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
+            if not is_overflow and (iteration % (hparams.iters_per_checkpoint//10) == 0) and iteration < 1000:
+                validate(model, Tacotron2Loss(900), valset, iteration,
+                         hparams.batch_size, n_gpus, collate_fn, logger,
+                         hparams.distributed_run, rank)
+            elif not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
                 validate(model, Tacotron2Loss(900), valset, iteration,
                          hparams.batch_size, n_gpus, collate_fn, logger,
                          hparams.distributed_run, rank)
