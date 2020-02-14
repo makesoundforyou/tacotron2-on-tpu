@@ -12,8 +12,8 @@ def save_figure_to_numpy(fig):
 
 
 def plot_alignment_to_numpy(alignment, info=None):
-    fig, ax = plt.subplots(figsize=(50, 10))
-    im = ax.imshow(alignment, aspect='auto', origin='lower',
+    fig, ax = plt.subplots(figsize=(60, 10))
+    im = ax.imshow(alignment, aspect='equal', origin='lower',
                    vmin=0., vmax=1.,
                    interpolation='none')
     fig.colorbar(im, ax=ax)
@@ -33,7 +33,7 @@ def plot_alignment_to_numpy(alignment, info=None):
 
 def plot_spectrogram_to_numpy(spectrogram):
     fig, ax = plt.subplots(figsize=(12, 3))
-    im = ax.imshow(spectrogram, aspect="auto", origin="lower",
+    im = ax.imshow(spectrogram, aspect="equal", origin="lower",
                    vmin=-3, vmax=3,
                    interpolation='none')
     plt.colorbar(im, ax=ax)

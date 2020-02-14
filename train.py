@@ -21,6 +21,7 @@ from hparams import create_hparams
 import wandb
 wandb.init(project="tts")
 
+
 def reduce_tensor(tensor, n_gpus):
     rt = tensor.clone()
     dist.all_reduce(rt, op=dist.reduce_op.SUM)
@@ -45,7 +46,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
 def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
-    trainset = TextMelLoader(hparams.training_files, hparams, start_len=50)
+    trainset = TextMelLoader(hparams.training_files, hparams, start_len=100)
     valset = TextMelLoader(hparams.validation_files, hparams, start_len=900)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
@@ -68,7 +69,8 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
         if not os.path.isdir(output_directory):
             os.makedirs(output_directory)
             os.chmod(output_directory, 0o775)
-        logger = Tacotron2Logger(os.path.join(output_directory, log_directory), wandb=wandb)
+        logger = Tacotron2Logger(os.path.join(
+            output_directory, log_directory), wandb=wandb)
     else:
         logger = None
     return logger
@@ -181,16 +183,8 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     model = load_model(hparams)
     learning_rate = hparams.learning_rate
 
-    optimizer = torch.optim.Adam([
-        {"params": model.embedding.parameters()},
-        {"params": model.encoder.parameters()},
-        {"params": model.postnet.parameters()},
-        {"params": model.decoder.prenet.parameters()},
-        {"params": model.decoder.decoder_rnn.parameters()},
-        {"params": model.decoder.linear_projection.parameters()},
-        {"params": model.decoder.attention_rnn.parameters(), 'lr':  learning_rate/10.},
-        {"params": model.decoder.attention_layer.parameters(), 'lr':  learning_rate/10.},
-    ], lr=learning_rate, weight_decay=hparams.weight_decay)
+    optimizer = torch.optim.Adamax(
+        model.parameters(), lr=learning_rate, weight_decay=hparams.weight_decay)
 
     if hparams.fp16_run:
         from apex import amp
@@ -231,26 +225,15 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         print("Epoch: {}".format(epoch))
         train_loader.dataset.step()
         criterion = Tacotron2Loss(train_loader.dataset.len)
-        batch_size = hparams.batch_size * 50 // train_loader.dataset.len
-        train_loader = DataLoader(train_loader.dataset, num_workers=2,
-                                  shuffle=(train_loader.sampler is None),
-                                  sampler=train_loader.sampler,
-                                  batch_size=batch_size, pin_memory=False,
-                                  drop_last=True, collate_fn=collate_fn)
-        print("batch size ", batch_size)
+        # batch_size = hparams.batch_size * 50 // train_loader.dataset.len
+        # train_loader = DataLoader(train_loader.dataset, num_workers=1,
+        #                           shuffle=(train_loader.sampler is None),
+        #                           sampler=train_loader.sampler,
+        #                           batch_size=batch_size, pin_memory=False,
+        #                           drop_last=True, collate_fn=collate_fn)
+        # print("batch size ", batch_size)
         for i, batch in enumerate(train_loader):
             start = time.perf_counter()
-            for param_group in optimizer.param_groups[:-2]:
-                param_group['lr'] = learning_rate
-            for param_group in optimizer.param_groups[-2:]:
-                param_group['lr'] = learning_rate/10.
-
-#             if iteration <= 200:
-#                 model.decoder.attention_rnn.requires_grad_(False)
-#                 model.decoder.attention_layer.requires_grad_(False)
-#             else:
-#                 model.decoder.attention_rnn.requires_grad_(True)
-#                 model.decoder.attention_layer.requires_grad_(True)
 
             model.zero_grad()
             x, y = model.parse_batch(batch)
@@ -284,14 +267,11 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 logger.log_training(
                     reduced_loss, grad_norm, learning_rate, duration, iteration)
 
-            if not is_overflow and (iteration % (hparams.iters_per_checkpoint//10) == 0) and iteration < 1000:
+            if not is_overflow and iteration % (hparams.iters_per_checkpoint//10) == 0:
                 validate(model, Tacotron2Loss(900), valset, iteration,
                          hparams.batch_size, n_gpus, collate_fn, logger,
                          hparams.distributed_run, rank)
-            elif not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
-                validate(model, Tacotron2Loss(900), valset, iteration,
-                         hparams.batch_size, n_gpus, collate_fn, logger,
-                         hparams.distributed_run, rank)
+            if not is_overflow and (iteration % hparams.iters_per_checkpoint == 0):
                 if rank == 0:
                     checkpoint_path = os.path.join(
                         output_directory, "checkpoint_{}".format(iteration))

@@ -63,9 +63,7 @@ class Tacotron2Logger(SummaryWriter):
         align = plot_alignment_to_numpy(alignments[idx].data.cpu().numpy().T)
         spec = plot_spectrogram_to_numpy(mel_targets[idx].data.cpu().numpy())
         mel = plot_spectrogram_to_numpy(mel_outputs[idx].data.cpu().numpy())
-        gate = plot_gate_outputs_to_numpy(gate_targets[idx].data.cpu(
-        ).numpy(), torch.sigmoid(gate_outputs[idx]).data.cpu().numpy())
 
         wandb = self.wandb
         wandb.log({"validation loss": reduced_loss, "alignment": wandb.Image(
-            align), "spectrogram": wandb.Image(spec), "mel_spec": wandb.Image(mel), "gate": wandb.Image(gate), })
+            align), "spectrogram": wandb.Image(spec), "mel_spec": wandb.Image(mel), })

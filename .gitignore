@@ -5,3 +5,4 @@ LJSpeech-1.1/wavs/*
 *.pyc
 outdir
 filelists/*
+wandb/*

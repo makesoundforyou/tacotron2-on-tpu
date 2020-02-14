@@ -43,6 +43,7 @@ class TextMelLoader(torch.utils.data.Dataset):
 
         self.len = start_len-step
         self._step = step
+        self.mm = {}
 
     def step(self):
         self.len += self._step
@@ -53,7 +54,13 @@ class TextMelLoader(torch.utils.data.Dataset):
         # separate filename and text
         audiopath, text = audiopath_and_text[0], audiopath_and_text[1]
         text = self.get_text(text)
-        mel = self.get_mel(audiopath)
+        
+        if audiopath in self.mm:
+            mel = self.mm[audiopath]
+        else:
+            mel = self.get_mel(audiopath)
+            self.mm[audiopath] = mel
+        
         return (text, mel[:, :self.len].sub(self._mean).div(self._std))
 
     def get_mel(self, filename):
