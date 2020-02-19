@@ -21,7 +21,6 @@ def create_hparams(hparams_string=None, verbose=False):
         cudnn_benchmark=False,
         ignore_layers=['embedding.weight'],
         use_monotonic_attention=True,
-        num_att_mixtures=1,
 
         ################################
         # Data Parameters             #
@@ -58,14 +57,14 @@ def create_hparams(hparams_string=None, verbose=False):
         n_frames_per_step=1,  # currently only 1 is supported
         decoder_rnn_dim=1024,
         prenet_dim=256,
-        max_decoder_steps=1000,
+        max_decoder_steps=10000,
         gate_threshold=0.5,
         p_attention_dropout=0.1,
         p_decoder_dropout=0.1,
 
         # Attention parameters
         attention_rnn_dim=1024,
-        attention_dim=512,
+        attention_dim=128,
 
         # Location Layer parameters
         attention_location_n_filters=32,
@@ -82,7 +81,7 @@ def create_hparams(hparams_string=None, verbose=False):
         use_saved_learning_rate=False,
         learning_rate=1e-3,
         weight_decay=1e-6,
-        grad_clip_thresh=.1,
+        grad_clip_thresh=4.,
         batch_size=64,
         mask_padding=True  # set model's padded outputs to padded values
     )

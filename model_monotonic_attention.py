@@ -12,21 +12,20 @@ def scale_gradient(x, s=1e-1):
     return x*s + x.data*(1.-s)
 
 
-class GMMAttention(nn.Module):
-    def __init__(self, num_mixtures, attention_rnn_dim, embedding_dim, attention_dim,
-                 attention_location_n_filters, attention_location_kernel_size):
-        super(GMMAttention, self).__init__()
-        self.num_mixtures = num_mixtures
-        lin = nn.Linear(attention_dim, 3*num_mixtures, bias=False)
-        lin.weight.data.mul_(0.1)
-        self.F = nn.Sequential(LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='tanh'),
-                               nn.Tanh(),
-                               lin
-                               )
+class MonoAttention(nn.Module):
+    def __init__(self, attention_rnn_dim, embedding_dim, attention_dim):
+        super(MonoAttention, self).__init__()
+
+        self.F = nn.Sequential(
+            LinearNorm(attention_rnn_dim, attention_dim,
+                       bias=True, w_init_gain='tanh'),
+            nn.Tanh(),
+            nn.Linear(attention_dim, 2, bias=False)
+        )
 
         self.score_mask_value = 0
         self.register_buffer('pos', torch.arange(
-            0, 2000, dtype=torch.float).view(1, -1, 1).data)
+            0, 10000, dtype=torch.float).view(1, -1, 1).data)
 
     def get_alignment_energies(self, attention_hidden_state, memory, previous_location):
         """
@@ -42,8 +41,8 @@ class GMMAttention(nn.Module):
         """
 #         attention_hidden_state = scale_gradient(attention_hidden_state)
         _t = self.F(attention_hidden_state.unsqueeze(1))
-        _t = scale_gradient(_t, 1e-1)
-        w, delta, scale = _t.chunk(3, dim=-1)
+        # _t = scale_gradient(_t, 1e-1)
+        delta, scale = _t.chunk(2, dim=-1)
 
         delta = torch.sigmoid(delta - 1.4)
         loc = previous_location + delta
@@ -55,9 +54,7 @@ class GMMAttention(nn.Module):
         z1 = torch.erf((loc-pos+0.5) * scale)
         z2 = torch.erf((loc-pos-0.5) * scale)
         z = (z1 - z2)*0.5
-        w = torch.softmax(w, dim=-1)
-        z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)
-        return z, loc
+        return z.squeeze(-1), loc
 
     def forward(self, attention_hidden_state, memory, previous_location, mask):
         """
@@ -81,20 +78,38 @@ class GMMAttention(nn.Module):
         return attention_context, attention_weights, loc
 
 
+class LSTMCellWithZoneout(nn.LSTMCell):
+    def __init__(self, input_size, hidden_size, bias=True,  zoneout_prob=0.1):
+        super().__init__(input_size, hidden_size, bias)
+        self._zoneout_prob = zoneout_prob
+
+    def forward(self, input, hx):
+        old_h, old_c = hx
+        new_h, new_c = super(LSTMCellWithZoneout, self).forward(input, hx)
+        if self.training:
+            c_mask = torch.empty_like(new_c).bernoulli_(
+                p=self._zoneout_prob).bool().data
+            h_mask = torch.empty_like(new_h).bernoulli_(
+                p=self._zoneout_prob).bool().data
+            h = torch.where(h_mask, old_h, new_h)
+            c = torch.where(c_mask, old_c, new_c)
+            return h, c
+        else:
+            return new_h, new_c
+
+
 class MonotonicDecoder(Decoder):
     def __init__(self, hparams):
         super(MonotonicDecoder, self).__init__(hparams)
-        self.num_att_mixtures = hparams.num_att_mixtures
 
-        self.attention_rnn = nn.LSTMCell(
-            hparams.prenet_dim + hparams.encoder_embedding_dim + hparams.decoder_rnn_dim,
-            hparams.attention_rnn_dim)
+        self.rnn1 = LSTMCellWithZoneout(
+            hparams.prenet_dim + hparams.encoder_embedding_dim, hparams.attention_rnn_dim)
 
-        self.attention_layer = GMMAttention(
-            hparams.num_att_mixtures,
-            hparams.attention_rnn_dim, hparams.encoder_embedding_dim,
-            hparams.attention_dim, hparams.attention_location_n_filters,
-            hparams.attention_location_kernel_size)
+        self.rnn2 = LSTMCellWithZoneout(
+            hparams.attention_rnn_dim, hparams.decoder_rnn_dim)
+
+        self.attention_layer = MonoAttention(
+            hparams.decoder_rnn_dim, hparams.encoder_embedding_dim, hparams.attention_dim)
 
     def initialize_decoder_states(self, memory, mask):
         """ Initializes attention rnn states, decoder rnn states, attention
@@ -108,24 +123,22 @@ class MonotonicDecoder(Decoder):
         B = memory.size(0)
         MAX_TIME = memory.size(1)
 
-        self.attention_hidden = Variable(memory.data.new(
+        self.rnn1_hx = Variable(memory.data.new(
             B, self.attention_rnn_dim).zero_())
-        self.attention_cell = Variable(memory.data.new(
+        self.rnn1_cx = Variable(memory.data.new(
             B, self.attention_rnn_dim).zero_())
 
-        self.decoder_hidden = Variable(memory.data.new(
+        self.rnn2_hx = Variable(memory.data.new(
             B, self.decoder_rnn_dim).zero_())
-        self.decoder_cell = Variable(memory.data.new(
+        self.rnn2_cx = Variable(memory.data.new(
             B, self.decoder_rnn_dim).zero_())
 
-        self.previous_location = Variable(memory.data.new(
-            B, 1, self.num_att_mixtures).zero_())
-        self.attention_weights = Variable(memory.data.new(
-            B, MAX_TIME).zero_())
-        self.attention_weights_cum = Variable(memory.data.new(
-            B, MAX_TIME).zero_())
-        self.attention_context = Variable(memory.data.new(
-            B, self.encoder_embedding_dim).zero_())
+        self.previous_location = Variable(memory.data.new(B, 1, 1).zero_())
+        self.attention_weights = Variable(memory.data.new(B, MAX_TIME).zero_())
+        self.attention_weights_cum = Variable(
+            memory.data.new(B, MAX_TIME).zero_())
+        self.attention_context = Variable(
+            memory.data.new(B, self.encoder_embedding_dim).zero_())
 
         self.memory = memory
         self.mask = mask
@@ -169,28 +182,17 @@ class MonotonicDecoder(Decoder):
         gate_output: gate output energies
         attention_weights:
         """
-        cell_input = torch.cat(
-            (decoder_input, self.attention_context, self.attention_hidden), -1).tanh()
-        self.attention_hidden, self.attention_cell = self.attention_rnn(
-            cell_input, (self.attention_hidden, self.attention_cell))
-        self.attention_hidden = F.dropout(
-            self.attention_hidden, self.p_attention_dropout, self.training)
 
-        attention_weights_cat = torch.cat(
-            (self.attention_weights.unsqueeze(1),
-             self.attention_weights_cum.unsqueeze(1)), dim=1)
         self.attention_context, self.attention_weights, self.previous_location = self.attention_layer(
-            self.attention_hidden, self.memory, self.previous_location, self.mask)
+            self.rnn2_hx, self.memory, self.previous_location, self.mask)
 
-        decoder_input = torch.cat(
-            (self.attention_hidden, self.attention_context), -1)
-        self.decoder_hidden, self.decoder_cell = self.decoder_rnn(
-            decoder_input, (self.decoder_hidden, self.decoder_cell))
-        self.decoder_hidden = F.dropout(
-            self.decoder_hidden, self.p_decoder_dropout, self.training)
-
+        cell_input = torch.cat((decoder_input, self.attention_context), -1)
+        self.rnn1_hx, self.rnn1_cx = self.rnn1(
+            cell_input, (self.rnn1_hx, self.rnn1_cx))
+        self.rnn2_hx, self.rnn2_cx = self.rnn2(
+            self.rnn1_hx, (self.rnn2_hx, self.rnn2_cx))
         decoder_hidden_attention_context = torch.cat(
-            (self.decoder_hidden, self.attention_context), dim=1)
+            (self.rnn2_hx, self.attention_context), dim=1)
         decoder_output = self.linear_projection(
             decoder_hidden_attention_context)
 
@@ -228,6 +230,42 @@ class MonotonicDecoder(Decoder):
             mel_outputs += [mel_output.squeeze(1)]
             gate_outputs += [gate_output]
             alignments += [attention_weights]
+
+        mel_outputs, gate_outputs, alignments = self.parse_decoder_outputs(
+            mel_outputs, gate_outputs, alignments)
+
+        return mel_outputs, gate_outputs, alignments
+
+    def inference(self, memory):
+        """ Decoder inference
+        PARAMS
+        ------
+        memory: Encoder outputs
+
+        RETURNS
+        -------
+        mel_outputs: mel outputs from the decoder
+        gate_outputs: gate outputs from the decoder
+        alignments: sequence of attention weights from the decoder
+        """
+        decoder_input = self.get_go_frame(memory)
+
+        self.initialize_decoder_states(memory, mask=None)
+
+        mel_outputs, gate_outputs, alignments = [], [], []
+        while True:
+            decoder_input = self.prenet(decoder_input)
+            mel_output, gate_output, alignment = self.decode(decoder_input)
+
+            mel_outputs += [mel_output.squeeze(1)]
+            gate_outputs += [gate_output]
+            alignments += [alignment]
+
+            if len(mel_outputs) == self.max_decoder_steps:
+                print("Warning! Reached max decoder steps")
+                break
+
+            decoder_input = mel_output
 
         mel_outputs, gate_outputs, alignments = self.parse_decoder_outputs(
             mel_outputs, gate_outputs, alignments)
