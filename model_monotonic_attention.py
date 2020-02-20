@@ -234,6 +234,31 @@ class MonotonicDecoder(Decoder):
 
         return mel_outputs, gate_outputs, alignments
 
+    def inference(self, memory):
+        decoder_input = self.get_go_frame(memory)
+
+        self.initialize_decoder_states(memory, mask=None)
+
+        mel_outputs, gate_outputs, alignments = [], [], []
+        while True:
+            decoder_input = self.prenet(decoder_input)
+            mel_output, gate_output, alignment = self.decode(decoder_input)
+
+            mel_outputs += [mel_output.squeeze(1)]
+            gate_outputs += [gate_output]
+            alignments += [alignment]
+
+            ## stop when the attention location is out of the memory
+            if self.previous_location.squeeze().item() + 1. > memory.shape[1]:
+                break
+
+            decoder_input = mel_output
+
+        mel_outputs, gate_outputs, alignments = self.parse_decoder_outputs(
+            mel_outputs, gate_outputs, alignments)
+
+        return mel_outputs, gate_outputs, alignments
+
 
 class MonotonicTacotron2(Tacotron2):
     def __init__(self, hparams):
