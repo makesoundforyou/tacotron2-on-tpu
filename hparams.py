@@ -26,15 +26,15 @@ def create_hparams(hparams_string=None, verbose=False):
         # Data Parameters             #
         ################################
         load_mel_from_disk=False,
-        training_files='filelists/ljs_audio_text_train_filelist.txt',
-        validation_files='filelists/ljs_audio_text_val_filelist.txt',
+        training_files='filelists/sktmt_audio_text_train_filelist.txt',
+        validation_files='filelists/sktmt_audio_text_val_filelist.txt',
         text_cleaners=['english_cleaners'],
 
         ################################
         # Audio Parameters             #
         ################################
         max_wav_value=32768.0,
-        sampling_rate=22050,
+        sampling_rate=22050*2,
         filter_length=1024,
         hop_length=256,
         win_length=1024,

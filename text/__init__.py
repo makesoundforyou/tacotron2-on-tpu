@@ -2,6 +2,7 @@
 import re
 from text import cleaners
 from text.symbols import symbols
+import unicodedata
 
 
 # Mappings from symbol to numeric ID and vice versa:
@@ -26,6 +27,8 @@ def text_to_sequence(text, cleaner_names):
       List of integers corresponding to the symbols in the text
   '''
   sequence = []
+
+  text = unicodedata.normalize('NFC', text)
 
   # Check for curly braces and treat their contents as ARPAbet:
   while len(text):
