@@ -201,6 +201,23 @@ class Encoder(nn.Module):
         return outputs
 
 
+class LSTMCellWithZoneout(nn.LSTMCell):
+    def __init__(self, input_size, hidden_size, bias=True,  zoneout_prob=0.1):
+        super().__init__(input_size, hidden_size, bias)
+        self._zoneout_prob = zoneout_prob
+
+    def forward(self, input, hx):
+        old_h, old_c = hx
+        new_h, new_c = super(LSTMCellWithZoneout, self).forward(input, hx)
+        if self.training:
+            c_mask = torch.empty_like(new_c).bernoulli_(p=self._zoneout_prob).bool().data
+            h_mask = torch.empty_like(new_h).bernoulli_(p=self._zoneout_prob).bool().data
+            h = torch.where(h_mask, old_h, new_h)
+            c = torch.where(c_mask, old_c, new_c)
+            return h, c
+        else:
+            return new_h, new_c
+
 class Decoder(nn.Module):
     def __init__(self, hparams):
         super(Decoder, self).__init__()
@@ -219,7 +236,7 @@ class Decoder(nn.Module):
             hparams.n_mel_channels * hparams.n_frames_per_step,
             [hparams.prenet_dim, hparams.prenet_dim])
 
-        self.attention_rnn = nn.LSTMCell(
+        self.attention_rnn = LSTMCellWithZoneout(
             hparams.prenet_dim + hparams.encoder_embedding_dim,
             hparams.attention_rnn_dim)
 
@@ -228,9 +245,9 @@ class Decoder(nn.Module):
             hparams.attention_dim, hparams.attention_location_n_filters,
             hparams.attention_location_kernel_size)
 
-        self.decoder_rnn = nn.LSTMCell(
+        self.decoder_rnn = LSTMCellWithZoneout(
             hparams.attention_rnn_dim + hparams.encoder_embedding_dim,
-            hparams.decoder_rnn_dim, 1)
+            hparams.decoder_rnn_dim)
 
         self.linear_projection = LinearNorm(
             hparams.decoder_rnn_dim + hparams.encoder_embedding_dim,

@@ -216,6 +216,9 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     wandb.watch(model)
 
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = learning_rate
+
     model.train()
     is_overflow = False
     for epoch in range(epoch_offset):

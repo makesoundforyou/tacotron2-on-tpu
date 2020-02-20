@@ -5,7 +5,7 @@ from torch import nn
 from torch.nn import functional as F
 from layers import ConvNorm, LinearNorm
 from utils import to_gpu, get_mask_from_lengths
-from model import Prenet, Decoder, Tacotron2
+from model import Prenet, Decoder, Tacotron2, LSTMCellWithZoneout
 
 
 def scale_gradient(x, s=1e-1):
@@ -42,7 +42,7 @@ class GMMAttention(nn.Module):
         """
 #         attention_hidden_state = scale_gradient(attention_hidden_state)
         _t = self.F(attention_hidden_state.unsqueeze(1))
-        _t = scale_gradient(_t, 1e-1)
+        # _t = scale_gradient(_t, 1e-1)
         w, delta, scale = _t.chunk(3, dim=-1)
 
         delta = torch.sigmoid(delta - 1.4)
@@ -86,7 +86,7 @@ class MonotonicDecoder(Decoder):
         super(MonotonicDecoder, self).__init__(hparams)
         self.num_att_mixtures = hparams.num_att_mixtures
 
-        self.attention_rnn = nn.LSTMCell(
+        self.attention_rnn = LSTMCellWithZoneout(
             hparams.prenet_dim + hparams.encoder_embedding_dim + hparams.decoder_rnn_dim,
             hparams.attention_rnn_dim)
 
@@ -173,8 +173,8 @@ class MonotonicDecoder(Decoder):
             (decoder_input, self.attention_context, self.attention_hidden), -1).tanh()
         self.attention_hidden, self.attention_cell = self.attention_rnn(
             cell_input, (self.attention_hidden, self.attention_cell))
-        self.attention_hidden = F.dropout(
-            self.attention_hidden, self.p_attention_dropout, self.training)
+        # self.attention_hidden = F.dropout(
+        #     self.attention_hidden, self.p_attention_dropout, self.training)
 
         attention_weights_cat = torch.cat(
             (self.attention_weights.unsqueeze(1),
