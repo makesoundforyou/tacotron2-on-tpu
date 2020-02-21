@@ -35,9 +35,9 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         max_wav_value=32768.0,
         sampling_rate=22050*2,
-        filter_length=1024*2,
-        hop_length=256*2,
-        win_length=1024*2,
+        filter_length=1024*4,
+        hop_length=256*4,
+        win_length=1024*4,
         n_mel_channels=80,
         mel_fmin=0.0,
         mel_fmax=2000.0,

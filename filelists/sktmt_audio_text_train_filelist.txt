@@ -2,7 +2,6 @@ wavs/chunk_00003_00064.wav|Các đời trước không dùng danh từ "chế" v
 wavs/chunk_00014_00069.wav|Tất cả vén tay áo bên phải lên xưng "Đại Sở" lập đàn thề, lấy đầu viên uý để tế.
 wavs/chunk_00015_00049.wav|-Thế mới phải chứ!
 wavs/chunk_00013_00361.wav|Con cháu của ông là Câu Tiễn nhọc công, khổ xác,
-wavs/chunk_00004_00165.wav|sáu
 wavs/chunk_00016_00380.wav|trừ được cái lo của nước nhà.
 wavs/chunk_00005_00331.wav|Hạng Vũ bèn hẹn với Hàm gặp nhau ở Ân Khư, phía nam sông Hoàn Thủy.
 wavs/chunk_00003_00212.wav|Ám chỉ vua Tần theo Lý Tư không chia đất cho anh em mà thống nhất tất cả theo lối cai trị theo quận, huyện do các quan lại từ trung ương bổ nhiệm.
@@ -29,7 +28,6 @@ wavs/chunk_00001_00334.wav|Trước đấy, ở Trung quốc chỉ có những n
 wavs/chunk_00017_00253.wav|người quân tử có đức tốt thì diện mạo dường như ngu si"
 wavs/chunk_00001_00495.wav|một thương nhân giàu thấy Tử Tương, con vua Tần làm con tin ở Triệu, thì nói,
 wavs/chunk_00013_00118.wav|Nước Ngô có nước Việt, đó là cái bệnh trong tim trong ruột,
-wavs/chunk_00004_00325.wav|- Không được!
 wavs/chunk_00017_00351.wav|Tư tự cho mình kém Phi.
 wavs/chunk_00001_00057.wav|Ông lên miền Bắc vượt sông Vấn, sông Tứ đến nước Tề, nước Lỗ, bồi hồi nhìn lăng miếu của Khổng Tử, say sưa nghe nhân dân kể chuyện Trần Thiệp,
 wavs/chunk_00015_00417.wav|Đến khi ăn tiệc, rót rượu thái tử đứng chầu.
@@ -122,7 +120,6 @@ wavs/chunk_00006_00094.wav|Năm thứ nhất, tháng tư, đời nhà Hán (năm
 wavs/chunk_00007_00380.wav|Thực ra bình định thiên hạ là nhờ ở các tướng và Tịch này.
 wavs/chunk_00010_00260.wav|chở hàng trăm xe những đồ tích trữ không dùng cất ở ấp.
 wavs/chunk_00014_00333.wav|Thủy Hoàng chết rồi,
-wavs/chunk_00007_00479.wav|Lúc bấy giờ, Hạng Vương đang đem quân về hướng bắc đánh Điền Vinh ở Tề, đánh nhau ở thành Dương. Điền Vinh thua bỏ chạy đến Bình Nguyên, dân Binh Nguyên giết Điền Vinh, dân Tề đầu hàng Sở.
 wavs/chunk_00003_00112.wav|Do đó,
 wavs/chunk_00006_00295.wav|Lâu Phiền mắt không dám nhìn, tay không dám bắn, liền bỏ chạy vào thành, không dám ra nữa. Hán Vương sai người lẻn ra để hỏi, thì biết đó là Hạng Vương.
 wavs/chunk_00011_00007.wav|Thúc Lương Ngột đã quá sáu mươi tư tuổi mới lấy Nhan Thị.
@@ -320,7 +317,6 @@ wavs/chunk_00015_00363.wav|- Ngài thường làm mưu thần cho hoàng thượ
 wavs/chunk_00016_00063.wav|- Ở nước Sở người làm chức quan gì?
 wavs/chunk_00009_00142.wav|Tháng mười một,
 wavs/chunk_00005_00290.wav|Quả nhiên Triệu Cao cho người đuổi theo, nhưng không kịp.
-wavs/chunk_00001_00587.wav|Phan Ngọc.
 wavs/chunk_00001_00241.wav|Những thiên này viết chính xác đến nỗi người đời sau thường dựa vào đó để đính chính những sai sót trong các sách cổ, để nói về những thể chế xã hội.
 wavs/chunk_00003_00250.wav|Những kẻ học Nho theo cái học riêng của mình lại cùng nhau chê cười pháp luật rồi đem dạy cho người ta.
 wavs/chunk_00010_00293.wav|loại thứ nhất, nặng tám lạng hình tròn, có khắc rồng, tên gọi là bạch tuyển,
@@ -344,7 +340,6 @@ wavs/chunk_00013_00260.wav|- Ở nhà thì có hàng nghìn lạng vàng, làm q
 wavs/chunk_00015_00406.wav|(Trận ấy Hán Cao Tổ không nghe lời Trương Lương, bị tên bắn trúng).
 wavs/chunk_00011_00212.wav|Tử Lộ không bằng lòng, giữ lại. Khổng Tử nói:
 wavs/chunk_00001_00399.wav|và việc càng gần, ông càng chép rõ.
-wavs/chunk_00013_00233.wav|sáu
 wavs/chunk_00010_00191.wav|"thiên phu" đứng vào hàng thứ bảy, còn "ngũ đại phu" đứng vào hàng thứ chín. Tất cả có mười bậc.
 wavs/chunk_00008_00259.wav|Cao Đế quay về thấy cung và cửa cung to lớn quá,
 wavs/chunk_00014_00322.wav|Tần bèn bỏ đạo tiên vương, đốt sách bách gia,
@@ -363,7 +358,6 @@ wavs/chunk_00006_00226.wav|Tướng của Hán là Kỷ Tín, nói với Hán V�
 wavs/chunk_00007_00328.wav|Bái Công đi về phía tây vào Hàm Dương muốn dừng lại ở trong cung mà nghỉ.
 wavs/chunk_00008_00295.wav|Nhiều người ra hàng. Năm thứ mười một, nhà vua giết bọn Trần Hy ở Hàm Đan.
 wavs/chunk_00005_00189.wav|- Tôi cho rằng Vũ Tín Quân thế nào cũng thua. Ông cứ thủng thẳng mà đi thì sẽ khỏi chết, nếu đi nhanh thì sẽ mắc tai họa đấy!
-wavs/chunk_00004_00342.wav|tám.
 wavs/chunk_00014_00354.wav|Nhưng Tần từ một miếng đất nhỏ bé mà nắm được quyền vạn cỗ xe,
 wavs/chunk_00013_00341.wav|Nó từ nhỏ đã từng chịu khổ cùng ta thấy việc làm ăn khó khăn, cho nên bỏ của thì tiếc.
 wavs/chunk_00008_00078.wav|Vua Tề bỏ Lịch Sinh vào vạc và nấu rồi bỏ chạy về hướng đông ở Cao Mật.
@@ -414,7 +408,6 @@ wavs/chunk_00016_00271.wav|(Ngày xưa ngồi quay mặt về hướng đông l�
 wavs/chunk_00012_00335.wav|Về sau Khổng Tử thích Kinh Dịch,
 wavs/chunk_00016_00333.wav|- Đã có người lo việc ấy.
 wavs/chunk_00017_00004.wav|Tôn Tử đáp:
-wavs/chunk_00012_00086.wav|- Vâng ạ.
 wavs/chunk_00012_00252.wav|Quý Khang Tử nói:
 wavs/chunk_00010_00091.wav|nhà cửa, xiêm áo, xe ngựa lớn cả bậc trên không chừng mực.
 wavs/chunk_00013_00253.wav|- Vua có lệnh vua thì tôi có ý tôi.
@@ -425,7 +418,6 @@ wavs/chunk_00009_00286.wav|Ngươi phải cầm quân giữ lấy cung, chớ c�
 wavs/chunk_00014_00114.wav|quân lính không chiến đấu nữa.
 wavs/chunk_00007_00351.wav|Nay nghe nói Chương Hàm đã đầu hàng Hạng Vũ. Hạng Vũ lại cho hắn làm Ung Vương làm vua ở Quan Trung.
 wavs/chunk_00003_00088.wav|Trẫm không chấp nhận điều ấy. Từ nay trở đi, bỏ phép đặt hiệu bụt.
-wavs/chunk_00010_00065.wav|hai.
 wavs/chunk_00012_00081.wav|Kiệt Nịch bảo Tử Lộ:
 wavs/chunk_00002_00130.wav|Vì sợ nói thế táo bạo quá nên thoái thác nói mình không sáng tác, tác phẩm mình không dám sánh với Xuân Thu.
 wavs/chunk_00001_00423.wav|Ta thấy bức tranh hiện thực về xã hội mà bọn bồi bút phong kiến
@@ -491,7 +483,6 @@ wavs/chunk_00015_00186.wav|chưa từng làm tướng một mình, thường là
 wavs/chunk_00001_00212.wav|Nguyệt biểu những việc xảy ra thời Hán Sở.
 wavs/chunk_00006_00029.wav|Theo Tiền hán thư, thì người thuyết khách này là Hàn Sinh, Hán Sở Xuân Thu gọi là Thái Sinh
 wavs/chunk_00004_00267.wav|Tư Mã Hân sợ bỏ trốn.
-wavs/chunk_00013_00011.wav|hai.
 wavs/chunk_00013_00116.wav|Tôi nghe Câu Tiễn ăn không hai món, cùng vui cùng khổ với trăm họ.
 wavs/chunk_00008_00087.wav|Hạng Vũ bèn lên đường đánh các thành Trần Lưu, Ngoại Hoàng, lấy mấy thành này.
 wavs/chunk_00013_00190.wav|Phạm Lãi bèn sai đánh trống, cho quân tiến lên nói:
@@ -588,7 +579,6 @@ wavs/chunk_00017_00001.wav|Tôn Tử tên là Vũ, người nước Tề, đem s
 wavs/chunk_00017_00097.wav|Người thiện chiến thì nhân cái thế của mình mà lợi dụng
 wavs/chunk_00011_00475.wav|Khổng Tử học đánh đàn cầm với thầy dạy nhạc là Tương Tử. Học mười ngày không tiến. Tương Tử nói:
 wavs/chunk_00017_00149.wav|Có người lính mắc bệnh ung bướu,
-wavs/chunk_00002_00360.wav|Ôi!
 wavs/chunk_00010_00394.wav|Do đó, nhà vua lâu không trả lời Bốc Thức.
 wavs/chunk_00001_00047.wav|Tư Mã Thiên sống thời thơ ấu ở Long Môn, cày ruộng, chăn cừu, làm bạn với những người nông dân bình thường, và học các sách sử cổ điển. Lên mười tuổi, ông đã học Tả Truyện, Quốc Ngữ, Thế bản và đã thuộc lòng hầu hết những bài văn nổi tiếng của thời trước.
 wavs/chunk_00004_00280.wav|Nhị Thế cười nói:
@@ -709,7 +699,6 @@ wavs/chunk_00011_00235.wav|Khổng Tử nghĩ nước Tề không thành thực.
 wavs/chunk_00015_00262.wav|Như vậy bệ hạ làm sao mà bắt họ thần phục mình được?
 wavs/chunk_00008_00026.wav|Hán Vương lấy lính ở Quan Trung để giữ biên giới.
 wavs/chunk_00016_00189.wav|Hán Vương họp chư hầu ở Trần, bình định tất cả đất Sở.
-wavs/chunk_00005_00040.wav|hai.
 wavs/chunk_00015_00051.wav|- Đọc quyển sách này thì làm được thầy bậc vương giả.
 wavs/chunk_00010_00503.wav|Các quan địa phương nhờ có muối, sắt và gia sản của thương nhân cho nên của cải tiêu dùng càng nhiều.
 wavs/chunk_00002_00282.wav|nỗi lòng biết tỏ cùng ai?
@@ -723,7 +712,6 @@ wavs/chunk_00002_00140.wav|Nhâm An làm thứ sử Ích Châu bị can vào vi�
 wavs/chunk_00017_00192.wav|Điền Văn nói:
 wavs/chunk_00010_00459.wav|khách nói:
 wavs/chunk_00012_00091.wav|Khổng Tử muốn tìm vị vua hiền, tránh vị vua dở không bằng những người ở ẩn trốn đời.
-wavs/chunk_00006_00024.wav|bảy.
 wavs/chunk_00016_00337.wav|nếu hỏi về tiền và thóc thì hỏi quan trị túc nội sử.
 wavs/chunk_00010_00681.wav|Nước Ngụy dùng Lý Khắc làm hết cái sức của đất,
 wavs/chunk_00004_00147.wav|Vì xây lăng thì phải đào đất bỏ quan tài xuống rồi lại đổ đất lên nên nói đổ đất lại.
@@ -748,7 +736,6 @@ wavs/chunk_00002_00410.wav|thì tôi cũng xin liều với cái nhục kia, dù
 wavs/chunk_00016_00327.wav|Nhà vua hỏi:
 wavs/chunk_00014_00291.wav|nhờ nghiệp cũ, theo cái sách lược cha ông để lại, phía nam lấy đất Hán Trung, phía tây lấy đất Ba, đất Thục,
 wavs/chunk_00017_00228.wav|nhưng cũng bắn phải thi thể Điệu Vương.
-wavs/chunk_00012_00294.wav|năm.
 wavs/chunk_00005_00334.wav|Tướng sĩ nhà Tần nhiều người nói trộm với nhau:
 wavs/chunk_00002_00421.wav|muốn ẩn mình vào nơi hang sâu núi thẳm nào được đâu.
 wavs/chunk_00001_00455.wav|những anh hàng thịt như Chu Hợi, Cao Tiệm Ly, những triết gia như Khổng Khâu, Trang Chu, những danh tướng như Hàn Tín, Lý Quảng,
@@ -797,7 +784,6 @@ wavs/chunk_00013_00179.wav|Nước Việt có nên làm trái mệnh trời khô
 wavs/chunk_00007_00395.wav|Ngô Nhuế làm phiên quân, được làm Hành Sơn Vương, đóng đô ở Chu,
 wavs/chunk_00010_00132.wav|Mười chung là sáu mươi bốn thạch.
 wavs/chunk_00012_00302.wav|không đủ chứng minh những điều ta nói.
-wavs/chunk_00010_00383.wav|Thức đáp:
 wavs/chunk_00013_00258.wav|Người nước Tề nghe ông hiền, mời làm tướng quốc.
 wavs/chunk_00008_00364.wav|- Ta xuất thân áo vải, tay cầm ba thước kiếm lấy được thiên hạ, đó chẳng phải mệnh trời?
 wavs/chunk_00013_00348.wav|Cho nên Phạm Lãi ba lần đổi chỗ ở mà vẫn thành danh trong thiên hạ.
@@ -868,7 +854,6 @@ wavs/chunk_00003_00214.wav|nếu bổng chốc có xảy ra việc như Điền 
 wavs/chunk_00016_00256.wav|Vì vậy,
 wavs/chunk_00010_00104.wav|Dân đất Ba, đất Thục vì thế mệt nhọc.
 wavs/chunk_00007_00423.wav|Hạng Vũ bèn ngầm sai Hành Sơn Vương và Lâm Giang Vương đánh và giết Nghĩa Đế ở Giang Nam.
-wavs/chunk_00005_00346.wav|sáu.
 wavs/chunk_00011_00248.wav|kiếm và khiên bước ra trong tiếng trống và tiếng hò hét và bước lên đài
 wavs/chunk_00003_00303.wav|đem màn trướng, trống chiêng cùng gái đẹp đưa vào các cung không cho xê dịch.
 wavs/chunk_00011_00122.wav|Sau khi các bậc đại hiền ra đời, nhà Chu đã suy, lễ nhạc thiếu sót.
@@ -920,8 +905,6 @@ wavs/chunk_00003_00298.wav|Nay nhà vua cai trị thiên hạ vẫn chưa nghĩ 
 wavs/chunk_00001_00034.wav|Chức sử quan ngoài việc chép sử còn coi thiên văn, làm lịch, bói toán.
 wavs/chunk_00011_00356.wav|- Sau khi Văn Vương chết đi, cái "văn" không phải ở ta hay sao?
 wavs/chunk_00014_00220.wav|Quân của viên tướng cướp ở đất Ba là Đương Dương Quân Kình Bố liên hợp với quân của Lữ Thần đánh quân tả, hữu hiệu uý và phá quân Tần ở đất Thanh Ba,
-wavs/chunk_00016_00154.wav|- Chưa.
-wavs/chunk_00005_00276.wav|năm.
 wavs/chunk_00015_00091.wav|Bái Công bèn sai Hàn Vương Thành ở lại giữ huyện Dương Định,
 wavs/chunk_00008_00216.wav|Năm thứ sáu (năm hai trăm lẻ một trước công nguyên) Cao Tổ cứ năm ngày đến thăm Thái Công theo như lễ cha con trong nhà.
 wavs/chunk_00010_00350.wav|vậy xin đánh thuế như trước.
@@ -1006,7 +989,6 @@ wavs/chunk_00017_00319.wav|xét rành mạch sự tình, nhằm công kích đ�
 wavs/chunk_00008_00079.wav|Hạng Vũ nghe nói Hàn Tín đem quân của Hà Bắc, đã phá quân nước Tề và nước Triệu, lại muốn đánh quân Sở bèn sai Long Thư và Chu Lan đến đánh
 wavs/chunk_00004_00353.wav|Có sách nói cha, mẹ, vợ
 wavs/chunk_00015_00360.wav|Lữ Hậu sợ, không biết làm thế nào. Có người nói với Lữ Hậu:
-wavs/chunk_00013_00271.wav|năm.
 wavs/chunk_00005_00170.wav|Hạng Lương nói:
 wavs/chunk_00011_00059.wav|ai cũng cho là con người cao lớn
 wavs/chunk_00003_00365.wav|Thủy Hoàng nghe tin ấy, sai ngự sử tra hỏi, nhưng không ai thú, bèn bắt tất cả những người ở gần đấy giết đi, và đốt chảy hòn đá.
@@ -1014,7 +996,6 @@ wavs/chunk_00011_00377.wav|Khổng Tử thề nói:
 wavs/chunk_00012_00299.wav|Khổng Tử sắp đặt lại các sự việc và nói:
 wavs/chunk_00002_00320.wav|thế đành phải chịu.
 wavs/chunk_00004_00227.wav|Nhắc lại lời của Hàn Phi là ý chế nhạo Lý Tư.
-wavs/chunk_00010_00006.wav|một.
 wavs/chunk_00014_00051.wav|Quân lính mua cá mổ ra thấy thư ở trong bụng cá cho là quái lạ.
 wavs/chunk_00001_00032.wav|Tổ tiên của ông từ đời Chu đã làm Thái sử. Đến đời cha của ông là Tư Mã Đàm làm thái sử lệnh của nhà Hán.
 wavs/chunk_00008_00436.wav|Trong thời Chu, Tần có thể nói cái văn bị hư hỏng đi. Chính trị của Tần không thay đổi điều đó lại dùng hình phạt khốc liệt há chẳng sai lầm sao!
@@ -1041,7 +1022,6 @@ wavs/chunk_00013_00142.wav|(Tử Tư sợ nước Ngô mất nên gửi con ở 
 wavs/chunk_00012_00460.wav|- Anh Tứ, sao anh lại đến muộn thế?
 wavs/chunk_00002_00161.wav|Nay Thiếu Khanh gặp tội không biết đến thế nào.
 wavs/chunk_00017_00260.wav|Khổng tử ra đi, bảo học trò:
-wavs/chunk_00010_00202.wav|bốn.
 wavs/chunk_00001_00281.wav|Nhưng còn một cái nữa mà văn học từ Hán trở về trước trừ Kinh Thi không thấy có,
 wavs/chunk_00003_00336.wav|- Trước đây ta thu các sách trong thiên hạ, sách nào không dùng được thì bỏ đi, sai triệu tập tất cả những người có văn học và những phương sĩ, thuật sĩ rất đông muốn làm cho thiên hạ thái bình.
 wavs/chunk_00012_00027.wav|Khổng Tử lúc ấy đang ở đất Trần, nói:
@@ -1241,10 +1221,8 @@ wavs/chunk_00014_00307.wav|Nước Tần không phí một mũi tên hòn đạn
 wavs/chunk_00008_00018.wav|về sau chỉ được một mình Hiếu Huệ
 wavs/chunk_00013_00131.wav|- Nếu nhà vua không nghe lời can, thì sau ba năm nước Ngô sẽ biến thành gò mất.
 wavs/chunk_00008_00444.wav|để khắc phục sai lầm ấy, nhà Ân nêu lên nguyên tắc "kính", lấy kính làm then chốt. Nhưng một khi thiên lệch thì kính biến thành sợ, do đó nhà Ân, về sau chỉ nói đến quỷ thần, thờ cúng.
-wavs/chunk_00010_00094.wav|ba.
 wavs/chunk_00009_00047.wav|Sau đó thái hậu cho Hoài Dương Vương tên là Hữu làm Triệu Vương.
 wavs/chunk_00015_00233.wav|Nay bệ hạ có thể lấy của kho ra phân phát cho người nghèo không?
-wavs/chunk_00005_00201.wav|bốn.
 wavs/chunk_00008_00144.wav|năm hai trăm lẻ hai trước công nguyên
 wavs/chunk_00013_00218.wav|- Chủng sắp làm phản.
 wavs/chunk_00014_00351.wav|Thế nhưng thế cục thay đổi, công nghiệp ngược nhau.
@@ -1276,7 +1254,6 @@ wavs/chunk_00001_00398.wav|Trái lại Tư Mã Thiên đã dành một nửa tá
 wavs/chunk_00003_00133.wav|mà lại lập các nước lên thì cũng như là tự gây ra binh đao mà muốn được thái bình nghỉ ngơi, chẳng phải là khó lắm sao?
 wavs/chunk_00015_00292.wav|Đó là trời đem thần giao cho bệ hạ.
 wavs/chunk_00004_00097.wav|Nhị Thế bàn với Triệu Cao:
-wavs/chunk_00001_00216.wav|bảy.
 wavs/chunk_00011_00318.wav|Cuối cùng, Quý Hoàn Tử nhận nữ nhạc của Tề, ba ngày không nghe việc chính sự.
 wavs/chunk_00016_00292.wav|Sau khi Lăng không được làm thừa tướng. Lữ Thái Hậu bèn đổi Bình làm hữu thừa tướng,
 wavs/chunk_00006_00171.wav|Gió thổi thẳng vào quân Sở, quân Sở rối loạn, tan rã. Nhờ thế, Hán Vương mới trốn thoát với mấy mươi kỵ binh.
@@ -1334,7 +1311,6 @@ wavs/chunk_00005_00407.wav|- Đó là quan tả tư mã của Bái Công là Tà
 wavs/chunk_00006_00311.wav|Con trai của huyện lệnh Ngoại Hoàng mới mười ba tuổi, đến nói với Hạng Vương:
 wavs/chunk_00010_00602.wav|Do đó nhà vua không thích Bốc Thức.
 wavs/chunk_00003_00091.wav|Thủy Hoàng xét việc năm đức lần lượt thay đổi nhau
-wavs/chunk_00007_00000.wav|một.
 wavs/chunk_00007_00012.wav|ở bắp vế bên trái có bảy mươi hai nốt ruồi. Tính nhân hậu, thương người, thích cho người, đầu óc rộng rãi, luôn luôn nghĩ đến những mưu đồ lớn, không lo việc làm ăn và những công việc của những người trong nhà.
 wavs/chunk_00002_00365.wav|Vả chăng kẻ dũng không cần phải chịu chết để giữ khí tiết,
 wavs/chunk_00014_00163.wav|Hai bên giao chiến.
@@ -1475,13 +1451,11 @@ wavs/chunk_00010_00612.wav|Nhưng nơi nào binh sĩ đi qua, các quan địa p
 wavs/chunk_00013_00241.wav|Câu Tiễn làm bá,
 wavs/chunk_00011_00289.wav|- Nếu thành bị phá thì quân Tề thế nào cũng đến cửa phía bắc.
 wavs/chunk_00011_00383.wav|Mấy người lượn qua chợ trước mặt đông người. Khổng Tử nói:
-wavs/chunk_00011_00000.wav|một.
 wavs/chunk_00017_00035.wav|- Thần đã vâng mệnh lệnh bệ hạ làm tướng, tướng đã ở trong quân thì có khi không theo lệnh vua.
 wavs/chunk_00009_00391.wav|- Hoàng Đế đã sai thái úy cầm đạo quân phía bắc,
 wavs/chunk_00009_00153.wav|muốn nhân đó dần dần phong những người họ Lữ làm Vương.
 wavs/chunk_00008_00060.wav|Làm như thế thì quân Sở phải chống chọi ở nhiều mặt mà quân Hán được nghỉ ngơi.
 wavs/chunk_00016_00157.wav|Bình nói:
-wavs/chunk_00013_00071.wav|ba.
 wavs/chunk_00001_00332.wav|Cái mâu thuẫn đau đớn này trong tư tưởng đã đẻ ra cách quan niệm về sử hết sức độc đáo, xứng đáng gọi là một cống hiến về tư tưởng.
 wavs/chunk_00010_00636.wav|Tang Hoằng Dương lại xin ra lệnh cho phép các thuộc lại được nộp lúa để làm quan và những người có tội được nộp tiền để chuộc tội.
 wavs/chunk_00013_00066.wav|Vua Ngô không nghe, cuối cùng tha cho vua Việt, bãi binh và quay về.
@@ -1519,13 +1493,11 @@ wavs/chunk_00016_00041.wav|Nguỵ Vương cho làm thái bộc
 wavs/chunk_00010_00160.wav|Năm sau, đại tướng quân lại đem sáu vị tướng đánh quân Hồ bắt được một vạn chín nghìn tù binh, người nào chém hay bắt được quân Hồ thì được thưởng vàng.
 wavs/chunk_00017_00043.wav|- Đại Vương thích nói suông, mà không thể dùng trong việc thực.
 wavs/chunk_00015_00316.wav|Nhà vua nói:
-wavs/chunk_00016_00156.wav|- Không biết.
 wavs/chunk_00009_00413.wav|Chu Hư Hầu xin binh sĩ.
 wavs/chunk_00009_00240.wav|Triệu Vương cảm thấy tù túng.
 wavs/chunk_00010_00489.wav|Tiền đúc nhiều nên có lệnh ban ra nói:
 wavs/chunk_00015_00075.wav|Bái Công khen,
 wavs/chunk_00017_00189.wav|Điền Văn nói: - Tôi không bằng ông.
-wavs/chunk_00011_00053.wav|hai.
 wavs/chunk_00005_00399.wav|nhân tiện nói:
 wavs/chunk_00001_00366.wav|Câu nói này thể hiện đúng cái quan điểm của tác giả về sử.
 wavs/chunk_00009_00452.wav|Gia đình thái hậu họ Bạc lại chăm chỉ và tốt.
@@ -1638,7 +1610,6 @@ wavs/chunk_00014_00141.wav|Được vài tháng, nước Triệu đưa mẹ và 
 wavs/chunk_00009_00464.wav|Bèn cùng quan thái bộc là Nhữ Âm Hầu Đằng Công vào cung, đến trước mặt Thiếu Đế nói:
 wavs/chunk_00017_00201.wav|Ngô Khởi mới tự biết mình không bằng Điền Văn.
 wavs/chunk_00006_00014.wav|- Chà! Thằng trẻ con không thể cùng bàn mưu kế!
-wavs/chunk_00007_00110.wav|hai.
 wavs/chunk_00003_00034.wav|Tần sai tướng quân Vương Bôn đi qua phía nam nước Yên đánh Tề bắt được vua Tề là Kiến.
 wavs/chunk_00008_00070.wav|Hán Vương chạy trốn một mình cùng Đằng Công ngồi một xe theo cửa ngọc môn ra khỏi Thành Cao chạy lên phía bắc vượt Hoàng Hà, chạy nhanh đến Tu Vũ nghỉ đêm ở đấy, tự xưng là sứ giả
 wavs/chunk_00017_00159.wav|Văn Hầu cho Ngô Khởi giỏi dùng binh, thanh liêm, công bình, được lòng quân sĩ,
@@ -1726,7 +1697,6 @@ wavs/chunk_00015_00342.wav|Khi chư hầu yên ổn, thì sông Hoàng Hà, Vị
 wavs/chunk_00010_00549.wav|sau ba năm thì trả ngựa lại, cứ được mười con ngựa con thì trả lại cho nhà nước một con.
 wavs/chunk_00010_00610.wav|và quan lại ở phương nam đến đánh mất một năm, tất cả việc tiêu dùng đều do quan đại nông cung cấp.
 wavs/chunk_00008_00371.wav|- Nếu bệ hạ có trăm tuổi rồi tướng quốc Tiêu Hà cũng mất thì lấy ai thay?
-wavs/chunk_00012_00199.wav|- Không.
 wavs/chunk_00010_00309.wav|Vì pháp luật ngày càng nghiêm ngặt nên quan lại nhiều người bị giáng và bị bãi.
 wavs/chunk_00003_00114.wav|trong một thời gian dài không tha tội cho ai.
 wavs/chunk_00006_00146.wav|Tức là đã được làm vua ở Quan Trung (Tam Tần) như lời hứa của Sở Hoài Vương
@@ -1737,7 +1707,6 @@ wavs/chunk_00008_00224.wav|Nhà vua dùng kế của Trần Bình giả vờ đi
 wavs/chunk_00010_00116.wav|Trăm họ thì cùng kiệt, tìm cách lẩn trốn.
 wavs/chunk_00003_00344.wav|Từ Phúc cùng họ đi không về nữa.
 wavs/chunk_00012_00167.wav|người giỏi nghề nông có thể biết vãi giống nhưng không chắc là gặt được.
-wavs/chunk_00013_00000.wav|một.
 wavs/chunk_00012_00189.wav|Sau đó, Khổng Tử sai Tử Cống sang Sở.
 wavs/chunk_00001_00535.wav|Muốn làm nổi bật cái cá tính của nhân vật cũng như màu sắc chung của thời đại,
 wavs/chunk_00010_00286.wav|Bèn sai cắt da con nai trắng ra thành từng mảnh vuông mỗi bề một thước, xung quanh viền rong biển, định giá mỗi miếng da như vậy là bốn mươi vạn đồng tiền.
@@ -1756,7 +1725,6 @@ wavs/chunk_00007_00195.wav|Ninh Quân người Đông Dương cùng Bái Công �
 wavs/chunk_00004_00132.wav|Tương Lư nói:
 wavs/chunk_00015_00263.wav|Nếu bệ hạ dùng mưu của người khách thì sự nghiệp của bệ hạ hỏng mất
 wavs/chunk_00006_00012.wav|Hạng Vương bèn nhận ngọc bích đặt ở chỗ ngồi. Á Phụ cầm chén ngọc đặt xuống đất,
-wavs/chunk_00013_00213.wav|bốn.
 wavs/chunk_00015_00217.wav|Hán Vương nói:
 wavs/chunk_00012_00212.wav|Văn Vương ở đất Phong, Vũ Vương ở đất Cảo đều chỉ là những ông vua có trăm dặm đất,
 wavs/chunk_00005_00047.wav|- Dân Giang Tây đều làm phản, nay chính là lúc trời tiêu diệt nhà Tần.
@@ -1782,7 +1750,6 @@ wavs/chunk_00005_00464.wav|- Làm việc lớn thì không để ý đến nhữ
 wavs/chunk_00014_00341.wav|mang lương thực đi theo như bóng theo hình.
 wavs/chunk_00012_00235.wav|Học trò Khổng Tử lại có nhiều người làm quan ở Vệ, nên vua Vệ muốn trao chính trị cho Khổng Tử.
 wavs/chunk_00012_00191.wav|Chiêu Vương định phong cho Khổng Tử miếng đất trong sổ sách bảy trăm lý
-wavs/chunk_00006_00439.wav|mười.
 wavs/chunk_00013_00100.wav|Được hai năm, vua Ngô cho Phạm Lãi trở về.
 wavs/chunk_00001_00203.wav|Các bản kỷ cung cấp cho người đọc, cái nhìn khái quát về từng thời đại để sau đó đi sâu vào từng sự kiện và từng nhân vật.
 wavs/chunk_00016_00338.wav|Vua hỏi: - Nếu việc gì cũng có người lo thì ông còn phải lo việc gì?
@@ -1817,9 +1784,7 @@ wavs/chunk_00003_00272.wav|ở trên có thể ngồi một vạn người, ở 
 wavs/chunk_00012_00193.wav|Lý ở đây là một nhóm gia đình gồm hai mươi lăm nhà.
 wavs/chunk_00012_00372.wav|Khi bên cạnh có người có tang thì không bao giờ ăn no.
 wavs/chunk_00008_00294.wav|Bèn đút lót cho các tướng của Hy nhiều vàng.
-wavs/chunk_00005_00188.wav|- Vâng.
 wavs/chunk_00003_00092.wav|nên cho nhà Chu được hỏa đức.
-wavs/chunk_00012_00187.wav|- Đúng lắm!
 wavs/chunk_00010_00164.wav|đó là chưa nói đến tiền phí tổn về vũ khí và vận chuyển bằng đường thủy và đường bộ.
 wavs/chunk_00013_00364.wav|Câu Tiễn chẳng đáng gọi là hiền sao?
 wavs/chunk_00011_00431.wav|Trong số học trò của Khổng tử có Công Lương Nhụ đem năm cỗ xe của mình đi theo Khổng Tử.
@@ -2005,7 +1970,6 @@ wavs/chunk_00011_00384.wav|- Ta chưa hề thấy có người nào yêu đức 
 wavs/chunk_00015_00369.wav|- Thì ngài bày kế hộ tôi.
 wavs/chunk_00004_00069.wav|Sau khi chôn cất xong, có người nói: những người thợ làm máy và cất giấu đều biết chỗ cất giấu, thế nào họ cũng tiết lộ việc.
 wavs/chunk_00017_00113.wav|Lại sai một vạn quân Tề giỏi bắn tên nấp ở bên đường, hẹn, "Ban đêm thấy lửa đốt lên thì đều bắn tên ra".
-wavs/chunk_00001_00173.wav|hai.
 wavs/chunk_00002_00072.wav|Nay ông ở trên thì gặp đức vua sáng suốt,
 wavs/chunk_00007_00244.wav|Lúc bấy giờ, binh lực của Tần còn mạnh, thường thừa thắng đánh đuổi quân của chư hầu.
 wavs/chunk_00012_00262.wav|Dù nhà vua có cho ông ta một nghìn xã, ông ta cũng không mưu lợi cho mình
@@ -2025,7 +1989,6 @@ wavs/chunk_00005_00160.wav|Tướng quốc của Giả là Điền Giác chạy 
 wavs/chunk_00010_00413.wav|Thức nói:
 wavs/chunk_00002_00143.wav|Tư Mã Thiên nhận thấy không thể làm được bèn bộc lộ cảnh ngộ của mình.
 wavs/chunk_00007_00052.wav|Lữ Hậu nhờ ông ta xem tướng Hiếu Huệ, cụ già nói:
-wavs/chunk_00003_00232.wav|Cốc,
 wavs/chunk_00013_00132.wav|Quan Thái tể là Phỉ nghe nói thế, bèn trách Tử Tư, cãi nhau với Tử Tư về vấn đề Việt.
 wavs/chunk_00006_00400.wav|quân Hán không biết Hạng Vương ở đâu, bèn chia quân làm ba và vây lại lần thứ hai.
 wavs/chunk_00010_00332.wav|Ở những quận không sản xuất sắt
@@ -2040,7 +2003,6 @@ wavs/chunk_00001_00560.wav|Mục đích của nó là trình bày sự thực kh
 wavs/chunk_00014_00006.wav|- Đã đi cày thuê, còn giàu sang nỗi gì?
 wavs/chunk_00008_00287.wav|Khi đến Hàm Đan, nhà vua mừng rỡ nói:
 wavs/chunk_00008_00288.wav|- Hy không chiếm cứ Hàm Đan ở phía Nam mà lại chẹn sông Chương Thủy, ta biết rằng hắn không làm gì được!
-wavs/chunk_00001_00175.wav|ba.
 wavs/chunk_00016_00001.wav|Trần thừa tướng tên là Bình, người làng Hộ Dũ, huyện Dương Vũ.
 wavs/chunk_00017_00200.wav|- Vì thế cho nên địa vị tôi ở trên ông đấy!
 wavs/chunk_00014_00229.wav|Khi đã làm vương đóng ở đất Trần có người bạn cũ thường cùng cày thuê với Thắng,
@@ -2188,7 +2150,6 @@ wavs/chunk_00010_00003.wav|và người mua khỏi bị bóc lột quá đáng.
 wavs/chunk_00013_00331.wav|chỉ vì chuyện con Chu Công đó thôi.
 wavs/chunk_00016_00177.wav|Đất Trần có giáp giới phía tây của đất Sở.
 wavs/chunk_00012_00160.wav|"Chẳng phải con trủy chẳng phải con hổ ở ngoài đồng vắng".
-wavs/chunk_00001_00218.wav|tám.
 wavs/chunk_00003_00046.wav|bắt được vua Kinh, sau đó bình định đất Kinh.
 wavs/chunk_00001_00196.wav|Đó là vì, tuy Huệ Đế làm vua nhưng tất cả quyền hành đều nằm trong tay Lữ Hậu.
 wavs/chunk_00007_00226.wav|Sở Hoài Vương thấy quân của Hạng Lương đã bị phá,
@@ -2241,7 +2202,6 @@ wavs/chunk_00005_00237.wav|Nghĩa bèn sai con là Tống Tương sang làm tư�
 wavs/chunk_00010_00029.wav|nhưng con cháu những người buôn bán vẫn không được làm quan lại.
 wavs/chunk_00011_00491.wav|Mắt như con cừu nhìn xa, như con người làm vua bốn phương,
 wavs/chunk_00017_00169.wav|nhưng chính vì chính sự bất nhân nên bị vua Thang diệt.
-wavs/chunk_00001_00554.wav|Không,
 wavs/chunk_00004_00054.wav|Khi Thủy Hoàng mới lên ngôi đã sai đào núi Ly Sơn.
 wavs/chunk_00011_00116.wav|Tề Cảnh Công bằng lòng, lấy ruộng Ni Khê phong cho Khổng Tử.
 wavs/chunk_00014_00014.wav|Tháng bảy, năm thứ nhất đời Nhị Thế
@@ -2575,7 +2535,6 @@ wavs/chunk_00012_00114.wav|mà những điều các quan đại phu làm đều 
 wavs/chunk_00008_00319.wav|Gió lớn thổi dậy chừ, mây bay ngổn ngang!
 wavs/chunk_00002_00210.wav|Tôi cũng đã thường mon men dự vào hàng hạ đại phu,
 wavs/chunk_00009_00291.wav|Khi Cao Hậu đã chết,
-wavs/chunk_00015_00304.wav|Vua nói:
 wavs/chunk_00015_00234.wav|Hán Vương nói:
 wavs/chunk_00002_00338.wav|quyền nghiêng cả ngũ bá, xưa đã từng bị tù ở Thỉnh Thất
 wavs/chunk_00010_00221.wav|tướng phiêu kỵ
@@ -2691,7 +2650,6 @@ wavs/chunk_00013_00203.wav|Sau khi đã vượt qua phía nam sông Hoài,
 wavs/chunk_00014_00201.wav|Lúc đầu, Trần Vương đến đất Trần, sai Tống Lưu người đất Trất đem binh đánh lấy Nam Dương, vào đất Vũ Quan.
 wavs/chunk_00010_00611.wav|Quan đại nông cung cấp đầy đủ là nhờ các "quân thâu" và nhờ ở chỗ đánh thuế muối và sắt.
 wavs/chunk_00011_00433.wav|- Xưa kia con theo thầy gặp nạn ở đất Khuông, nay gặp nạn ở đây, đó là mệnh.
-wavs/chunk_00012_00090.wav|Ý nói
 wavs/chunk_00007_00355.wav|Vào giữa tháng mười một,
 wavs/chunk_00011_00372.wav|- Trước kia ta định không đến thăm. Nhưng khi đến thăm thấy tiếp đãi theo đúng lễ.
 wavs/chunk_00002_00148.wav|ý ông ân cần tha thiết, hình như trách tôi không nghe lời dạy mà lại theo lời bọn thế tục tầm thường. Tôi đâu dám thế.
@@ -2765,7 +2723,6 @@ wavs/chunk_00001_00376.wav|trong số đó phần lớn còn đến ngày nay v�
 wavs/chunk_00002_00001.wav|- Cha tôi có nói:
 wavs/chunk_00002_00316.wav|Nay tôi đã bị trói tay chân, chịu roi vọt, bị giam trong tường ngục,
 wavs/chunk_00016_00018.wav|nhưng ở ngoài cửa có nhiều dấu xe của những bậc trưởng giả,
-wavs/chunk_00007_00240.wav|bốn.
 wavs/chunk_00016_00071.wav|Bọn Giáng Hầu Quán Anh gièm pha Trần Bình, nói:
 wavs/chunk_00001_00279.wav|có cái rạch ròi của Hàn Phi Tử.
 wavs/chunk_00009_00468.wav|Có mấy người không chịu vất binh khí.
@@ -2827,11 +2784,9 @@ wavs/chunk_00010_00015.wav|sai dân đúc tiền:
 wavs/chunk_00014_00319.wav|Thủy Hoàng bèn sai Mông Điềm xây tường thành phía bắc để gìn giữ phên giậu, đuổi quân Hung Nô lui hơn bảy trăm dặm,
 wavs/chunk_00006_00133.wav|ba nước Ung, Tắc và Dịch,
 wavs/chunk_00008_00357.wav|Nhà vua sai Tích Dương Hầu đến đón Quán. Quán cáo bệnh.
-wavs/chunk_00016_00374.wav|bốn.
 wavs/chunk_00015_00117.wav|mà đã ham thích cái vui thú của nó, thì khác gì người ta đã nói
 wavs/chunk_00010_00583.wav|- Bốc Thức tuy lo cày và chăn nuôi nhưng không phải để mưu lợi cho mình, hễ có của thừa là đem giúp cho quan địa phương để tiêu dùng.
 wavs/chunk_00009_00033.wav|Em của Cao Tổ tên là Giao làm Sở Vương, con của người anh Cao Tổ tên là Tỵ lên làm Ngô Vương.
-wavs/chunk_00004_00277.wav|bảy.
 wavs/chunk_00003_00231.wav|Hoàng Đế, Chuyên Húc,
 wavs/chunk_00013_00006.wav|con là Câu Tiễn được lập làm Việt Vương.
 wavs/chunk_00012_00079.wav|Trường Thư nói:
@@ -2849,7 +2804,6 @@ wavs/chunk_00008_00058.wav|Xin đại vương đi ra cửa Vũ Quan, thế nào 
 wavs/chunk_00012_00088.wav|- Thiên hạ như nước chảy cuồn cuộn đều thế cả, ai mà thay đổi được? Vả lại ông theo một kẻ sĩ lo tránh người chi bằng theo một kẻ sĩ lo tránh đời
 wavs/chunk_00003_00077.wav|Truy tôn Trang Tương Vương là Thái Thượng Hoàng.
 wavs/chunk_00017_00118.wav|Quân Tề thừa thắng phá tan tất cả quân Nguỵ, bắt Nguỵ thái tử là Thân đem về. Do đó, Tôn Tẫn nổi danh ở thiên hạ, đời truyền binh pháp của ông ta.
-wavs/chunk_00017_00119.wav|ba.
 wavs/chunk_00001_00579.wav|Trong việc dịch, chúng tôi đã được cụ Phan Võ xem lại và cụ Phan Duy Tiếp giúp đỡ.
 wavs/chunk_00008_00405.wav|Lễ chôn cất vào ngày bính dần, ngày kỷ tỵ lập thái tử làm vua,
 wavs/chunk_00015_00387.wav|nay Thích Phu Nhân ngày đêm chầu chực,
@@ -2909,9 +2863,7 @@ wavs/chunk_00016_00258.wav|Năm thứ sáu đời Hiếu Huệ (năm một trăm
 wavs/chunk_00008_00299.wav|Thái uý Chu Bột đi theo đường Thái Nguyên vào bình định đất Đại.
 wavs/chunk_00003_00357.wav|Các nho sinh đều học theo Khổng Tử nay bệ hạ dùng theo pháp luật nặng để trói buộc họ thì thần sợ thiên hạ không yên,
 wavs/chunk_00004_00105.wav|Những người làm vua sau này nếu khắc thì chờ sánh ngang với công lao và đạo đức to lớn của người.
-wavs/chunk_00010_00616.wav|sáu.
 wavs/chunk_00011_00228.wav|Tề Cảnh Công bèn sai sứ giả mời vua Lỗ lại họp ở Giáp Cốc.
-wavs/chunk_00012_00201.wav|- Không.
 wavs/chunk_00009_00148.wav|Thái hậu bèn cho Thẩm Tự Cơ làm tả thừa tướng, Trần Bình làm hữu thừa tướng.
 wavs/chunk_00012_00213.wav|thế mà rốt cục lại làm vương thiên hạ.
 wavs/chunk_00015_00398.wav|Vua nói:
@@ -2932,7 +2884,6 @@ wavs/chunk_00009_00370.wav|Đó cũng là ý kiến của Lữ Hậu trước kh
 wavs/chunk_00004_00261.wav|thượng tướng quân của Sở là Hạng Vũ cầm đầu quân Sở đến cứu Cự Lộc.
 wavs/chunk_00015_00276.wav|Việc này chép trong chuyện Hoài Âm Hầu
 wavs/chunk_00017_00205.wav|Công Thúc hỏi: - Làm thế nào?
-wavs/chunk_00001_00204.wav|hai.
 wavs/chunk_00007_00207.wav|Khi nghe tin Trần Vương chắc chắn đã chết.
 wavs/chunk_00002_00349.wav|việc Quán Phu xem Ngụy Kỳ, Vũ An Hầu liệt truyện
 wavs/chunk_00010_00175.wav|Biên giới phía bắc chưa yên, trẫm rất lấy làm lo lắng.
@@ -3144,9 +3095,7 @@ wavs/chunk_00016_00355.wav|Con Khôi là Hà tập tước làm Hầu,
 wavs/chunk_00006_00112.wav|Vinh giao ấn tướng quân cho Bành Việt,
 wavs/chunk_00001_00420.wav|Nhìn vào quyển sách của ông, ta thấy hiện lên rõ sự bất bình đẳng trong xã hội,
 wavs/chunk_00011_00253.wav|- Vua hai nước chúng ta hội họp nhau thân mật, chơi thứ nhạc Di, Địch làm gì?
-wavs/chunk_00012_00523.wav|bảy.
 wavs/chunk_00013_00249.wav|tôi xin chết theo tội ở Cối Kê.
-wavs/chunk_00017_00283.wav|Đam,
 wavs/chunk_00012_00338.wav|Kinh Dịch có phần bổ sung gọi là thập dực tương truyền là do Khổng Tử làm gồm có những mục:
 wavs/chunk_00006_00019.wav|Bái Công về đến quân doanh, lập tức giết Tào Vô Thương.
 wavs/chunk_00009_00192.wav|Nay hoàng đế mắc bệnh đã lâu không khỏi, lại mất trí, hỗn loạn, không thể tiếp tục phụng thờ tôn miếu xã tắc,
@@ -3254,7 +3203,6 @@ wavs/chunk_00012_00270.wav|Trọng Ni từ chối không biết.
 wavs/chunk_00010_00362.wav|Có sự phân biệt về thuế giữa thương nhân và thợ thủ công.
 wavs/chunk_00010_00594.wav|Trong số hai trăm bốn mươi mốt người đến một trăm lẻ sáu người bị tội thiếu vàng.
 wavs/chunk_00004_00011.wav|Sau đó, trở về, đi qua đất Ngô theo sông Trường Giang qua đò ở Giang Thặng và đi dọc theo bờ biển lên phía bắc đến đất Lang Gia.
-wavs/chunk_00016_00000.wav|một.
 wavs/chunk_00004_00134.wav|Bảo không làm nhiệm vụ bầy tôi là thế nào xin ông cho biết tội để rồi chịu chết?
 wavs/chunk_00016_00335.wav|Bình nói:
 wavs/chunk_00016_00025.wav|Rồi Phụ gả cháu gái cho Bình.
@@ -3268,7 +3216,6 @@ wavs/chunk_00013_00284.wav|- Khi con đến thì dâng một nghìn lạng vàng
 wavs/chunk_00013_00337.wav|Người mẹ và người làng đều lấy làm thương xót.
 wavs/chunk_00016_00248.wav|Bình sợ Lữ Thái Hậu và Lữ Tu giận, bèn phi ngựa trạm đi trước.
 wavs/chunk_00001_00427.wav|Cái khó ở đây không ở phương pháp mà ở con tim.
-wavs/chunk_00006_00129.wav|tám
 wavs/chunk_00015_00018.wav|Tần Thủy Hoàng nổi giận sai lùng khắp thiên hạ, tìm người thích khách rất gấp,
 wavs/chunk_00002_00394.wav|Kia xem Tả Khâu không có mắt,
 wavs/chunk_00010_00370.wav|Ai tố cáo ra thì thưởng cho một nửa, những người bán hàng có tên trong sổ và những người bà con của họ đều không được có ruộng theo tên của mình, như thế để lợi cho những người cày, ai dám phạm lệnh thì sung công tất cả ruộng và tôi tớ của họ.
@@ -3402,7 +3349,6 @@ wavs/chunk_00010_00222.wav|Đây chỉ Hoắc Khứ Bệnh.
 wavs/chunk_00010_00046.wav|Vì vậy Ngô Vương là chư hầu nhờ lấy được đồng ở núi để đúc tiền mà giàu hơn cả thiên tử.
 wavs/chunk_00012_00469.wav|Đêm qua ta nằm mơ thấy ngồi ở giữa hai cái cột.
 wavs/chunk_00003_00230.wav|Ngũ Đế:
-wavs/chunk_00001_00214.wav|sáu.
 wavs/chunk_00016_00307.wav|lại càng làm quá hơn trước.
 wavs/chunk_00009_00438.wav|Lữ Hậu dùng mưu lấy con người khác, giết mẹ của họ, nuôi họ ở hậu cung bảo Huệ Đế nhận là con lập lên để làm người nối dõi
 wavs/chunk_00009_00183.wav|Hiếu Huệ mất, thái tử được lập làm hoàng đế.
@@ -3474,7 +3420,6 @@ wavs/chunk_00010_00217.wav|Công Tôn Hoằng làm thừa tướng nhà Hán, m�
 wavs/chunk_00007_00161.wav|Năm thứ hai đời Tần Nhị Thế
 wavs/chunk_00011_00064.wav|Vua nước Lỗ cho ông ta một cỗ xe, hai con ngựa, một người đầy tớ, cùng Khổng Tử đến đất Chu hỏi về lễ.
 wavs/chunk_00010_00024.wav|đánh thuế nặng để làm khốn nhục họ
-wavs/chunk_00011_00336.wav|bốn.
 wavs/chunk_00009_00228.wav|Ngày kỷ sửu, có nhật thực, ban ngày tối đen. Thái hậu ghét điều đó, trong lòng không vui bèn bảo các quan hầu:
 wavs/chunk_00008_00314.wav|Sở Vương là Giao bỏ chạy vào đất Tiết,
 wavs/chunk_00010_00297.wav|Sai các quan địa phương đúc tiền nửa lạng thay thứ tiền bốn thù, chữ đề bao nhiêu thì nặng bấy nhiêu.
@@ -3500,7 +3445,6 @@ wavs/chunk_00001_00029.wav|như lời đánh giá của Lỗ Tấn.
 wavs/chunk_00006_00055.wav|- Đất Ba và đất Thục cũng là đất Quan Trung
 wavs/chunk_00008_00359.wav|Tháng hai, Cao Tổ sai Phàn Khoái, Chu Bột cầm quân đánh Yên Vương Lư Quán, tha cho quan lại và dân chúng ở Yên đã theo kẻ làm phản và lập hoàng tử Kiến làm Yên Vương.
 wavs/chunk_00005_00051.wav|Bấy giờ Hoàn Sở đang trốn tránh trong chốn giang hồ. Lương nói:
-wavs/chunk_00009_00390.wav|nói:
 wavs/chunk_00005_00313.wav|Cô độc đứng một mình mà muốn tồn tại được mãi thì chẳng đáng thương lắm sao!
 wavs/chunk_00011_00290.wav|Vả lại thành này che chở cho họ Mạnh, nếu không có nó tức là họ Mạnh không còn. Tôi sẽ không phá.
 wavs/chunk_00005_00006.wav|Họ Hạng đời đời làm tướng nước Sở, được phong đất ở Hạng cho nên lấy họ là họ Hạng.
@@ -3674,7 +3618,6 @@ wavs/chunk_00013_00034.wav|Phạm Lãi nói:
 wavs/chunk_00010_00210.wav|Năm sau, âm mưu Hoài Nam Vương, Hành Sơn Vương, Giang Đô Vương làm phản bại lộ.
 wavs/chunk_00006_00088.wav|Điền An đã lấy lại được mấy thành ở Tế Bắc rồi đem binh đầu hàng Hạng Vũ, cho nên được lập làm Tế Bắc Vương, đóng đô ở Bắc Dương.
 wavs/chunk_00008_00170.wav|- Nếu các ông đều cho thế là tiện thì tôi nhận, vì tiện lợi của quốc gia.
-wavs/chunk_00003_00030.wav|hai.
 wavs/chunk_00006_00306.wav|Bấy giờ Bành Việt lại làm phản, lấy được đất Lương, cắt đứt lương thực của Sở. Hạng Vương bảo bọn Hải Xuân Hầu, đại tư mã là Tào Cửu rằng:
 wavs/chunk_00017_00114.wav|Bàng Quyên quả nhiên đêm ấy đến dưới gốc cây bị đẽo,
 wavs/chunk_00001_00263.wav|thường không có chức tước gì nhưng có ảnh hưởng vô cùng sâu rộng với cả dân tộc.
@@ -3769,7 +3712,6 @@ wavs/chunk_00001_00385.wav|không ai lấy đó làm cơ sở chính cho sự ng
 wavs/chunk_00007_00406.wav|Hán Vương đi theo con đường phía nam đất Đỗ và đất Thục, đi xong liền đốt và cắt đứt đường sạn đạo để đề phòng quân chư hầu đánh úp,
 wavs/chunk_00017_00267.wav|Ông ở nhà Chu đã lâu, thấy nhà Chu suy bèn bỏ đi. Đến cửa quan, quan coi cửa là Doãn Hỷ nói:
 wavs/chunk_00017_00237.wav|Tôn Tẫn trù tính đối phó với Bàng Quyên thật rõ ràng,
-wavs/chunk_00005_00092.wav|ba.
 wavs/chunk_00010_00071.wav|Các kho lúa ở kinh đô và ở các nơi đều đầy, mà kho đụn thì thừa của cải.
 wavs/chunk_00013_00323.wav|- Anh vào nhà trong mà lấy vàng.
 wavs/chunk_00001_00388.wav|Trịnh Tiều nói,
@@ -3779,7 +3721,6 @@ wavs/chunk_00004_00209.wav|Triệu Cao nói với Nhị Thế:
 wavs/chunk_00008_00297.wav|Vương Hoàng đánh Liễu Thành,
 wavs/chunk_00007_00474.wav|Quả nhân thân hành báo tang Nghĩa Đế".
 wavs/chunk_00001_00243.wav|đối với lịch sử một nước.
-wavs/chunk_00013_00235.wav|bảy,
 wavs/chunk_00003_00191.wav|Lại sai Mông Điềm vượt sông Hoàng Hà lấy đất Cao Khuyết, Đào Sơn, Bắc Giả, xây đình và thành lũy ở đấy để đuổi người Nhung và đưa những người bị đày đến đấy để ở và lần đầu những nơi này trở thành huyện. Cấm không được thờ
 wavs/chunk_00004_00085.wav|tuy đến vạn đời cũng không bỏ cái lệ ấy.
 wavs/chunk_00008_00133.wav|Hạng Vũ sợ, cùng Hán Vương giao ước chia khoảng giữa thiên hạ, cắt đất từ Hồng Câu về phía tây là của Hán, từ Hồng Câu về phía đông là của Sở.
@@ -3951,7 +3892,6 @@ wavs/chunk_00002_00203.wav|mình trên đã không thể tỏ lòng trung tín,
 wavs/chunk_00014_00241.wav|Thiệp làm vương thật là oai vệ quá!
 wavs/chunk_00003_00048.wav|thái tử nước Yên là Đan lại ngầm sai Kinh Kha ám sát ta
 wavs/chunk_00013_00002.wav|con thứ hai của vua Thiếu Khang đời nhà Hạ,
-wavs/chunk_00004_00076.wav|sáu.
 wavs/chunk_00009_00357.wav|thì sẽ bị các quan đại thần và chư hầu nghi ngờ. Tại sao túc hạ lại không trao ấn tướng quân cho thái úy, nói với Lương Vương trả lại ấn tướng quốc cùng ăn thề với các quan đại thần mà về nước?
 wavs/chunk_00015_00179.wav|Nếu muốn bỏ đất đai cứ giao cho ba người ấy thì có thể phá được nước Sở.
 wavs/chunk_00004_00200.wav|Chương Hàm làm Thiếu phủ nói:
@@ -3982,7 +3922,6 @@ wavs/chunk_00001_00369.wav|những nhân vật thời Xuân Thu, Chiến Quốc 
 wavs/chunk_00011_00137.wav|Khổng Tử bèn ra đi, trở về nước Lỗ. Bấy giờ Khổng Tử bốn mươi hai tuổi.
 wavs/chunk_00008_00289.wav|Khi nghe nói các tướng của Hy nguyên trước là con buôn, vua nói:
 wavs/chunk_00004_00265.wav|Chương Hàm sợ sai trưởng sử là Tư Mã Hân đến trình việc.
-wavs/chunk_00013_00227.wav|một
 wavs/chunk_00015_00409.wav|- Nên cho thái tử làm tướng quân coi quân ở Quan Trung.
 wavs/chunk_00008_00184.wav|Cao Tổ sai Lư Quán, Lưu Giả bao vây Hoan, nhưng không lấy được thành, mấy tháng sau Hoan đầu hàng và bị giết ở Lạc Dương.
 wavs/chunk_00008_00092.wav|Đại Tư Mã là Cữu và trưởng sử là Hân đều tự đâm cổ chết trên sông Tự Thủy.
@@ -4057,7 +3996,6 @@ wavs/chunk_00016_00127.wav|Sứ giả nước Sở về báo lại với Hạng 
 wavs/chunk_00008_00005.wav|Hạng Vũ nghe tin, đem quân rời bỏ đất Tề, đi qua đất Lỗ,
 wavs/chunk_00017_00197.wav|Khởi im lặng một hồi lâu rồi nói:
 wavs/chunk_00017_00130.wav|rồi đi ra ngoài thành về hướng đông,
-wavs/chunk_00016_00038.wav|hai.
 wavs/chunk_00015_00332.wav|phần nhiều khuyên nhà vua đóng đô ở Lạc Dương, nói:
 wavs/chunk_00016_00183.wav|Ngay liền đó, vua cũng đi. Đến Trần, Sở Vương Hàn Tín quả nhiên ra ngoài bờ cõi đón ở dọc đường.
 wavs/chunk_00013_00265.wav|Phạm Lãi dừng lại ở đất Đào, cho nơi đó là giữa thiên hạ, tiện đường đổi chác, buôn bán để làm giàu.
@@ -4103,7 +4041,6 @@ wavs/chunk_00005_00140.wav|Trước đây, Hạng Lương đã sai Hạng Vũ đ
 wavs/chunk_00005_00261.wav|Bấy giờ thanh thế quân của Sở át cả quân các nước chư hầu.
 wavs/chunk_00008_00040.wav|Hạng Vũ vây quân Hán.
 wavs/chunk_00004_00201.wav|- Bọn giặc đã đông và mạnh.
-wavs/chunk_00014_00000.wav|một.
 wavs/chunk_00014_00068.wav|Thắng bèn nói dối là công tử Phù Tô, Hạng Yên để theo ý muốn của dân.
 wavs/chunk_00010_00030.wav|Người ta tính số tiền để nuôi quan lại và số tiền chi dùng, rồi căn cứ vào đó mà đánh thuế thân của dân
 wavs/chunk_00005_00429.wav|Trương Lương nói: - Nguy cấp lắm! Hiện nay Hạng Trang rút kiếm đang múa, xem hắn cốt nhằm Bái Công mà đâm.
@@ -4131,17 +4068,14 @@ wavs/chunk_00017_00039.wav|- Binh đã chỉnh tề, bệ hạ có thể xuống
 wavs/chunk_00011_00182.wav|Người khách bèn nói:
 wavs/chunk_00016_00286.wav|Hỏi Trần Bình. Trần Bình nói: - Được.
 wavs/chunk_00017_00236.wav|"Người làm được chưa chắc đã nói được, người nói được chưa chắc đã làm được".
-wavs/chunk_00009_00048.wav|Mùa hạ, thái hậu ban chiếu truy tặng cha của Lịch Hầu làm Lệnh Vũ Hầu.
 wavs/chunk_00010_00139.wav|Nhà vua nhận thấy dù lấy cả tô và thuế đất Ba và đất Thục cũng không đủ để cung vào việc chi phí
 wavs/chunk_00006_00383.wav|Hạng Vương bèn lên mình ngựa, tráng sĩ cưỡi ngựa ở dưới cờ hơn tám trăm người, đang đêm phá vỡ vòng vây, xông ra phía nam, phi ngựa chạy. Đến tảng sáng, quân Hán mới biết, sai kỵ tướng là Quán Anh mang năm ngàn kỵ binh đuổi theo.
 wavs/chunk_00001_00021.wav|Bách khoa toàn thư xô-viết,
 wavs/chunk_00012_00410.wav|- Trời giết ta!
 wavs/chunk_00001_00375.wav|tất cả chiếm một phần ba tác phẩm,
-wavs/chunk_00001_00205.wav|Biểu
 wavs/chunk_00013_00090.wav|- Mày quên cái nhục ở Cối Kê rồi hay sao?
 wavs/chunk_00007_00135.wav|Tiêu Hà và Tào Tham đều là quan văn, họ tiếc thân mình, sợ lỡ việc không thành thì sau này thì nhà Tần sẽ giết hết cả họ,
 wavs/chunk_00002_00232.wav|Tôi và Lý Lăng điều ở dưới môn hạ chúa thượng, vốn cũng không quen thân nhau, chí hướng khác nhau, chưa từng nâng chén rượu, vui vẻ ân cần.
-wavs/chunk_00001_00513.wav|nói
 wavs/chunk_00015_00464.wav|- Người ta sinh ra trong đời như bóng bạch câu đi qua cửa sổ, cần gì phải làm khổ mình như thế?
 wavs/chunk_00015_00277.wav|Mùa thu năm ấy, Hán Vương đuổi theo Sở đến miền nam Dương Hạ, đánh không lợi, phải đóng lại giữ Cố Lăng.
 wavs/chunk_00014_00240.wav|(tức ối chà!).
@@ -4163,7 +4097,6 @@ wavs/chunk_00015_00415.wav|Thúc Tôn Thông dẫn chuyện xưa nay, cố chế
 wavs/chunk_00010_00543.wav|Nhà vua bèn đi về phía bắc ra khỏi cửa Tiêu Quan,
 wavs/chunk_00014_00138.wav|vả chăng mạnh như nước Sở mà còn không dám hại gia đình Triệu Vương,
 wavs/chunk_00003_00197.wav|Đây là sao chổi,
-wavs/chunk_00012_00203.wav|- Không.
 wavs/chunk_00017_00129.wav|Người làng xóm chê cười. Ngô Khởi giết hơn ba mươi người chê cười mình,
 wavs/chunk_00013_00140.wav|Đến khi nghe Tử Tư gửi con ở nhà họ Bão
 wavs/chunk_00011_00409.wav|Đó là mũi tên của người Túc Thận. Ngày xưa vua Vũ Vương đánh nhà Thương, tiếng vang đến cả Cửu Di và Bách Man,
@@ -4203,7 +4136,6 @@ wavs/chunk_00008_00399.wav|Có người nghe điều ấy nói với Lịch tư�
 wavs/chunk_00007_00450.wav|Tháng giêng, Hán Vương cầm tù Chương Bình là em Ung Vương, đại xá các tội nhân. Hán Vương ra khỏi Quan Trung đi đến đất Thiễm vỗ về an ủi các phụ lão ở ngoài Quan Trung rồi trở về.
 wavs/chunk_00016_00137.wav|Rồi vào Quan Trung tập họp binh sĩ bị tan trước đây, kéo về hướng đông.
 wavs/chunk_00017_00019.wav|ban lệnh ba lần, nhắc nhở năm lượt.
-wavs/chunk_00001_00171.wav|Cốc,
 wavs/chunk_00006_00174.wav|Hán Vương đến gặp Hiếu Huệ, Lỗ Nguyên
 wavs/chunk_00017_00106.wav|Bàng Quyên đi được ba ngày cả mừng, nói:
 wavs/chunk_00016_00144.wav|(Năm hai trăm lẻ hai trước công nguyên, Tang Đồ phản lại nhà Hán. Hán Cao Tổ đem quân dẹp).
@@ -4215,7 +4147,6 @@ wavs/chunk_00017_00143.wav|Lý Khắc đáp:
 wavs/chunk_00004_00202.wav|Nay nếu đem binh ở các huyện đến thì không kịp nữa.
 wavs/chunk_00012_00024.wav|Khổng Tử sáu mươi tuổi. Nước Tề giúp nước Vệ vây đất Thích và thái tử nước Vệ là Khoái Ngoại ở đấy.
 wavs/chunk_00010_00596.wav|Nhà vua bèn cho Bốc Thức làm ngự sử đại phu.
-wavs/chunk_00010_00654.wav|bảy.
 wavs/chunk_00004_00123.wav|- Phải đấy.
 wavs/chunk_00004_00285.wav|"Bọn ăn trộm ở Quan Đông không làm được gì".
 wavs/chunk_00004_00107.wav|- Chúng tôi xin khắc chiếu thư này ở khắp nơi, và khắc lên đá để cho sáng rõ. Chúng tôi liều chết xin làm thế.
@@ -4297,17 +4228,14 @@ wavs/chunk_00012_00533.wav|các học giả đều tôn làm thầy, từ thiên
 wavs/chunk_00011_00145.wav|Trọng Ni nói:
 wavs/chunk_00004_00330.wav|Diễm Nhạc nói:
 wavs/chunk_00012_00143.wav|- Theo ý của con, có lẽ vì chúng ta chưa "nhân" chăng
-wavs/chunk_00015_00357.wav|ba.
 wavs/chunk_00014_00063.wav|Dù có khỏi bị chém đi nữa, thì trong số mười người đi thú, cũng chết mất sáu, bảy.
 wavs/chunk_00005_00312.wav|Nay tướng quân ở triều đình thì không thể lấy lời thẳng để khuyên can ở ngoài biên cương thì làm vị tướng của một nước sắp mất.
 wavs/chunk_00003_00047.wav|Vua nước Yên hôn ám làm loạn,
 wavs/chunk_00007_00306.wav|Khi đem quân đến sông Đan Thủy, Cao Vũ Hầu là Ngư, Tương Hầu là Vương Lăng đầu hàng nộp đất Tây Lăng.
 wavs/chunk_00015_00159.wav|Lương đến nước Hàn. Vì Hàn Vương Thành đã cho Lương theo Hán Vương,
 wavs/chunk_00016_00324.wav|- Trong thiên hạ, một năm xét xử ngục hình bao nhiêu người?
-wavs/chunk_00004_00034.wav|năm.
 wavs/chunk_00010_00449.wav|Quan đại nông Nhan Dị bị giết.
 wavs/chunk_00009_00387.wav|Tương Bình Hầu Kỷ Thông giữ các phù và các cờ tiết.
-wavs/chunk_00014_00197.wav|ba.
 wavs/chunk_00012_00071.wav|Trường Thư và Kiệt Nịch đánh đôi cùng cày.
 wavs/chunk_00006_00381.wav|Hạng Vương khóc chảy nước mắt!
 wavs/chunk_00007_00367.wav|Hạng Bá muốn cứu Trương Lương nên đang đêm đến gặp Trương Lương rồi nhân đấy dùng lời lẽ khuyên Hạng Vũ, Hạng Vũ mới thôi. Bái Công với hơn trăm quân kỵ ruổi ngựa đến Hồng Môn yết kiến và xin lỗi Hạng Vũ.
@@ -4376,7 +4304,6 @@ wavs/chunk_00009_00038.wav|Lữ Hậu cả giận, bèn sai người gọi tư�
 wavs/chunk_00006_00013.wav|tuốt kiếm đập chén vỡ tan, nói:
 wavs/chunk_00011_00449.wav|Đàn bà có chí bảo vệ Tây Hà
 wavs/chunk_00007_00212.wav|Quân Sở bỏ đi, đánh Định Đào nhưng không hạ được thành.
-wavs/chunk_00007_00160.wav|ba.
 wavs/chunk_00012_00151.wav|nếu như người trí gặp việc gì cũng thông suốt thì làm gì có Vương Tử, Tỉ Can nữa
 wavs/chunk_00012_00015.wav|Dương Hổ cũng ở đấy sau khi bị đuổi khỏi nước Lỗ
 wavs/chunk_00013_00215.wav|"Chim đã hết thì cung tốt phải cất, thỏ khôn đã chết thì chó săn bị nấu.
@@ -4444,7 +4371,6 @@ wavs/chunk_00004_00009.wav|qua sông ở nơi dòng sông hẹp, lên Cối Kê 
 wavs/chunk_00017_00321.wav|Lời của ông mong lung, phóng túng, để thoả ý mình, cho nên từ bậc vương công, đại nhân trở xuống đều không ai biết quý trọng tài năng của ông.
 wavs/chunk_00009_00444.wav|nay người con đầu làm Tề Vương, nếu cứ xét đến gốc thì ông ta là cháu đích tôn của Cao Đế, có thể lập được.
 wavs/chunk_00003_00257.wav|quan úy mà đốt đi, hai người dám bàn nhau về việc Kinh Thư, Kinh Thi thì chém giữa chợ, lấy đời xưa mà chê đời nay thì giết cả họ.
-wavs/chunk_00011_00241.wav|- Phải.
 wavs/chunk_00007_00268.wav|Tự Cơ khuyên Bái Công đánh úp thành Trần Lưu, nhờ vậy lấy được thóc lúa của nhà Tần để lại. Bái Công cho Lịch Tự Cơ làm Quảng Dã Quân, cho Lịch Thương làm tướng,
 wavs/chunk_00009_00188.wav|Lữ Hậu nói:
 wavs/chunk_00016_00190.wav|Khi quay về đến Lạc Dương, Hán Vương tha cho Tín, cho Tín làm Hoài Âm Hầu và chẻ phù định phong tước cho các công thần.
@@ -4500,7 +4426,6 @@ wavs/chunk_00010_00040.wav|Đến thời Hiếu Văn,
 wavs/chunk_00010_00356.wav|Một toán là hai mươi đồng.
 wavs/chunk_00008_00207.wav|Yên Vương Tang Đồ làm phản, đánh lấy đất Đại.
 wavs/chunk_00002_00397.wav|xét qua việc làm, tóm tắt trước sau,
-wavs/chunk_00001_00211.wav|bốn.
 wavs/chunk_00017_00020.wav|Sau đó đánh trống ra lệnh nhìn về phía bên phải.
 wavs/chunk_00016_00187.wav|Cao Đế quay lại bảo Hàn Tín: - Mày đừng có kêu, mày làm phản đã rõ rành rành ra đấy!
 wavs/chunk_00006_00198.wav|Thế quân Hán lại mạnh. Quân Sở xuất phát từ Bành Thành, thừa thắng đuổi theo,
@@ -4568,7 +4493,6 @@ wavs/chunk_00017_00144.wav|- Khởi tham lam và hiếu sắc, nhưng về mặt
 wavs/chunk_00008_00370.wav|Bèn không cho chữa bệnh, thưởng năm mươi cân vàng rồi cho về. Ít lâu sau Lữ Hậu hỏi:
 wavs/chunk_00017_00255.wav|(Hai câu này đều trong Đạo Đức Kinh).
 wavs/chunk_00006_00309.wav|Thành Ngoại Hoàng không hạ được.
-wavs/chunk_00001_00179.wav|năm.
 wavs/chunk_00015_00225.wav|Tỷ Can can Trụ bị Trụ giết).
 wavs/chunk_00004_00219.wav|Giặc phần lớn là những người đi thú và lo vận chuyển trên cạn dưới nước, họ làm giặc vì việc xây đắp khổ cực, vì thuế má nặng.
 wavs/chunk_00001_00583.wav|Chắc chắn bạn đọc Việt Nam sẽ thấy Sử Ký là quyển sách của mình và dành cho Tư Mã Thiên một mối tình nồng hậu như các bạn đã có với Khuất Nguyên và Đỗ Phủ.
@@ -4601,7 +4525,6 @@ wavs/chunk_00011_00104.wav|Khổng Tử nói chuyện âm nhạc với quan thá
 wavs/chunk_00003_00234.wav|Tam Đại:
 wavs/chunk_00015_00077.wav|Lương nói cho người khác nghe thì họ đều không hiểu. Lương nói:
 wavs/chunk_00014_00323.wav|làm ngu dân đen, hủy hoại các danh thành,
-wavs/chunk_00015_00063.wav|hai.
 wavs/chunk_00015_00224.wav|Cơ Tử can Trụ không được bị Trụ bắt giam.
 wavs/chunk_00015_00105.wav|Nếu họ không nghe theo thì nguy, chi bằng ta nhân lúc nó trễ nãi mà đánh nó.
 wavs/chunk_00008_00107.wav|Hạng Vũ muốn một mình khiêu chiến với Hán Vương.
@@ -4988,7 +4911,6 @@ wavs/chunk_00006_00402.wav|Kỵ binh đều cúi rạp xuống thưa:
 wavs/chunk_00009_00414.wav|Thái úy cấp cho hơn một nghìn người.
 wavs/chunk_00005_00049.wav|"Ai đi trước thì làm chủ người khác, ai đi sau thì bị người khác làm chủ".
 wavs/chunk_00001_00424.wav|cố hết sức che đậy bằng những danh từ trống rỗng.
-wavs/chunk_00010_00257.wav|năm.
 wavs/chunk_00010_00588.wav|Liệt hầu có hàng trăm nhưng không ai muốn theo quân nhà vua để đánh quân Khương và quân Việt.
 wavs/chunk_00014_00353.wav|thì thực là một trời một vực.
 wavs/chunk_00012_00541.wav|xem ngang với một vị vua của chư hầu và dành cho Khổng Tử một tiểu sử rất kỹ, rất công phu.
@@ -5150,7 +5072,6 @@ wavs/chunk_00015_00416.wav|vua giả vờ nhận lời, nhưng vẫn muốn thay
 wavs/chunk_00004_00175.wav|còn miền đất ở phía tây tức là nước Tần chứ không phải Sơn Đông bây giờ.
 wavs/chunk_00009_00146.wav|tước quyền thừa tướng của Lăng.
 wavs/chunk_00011_00468.wav|Khổng Tử nói:
-wavs/chunk_00011_00219.wav|ba.
 wavs/chunk_00005_00382.wav|- Đại vương thử liệu xem sĩ tốt có đủ để chống lại Hạng Vương không?
 wavs/chunk_00009_00469.wav|Người cầm đầu các hoạn quan là Trương Trạch ra lệnh cho họ, họ cũng vất binh khí luôn. Đằng Công bèn sai lấy cái xe ngựa của nhà vua chở Thiếu Đế ra.
 wavs/chunk_00004_00346.wav|Nay ông bảo ta ăn chay, ra miếu, tức là muốn nhân đấy giết ta ở trong miếu. Ta cáo bệnh không đi, thừa tướng thế nào cũng thân hành đến, khi đến thì ta sẽ giết.
@@ -5349,7 +5270,6 @@ wavs/chunk_00003_00306.wav|đứng trên núi thấy xe, quân kỵ của thừa
 wavs/chunk_00002_00075.wav|vậy điều ông bàn đó là muốn soi sáng cho cái gì?
 wavs/chunk_00001_00262.wav|Điều đáng chú ý nhất ở đây là ông đã nhìn thấy vai trò to lớn của những con người bình thường,
 wavs/chunk_00010_00389.wav|- Thiên tử giết Hung Nô, tôi là người ngu dại cho rằng người hiền thì nên chết vì bổn phận ở biên giới, người có của cải thì nên đem nộp. Như vậy mới có thể tiêu diệt được Hung Nô.
-wavs/chunk_00006_00234.wav|hoàng ốc
 wavs/chunk_00015_00125.wav|- Tôi vì Hàn Vương mà tiễn Bái Công, nay có việc gấp bỏ trốn đi thì bất nghĩa.
 wavs/chunk_00002_00396.wav|Tôi trộm không chịu nhún nhường, cũng không muốn ký thác mình vào những lời tầm thường, tìm kiếm thu nhặt những chuyện cũ bỏ sót trong thiên hạ,
 wavs/chunk_00009_00227.wav|Ngày đinh sửu, Triệu Vương bị giam mà chết. Thái hậu chôn cất theo lễ nghĩa người dân thường ngoài nghĩa địa của dân chúng ở Tràng An.
@@ -5396,7 +5316,6 @@ wavs/chunk_00006_00414.wav|- Ông có phải là người cố nhân của ta đ
 wavs/chunk_00005_00255.wav|Đương Dương Quân và Bồ Tướng Quân đều ở dưới quyền Hạng Vũ.
 wavs/chunk_00004_00203.wav|Những người bị đày phải làm ở Ly Sơn rất đông xin tha cho họ, giao cho họ binh khí để đánh giặc.
 wavs/chunk_00004_00053.wav|chôn Thủy Hoàng ở Ly Sơn.
-wavs/chunk_00016_00254.wav|nói:
 wavs/chunk_00010_00119.wav|Phép tuyển cử dần dần bỏ. Liêm sỉ bị coi thường. Võ lực được tiến dụng.
 wavs/chunk_00010_00657.wav|đao, vải.
 wavs/chunk_00011_00110.wav|- Vua phải theo đúng đạo làm vua, tôi phải theo đúng đạo làm tôi, cha phải theo đúng đạo làm cha, con phải theo đúng đạo làm con.
@@ -5437,7 +5356,6 @@ wavs/chunk_00006_00260.wav|Hán Vương thu thập quân đội, lại vào gi�
 wavs/chunk_00002_00312.wav|Đó là nói làm kẻ sĩ phải cố gắng giữ lấy tiết tháo.
 wavs/chunk_00010_00570.wav|đày sáu mươi vạn binh lính đến làm ruộng và canh phòng ở đấy.
 wavs/chunk_00010_00608.wav|Tuy vậy, các quận mới lập vẫn luôn luôn làm phản giết quan lại.
-wavs/chunk_00011_00443.wav|- Được.
 wavs/chunk_00002_00012.wav|Thái Sử Công nói:
 wavs/chunk_00015_00131.wav|- Cái thằng khốn nạn kia khuyên ta giữ lấy Hàm Cốc Quan, không cho quân của chư hầu vào, thì có thể làm vương trên tất cả đất Tần, cho nên ta nghe theo.
 wavs/chunk_00017_00276.wav|Sau khi Khổng Tử mất một trăm hai mươi chín năm, sử ký chép thái tử nhà Chu tên là Đàm, yết kiến Tần Hiến Công, có nói:
@@ -5551,7 +5469,6 @@ wavs/chunk_00009_00150.wav|Tự Cơ được thái hậu yêu từ trước, th�
 wavs/chunk_00005_00253.wav|Họ bàn nhau lập Vũ làm quyền thượng tướng quân, sai người đuổi theo con của Tống Nghĩa, đến Tề thì bắt được và giết đi.
 wavs/chunk_00006_00199.wav|cùng quân Hán đánh nhau ở phía nam Huỳnh Dương, giữa miền Kinh ấp và Sách Đinh.
 wavs/chunk_00009_00098.wav|Trương Tích Cương nói với thừa tướng:
-wavs/chunk_00017_00048.wav|hai.
 wavs/chunk_00015_00468.wav|nắm cái có hạn mà gửi vào cái vô cùng chẳng khác gì ngựa Kỳ,
 wavs/chunk_00015_00216.wav|nay bệ hạ có thể lấy được đầu Hạng Tịch không?
 wavs/chunk_00005_00212.wav|Quân Sở đã bị thua ở Định Đào,
@@ -5568,7 +5485,6 @@ wavs/chunk_00010_00557.wav|Tây Khương xâm phạm cướp bóc ở biên gi�
 wavs/chunk_00016_00221.wav|Sau đó Bình thường làm Hộ Quân Trung Uý theo vua đánh Trần Hy và Kình Bố, sáu lần bày kế lạ tất cả, liền được phong thêm đất sáu lần tất cả.
 wavs/chunk_00002_00290.wav|nghề viết văn, viết sử, xem sao, xem lịch,
 wavs/chunk_00004_00121.wav|Làm như thế, trên dưới sẽ theo mà nước được an.
-wavs/chunk_00005_00000.wav|một.
 wavs/chunk_00004_00308.wav|tức chức quan võ nhỏ
 wavs/chunk_00011_00151.wav|quái vật do đất sinh ra là con "phần dương"
 wavs/chunk_00014_00070.wav|Trần Thắng tự lập làm tướng quân, Ngô Quảng làm đô uý.
@@ -5750,7 +5666,6 @@ wavs/chunk_00012_00226.wav|Năm sau, vua Ngô và vua Lỗ gặp nhau ở huyệ
 wavs/chunk_00013_00012.wav|Năm thứ nhất (năm bốn trăm chín mươi sáu trước công nguyên),
 wavs/chunk_00006_00204.wav|Năm thứ ba nhà Hán
 wavs/chunk_00015_00102.wav|Quả nhiên tướng Tần làm phản, muốn liên kết với Bái Công cùng đem binh đi về hướng Tây đánh úp Hàm Dương.
-wavs/chunk_00012_00197.wav|- Không.
 wavs/chunk_00013_00173.wav|Nhưng cũng muốn nhà vua tha tội cho cô thần như việc xảy ra trước đây ở Cối Kê.
 wavs/chunk_00016_00251.wav|- Ông mệt nhọc, hãy nghỉ đã!
 wavs/chunk_00013_00278.wav|Người con cả toan tự sát.
@@ -5795,7 +5710,6 @@ wavs/chunk_00010_00697.wav|đàn bà kéo sợi dệt vải không đủ cung c�
 wavs/chunk_00001_00119.wav|Bấy giờ có phép lấy tiền chuộc tội. Chỉ cần năm mươi vạn đồng tiền là chuộc được tội chết.
 wavs/chunk_00010_00622.wav|Họ luôn luôn đến các huyện đặt các quan "quân thâu" và các quan lo về muối và sắt,
 wavs/chunk_00015_00420.wav|- Họ làm gì thế?
-wavs/chunk_00003_00012.wav|Uyển,
 wavs/chunk_00009_00284.wav|- Sau khi bình định thiên hạ, Cao Đế có giao ước với các quan đại thần: "Ai không phải họ Lưu mà làm vua thì thiên hạ cùng đánh nó".
 wavs/chunk_00016_00250.wav|Bình nhận chiếu chỉ, lập tức lại phi ngựa về cung khóc lóc rất thảm thiết, nhân tâu trình sự việc trước đám tang, Lữ Hậu thương hại nói:
 wavs/chunk_00010_00641.wav|Ở phía đông núi, việc vận tải bằng sông thêm nhiều,
@@ -5873,7 +5787,6 @@ wavs/chunk_00002_00318.wav|thấy bọn chúng canh ngục thì lòng lại bồ
 wavs/chunk_00015_00299.wav|thấy họ cùng nhau ngồi trên bãi cát nói chuyện với nhau.
 wavs/chunk_00017_00347.wav|thích cái học "hình danh", "pháp thuật".
 wavs/chunk_00008_00358.wav|Tích Dương Hầu quay về báo lại rằng việc Quán làm phản đã có manh mối.
-wavs/chunk_00012_00285.wav|Ý nói
 wavs/chunk_00008_00114.wav|"Vào đất Tần không được làm việc hung bạo, cướp bóc", nhưng nhà ngươi đốt cháy cung thất nhà Tần, đào mả Tần Thủy Hoàng, thu của cải của Tần, đó là bốn tội. Nhà ngươi lại giết vua Tần đã đầu hàng là Tử Anh, đó là năm tội. Lừa dối, chôn sống hai mươi vạn con em Tần ở Tân An, trái lại phong tướng Tần làm vua, đó là sáu tội.
 wavs/chunk_00014_00276.wav|pháp luật làm ngọn ngành,
 wavs/chunk_00014_00002.wav|Lúc còn trẻ, Trần Thiệp thường cùng cày thuê với người ta,
@@ -5921,7 +5834,6 @@ wavs/chunk_00016_00101.wav|Quân Sở vây mãi, Hán Vương lo sợ, xin cắt
 wavs/chunk_00012_00005.wav|Vệ Linh Công hỏi Khổng Tử về cách bài binh bố trận. Khổng Tử nói:
 wavs/chunk_00016_00009.wav|Bá nghe vậy đuổi và bỏ vợ.
 wavs/chunk_00009_00416.wav|Lúc bấy giờ là lúc ăn chiều.
-wavs/chunk_00007_00262.wav|chú thích
 wavs/chunk_00007_00446.wav|Ở ngoài Quan Trung đặt quận Hà Nam, lập Tín trước làm thái úy nước Hàn, làm Hàn Vương,
 wavs/chunk_00015_00190.wav|Tự Cơ nói:
 wavs/chunk_00001_00051.wav|đoạn lên núi Cối Kê xem nơi vua Hạ Vũ triệu tập chư hầu,
@@ -6234,7 +6146,6 @@ wavs/chunk_00012_00174.wav|- Này anh Hồi, Kinh Thi nói:
 wavs/chunk_00011_00423.wav|Khổng Tử ở Trần ba năm.
 wavs/chunk_00011_00442.wav|- Có thể đánh đất Bồ được không?
 wavs/chunk_00010_00077.wav|Kẻ coi các cổng làng, cổng xóm bữa ăn thường có gà có thịt
-wavs/chunk_00003_00000.wav|một.
 wavs/chunk_00011_00306.wav|- Khổng Tử cầm đầu chính sự thì thế nào cũng làm bá chủ chư hầu.
 wavs/chunk_00005_00391.wav|- Nhà ngươi hãy thay mặt ta mời ông ta vào, ta sẽ đãi ông ta là bậc anh.
 wavs/chunk_00012_00246.wav|lễ nhạc không phồn thịnh thì hình phạt không đúng,
@@ -6292,7 +6203,6 @@ wavs/chunk_00001_00091.wav|Từ năm một trăm lẻ sáu trước công nguyê
 wavs/chunk_00013_00308.wav|- Thầy về nghỉ, quả nhân sẽ làm theo.
 wavs/chunk_00010_00382.wav|- Có muốn làm quan không?
 wavs/chunk_00006_00170.wav|Lúc bấy giờ, có một trận gió to thổi từ phía tây bắc, bẻ gãy cây, lật thốc mái nhà, làm bay cát đá, ban ngày tối đen.
-wavs/chunk_00006_00343.wav|chín.
 wavs/chunk_00015_00197.wav|nước Sở nhất định phải khép áo đến chầu.
 wavs/chunk_00007_00032.wav|Tuy Cao Tổ chỉ làm đình trưởng, nhưng tính vốn coi thường các nha lại nên yết kiến và nói dối:
 wavs/chunk_00013_00317.wav|Anh ta tiếc nghìn vàng đem cho lão Trang Sinh, thật là mất toi,
@@ -6458,7 +6368,6 @@ wavs/chunk_00009_00338.wav|Khúc Chư Hầu Lịch Thương đã già và ốm,
 wavs/chunk_00010_00395.wav|Được mấy năm nhà vua lại bãi Thức.
 wavs/chunk_00001_00410.wav|(Khốc lại liệt truyện), nhà nho cầu an, giả dối (Công Tôn Hoằng truyện, Thích Tôn Thông truyện).
 wavs/chunk_00001_00039.wav|Trong các sử quan thời trước, cũng có những người dám hy sinh đời mình để viết sự thật,
-wavs/chunk_00017_00231.wav|bốn.
 wavs/chunk_00017_00265.wav|Hôm nay gặp Lão Tử, ông ta có lẽ là con rồng chăng?
 wavs/chunk_00015_00022.wav|Lương thấy một cụ già, mặc áo cộc đến chỗ mình, để chiếc giầy rơi tõm xuống cầu.
 wavs/chunk_00014_00324.wav|giết những người hào kiệt, thu binh khí của thiên hạ tập trung ở Hàm Dương, nấu binh khí ấy để đúc mười hai người bằng đồng,
@@ -6601,7 +6510,6 @@ wavs/chunk_00015_00020.wav|Lương bèn đổi tên họ, trốn tránh ở Hạ
 wavs/chunk_00006_00389.wav|Kỵ binh Hán đuổi theo mấy ngàn. Hạng Vương tự liệu chẳng thoát được, bảo các kỵ binh:
 wavs/chunk_00011_00001.wav|Khổng Tử sinh ở ấp Trâu, thuộc làng Xương Bình nước Lỗ.
 wavs/chunk_00001_00079.wav|ông biết Lý Lăng cùng làm lang trung như ông, và thường gặp Lý Quảng.
-wavs/chunk_00014_00227.wav|bốn.
 wavs/chunk_00010_00218.wav|muốn nêu gương cho thiên hạ nhưng không có ích gì đối với phong tục.
 wavs/chunk_00007_00405.wav|Những người nước Sở và người chư hầu hâm mộ Hán Vương, đi theo mấy vạn người.
 wavs/chunk_00006_00166.wav|Quân Sở lại truy kích đến phía đông Linh Bích, trên sông Tuy Thủy.
@@ -6733,7 +6641,6 @@ wavs/chunk_00016_00047.wav|Hán Vương quay lại bình định được đất
 wavs/chunk_00010_00250.wav|Các sứ giả phân họ ra từng bộ phận để coi sóc.
 wavs/chunk_00012_00248.wav|Phàm người quân tử đã làm điều gì có thể nói tên cái việc đó,
 wavs/chunk_00007_00370.wav|Bái Công nhờ Phàn Khoái và Trương Lương nên thoát nạn về. Đến nơi, Bái Công lập tức giết Tào Vô Thương.
-wavs/chunk_00015_00000.wav|một.
 wavs/chunk_00002_00061.wav|Vua chẳng ra vua thì phạm tội với lễ nghĩa,
 wavs/chunk_00009_00095.wav|Người con của Lưu Hầu
 wavs/chunk_00001_00432.wav|Ông thấy rõ Trần Thiệp "tài năng ở dưới mức trung bình", nhưng đã làm được một việc oanh liệt, chỉ vì được dân chúng ủng hộ.
@@ -6861,7 +6768,6 @@ wavs/chunk_00013_00117.wav|Con người này chưa chết là còn mối lo cho 
 wavs/chunk_00001_00050.wav|Tư Mã Thiên trước tiên đi về nam đến Trường Giang, vượt sông Hoài, sông Tứ, thăm mộ mẹ Hàn Tín,
 wavs/chunk_00007_00005.wav|Tên Quý chứng tỏ Lưu Bang là con thứ ba, theo thứ tự:Bá, Trọng, Quý.
 wavs/chunk_00002_00036.wav|Kinh Xuân Thu phân biệt phải trái, cho nên giỏi về việc trị người.
-wavs/chunk_00012_00457.wav|sáu.
 wavs/chunk_00009_00409.wav|Bình Dương Hầu sợ không thắng được, ruổi ngựa nói với thái úy.
 wavs/chunk_00016_00129.wav|Á Phụ muốn đánh gấp để hạ thành Huỳnh Dương, Hạng Vương không tin, không chịu nghe theo.
 wavs/chunk_00011_00485.wav|Khổng Tử nói:
