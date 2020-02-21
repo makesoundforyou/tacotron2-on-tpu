@@ -215,6 +215,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             # epoch_offset = max(0, int(iteration / len(train_loader)))
 
     wandb.watch(model)
+    valset.step()
 
     model.train()
     is_overflow = False
