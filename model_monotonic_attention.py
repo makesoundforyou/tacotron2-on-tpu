@@ -13,14 +13,14 @@ def scale_gradient(x, s=1e-1):
 
 
 class MonoAttention(nn.Module):
-    def __init__(self, attention_rnn_dim, embedding_dim, attention_dim):
+    def __init__(self, num_mixtures, attention_rnn_dim, embedding_dim, attention_dim):
         super(MonoAttention, self).__init__()
 
+        self._num_mixtures = num_mixtures
         self.F = nn.Sequential(
-            LinearNorm(attention_rnn_dim, attention_dim,
-                       bias=True, w_init_gain='tanh'),
+            nn.Linear(attention_rnn_dim, attention_dim, bias=True),
             nn.Tanh(),
-            nn.Linear(attention_dim, 2, bias=False)
+            nn.Linear(attention_dim, 3*num_mixtures, bias=False)
         )
 
         self.score_mask_value = 0
@@ -39,22 +39,22 @@ class MonoAttention(nn.Module):
         -------
         alignment (batch, max_time)
         """
-#         attention_hidden_state = scale_gradient(attention_hidden_state)
         _t = self.F(attention_hidden_state.unsqueeze(1))
-        # _t = scale_gradient(_t, 1e-1)
-        delta, scale = _t.chunk(2, dim=-1)
+        w, delta, scale = _t.chunk(3, dim=-1)
 
         delta = torch.sigmoid(delta - 1.4)
-        loc = previous_location + delta
+        loc = scale_gradient(previous_location, s=0.9) + delta
 
-        # torch.nn.functional.softplus(scale + 5)
-        scale = torch.sigmoid(scale - 1) * 5 + 0.2
+        scale = torch.sigmoid(scale - 2) * 5 + 0.2
 
         pos = self.pos[:, :memory.shape[1], :]
         z1 = torch.erf((loc-pos+0.5) * scale)
         z2 = torch.erf((loc-pos-0.5) * scale)
         z = (z1 - z2)*0.5
-        return z.squeeze(-1), loc
+        w = torch.softmax(w, dim=-1)
+        z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)
+
+        return z, loc
 
     def forward(self, attention_hidden_state, memory, previous_location, mask):
         """
@@ -109,6 +109,7 @@ class MonotonicDecoder(Decoder):
             hparams.attention_rnn_dim, hparams.decoder_rnn_dim)
 
         self.attention_layer = MonoAttention(
+            hparams.num_att_mixtures,
             hparams.decoder_rnn_dim, hparams.encoder_embedding_dim, hparams.attention_dim)
 
     def initialize_decoder_states(self, memory, mask):

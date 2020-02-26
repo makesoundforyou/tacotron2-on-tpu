@@ -21,26 +21,27 @@ def create_hparams(hparams_string=None, verbose=False):
         cudnn_benchmark=False,
         ignore_layers=['embedding.weight'],
         use_monotonic_attention=True,
+        num_att_mixtures=1,
 
         ################################
         # Data Parameters             #
         ################################
-        load_mel_from_disk=False,
-        training_files='filelists/sktmt_audio_text_train_filelist.txt',
-        validation_files='filelists/sktmt_audio_text_val_filelist.txt',
-        text_cleaners=['english_cleaners'],
+        load_mel_from_disk=True,
+        training_files='train.txt',
+        validation_files='val.txt',
+        text_cleaners=['basic_cleaners'],
 
         ################################
         # Audio Parameters             #
         ################################
         max_wav_value=32768.0,
-        sampling_rate=22050*2,
-        filter_length=1024*4,
-        hop_length=256*4,
-        win_length=1024*4,
+        sampling_rate=22050,
+        filter_length=1024,
+        hop_length=256,
+        win_length=1024,
         n_mel_channels=80,
         mel_fmin=0.0,
-        mel_fmax=2000.0,
+        mel_fmax=8000.0,
 
         ################################
         # Model Parameters             #
@@ -81,7 +82,7 @@ def create_hparams(hparams_string=None, verbose=False):
         use_saved_learning_rate=False,
         learning_rate=1e-3,
         weight_decay=1e-6,
-        grad_clip_thresh=4.,
+        grad_clip_thresh=0.1,
         batch_size=64,
         mask_padding=True  # set model's padded outputs to padded values
     )
