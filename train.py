@@ -218,12 +218,12 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     wandb.watch(model)
     valset.step()
-    lrs = torch.optim.lr_scheduler.OneCycleLR(
-        optimizer, max_lr=learning_rate, total_steps=300_000, pct_start=1e-2, div_factor=100)
+    # lrs = torch.optim.lr_scheduler.OneCycleLR(
+    #     optimizer, max_lr=learning_rate, total_steps=300_000, pct_start=1e-2, div_factor=100)
 
     model.train()
     for ee in range(iteration): 
-        lrs.step()
+        # lrs.step()
         if ee % 500 == 0:
             train_loader.dataset.step()
 
@@ -273,14 +273,14 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                     model.parameters(), hparams.grad_clip_thresh)
 
             optimizer.step()
-            lrs.step()
+            # lrs.step()
 
             if not is_overflow and rank == 0:
                 duration = time.perf_counter() - start
                 print("Train loss {} {:.6f} Grad Norm {:.6f} {:.2f}s/it".format(
                     iteration, reduced_loss, grad_norm, duration))
                 logger.log_training(
-                    reduced_loss, grad_norm, lrs.get_last_lr()[0], duration, iteration)
+                    reduced_loss, grad_norm, learning_rate, duration, iteration)
 
             if not is_overflow and iteration % (hparams.iters_per_checkpoint//10) == 0:
                 validate(model, Tacotron2Loss(1000), valset, iteration,
@@ -290,7 +290,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 if rank == 0:
                     checkpoint_path = os.path.join(
                         output_directory, "checkpoint_{}".format(iteration))
-                    save_checkpoint(model, optimizer, lrs.get_last_lr()[0], iteration,
+                    save_checkpoint(model, optimizer, learning_rate, iteration,
                                     checkpoint_path, epoch)
 
             iteration += 1
