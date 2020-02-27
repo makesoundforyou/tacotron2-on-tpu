@@ -16,6 +16,7 @@ from data_utils import TextMelLoader, TextMelCollate
 from loss_function import Tacotron2Loss
 from logger import Tacotron2Logger
 from hparams import create_hparams
+from radam import *
 
 
 import wandb
@@ -46,7 +47,8 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
 def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
-    trainset = TextMelLoader(hparams.training_files, hparams, start_len=150, step=50)
+    trainset = TextMelLoader(hparams.training_files,
+                             hparams, start_len=150, step=50)
     valset = TextMelLoader(hparams.validation_files, hparams, start_len=-1)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
@@ -183,7 +185,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     model = load_model(hparams)
     learning_rate = hparams.learning_rate
 
-    optimizer = torch.optim.Adamax(
+    optimizer = RAdam(
         model.parameters(), lr=learning_rate, weight_decay=hparams.weight_decay)
 
     if hparams.fp16_run:
@@ -216,15 +218,22 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
 
     wandb.watch(model)
     valset.step()
+    lrs = torch.optim.lr_scheduler.OneCycleLR(
+        optimizer, max_lr=learning_rate, total_steps=300_000, pct_start=1e-2, div_factor=100)
 
     model.train()
+    for ee in range(iteration): 
+        lrs.step()
+        if ee % 500 == 0:
+            train_loader.dataset.step()
+
+
     is_overflow = False
     for epoch in range(epoch_offset):
         train_loader.dataset.step()
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
-        train_loader.dataset.step()
         criterion = Tacotron2Loss(train_loader.dataset.len)
         # batch_size = hparams.batch_size * 50 // train_loader.dataset.len
         # batch_size = max(64, batch_size)
@@ -236,6 +245,9 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
         # print("batch size ", batch_size)
         for i, batch in enumerate(train_loader):
             start = time.perf_counter()
+
+            if iteration % 500 == 0:
+                train_loader.dataset.step()
 
             model.zero_grad()
             x, y = model.parse_batch(batch)
@@ -261,13 +273,14 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                     model.parameters(), hparams.grad_clip_thresh)
 
             optimizer.step()
+            lrs.step()
 
             if not is_overflow and rank == 0:
                 duration = time.perf_counter() - start
                 print("Train loss {} {:.6f} Grad Norm {:.6f} {:.2f}s/it".format(
                     iteration, reduced_loss, grad_norm, duration))
                 logger.log_training(
-                    reduced_loss, grad_norm, learning_rate, duration, iteration)
+                    reduced_loss, grad_norm, lrs.get_last_lr()[0], duration, iteration)
 
             if not is_overflow and iteration % (hparams.iters_per_checkpoint//10) == 0:
                 validate(model, Tacotron2Loss(1000), valset, iteration,
@@ -277,7 +290,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
                 if rank == 0:
                     checkpoint_path = os.path.join(
                         output_directory, "checkpoint_{}".format(iteration))
-                    save_checkpoint(model, optimizer, learning_rate, iteration,
+                    save_checkpoint(model, optimizer, lrs.get_last_lr()[0], iteration,
                                     checkpoint_path, epoch)
 
             iteration += 1
