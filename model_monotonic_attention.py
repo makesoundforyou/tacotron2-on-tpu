@@ -43,13 +43,12 @@ class MonoAttention(nn.Module):
         w, delta, scale = _t.chunk(3, dim=-1)
 
         delta = torch.sigmoid(delta - 1.4)
-        loc = scale_gradient(previous_location, s=0.9) + delta
-
-        scale = torch.sigmoid(scale - 2) * 5 + 0.2
+        loc = previous_location + delta
+        std = torch.nn.functional.softplus(scale + 5)
 
         pos = self.pos[:, :memory.shape[1], :]
-        z1 = torch.erf((loc-pos+0.5) * scale)
-        z2 = torch.erf((loc-pos-0.5) * scale)
+        z1 = torch.erf((loc-pos+0.5) / std)
+        z2 = torch.erf((loc-pos-0.5) / std)
         z = (z1 - z2)*0.5
         w = torch.softmax(w, dim=-1)
         z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)
