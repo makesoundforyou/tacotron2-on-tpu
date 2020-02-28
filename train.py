@@ -48,7 +48,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
     trainset = TextMelLoader(hparams.training_files,
-                             hparams, start_len=150, step=50)
+                             hparams, start_len=1000, step=50)
     valset = TextMelLoader(hparams.validation_files, hparams, start_len=-1)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 

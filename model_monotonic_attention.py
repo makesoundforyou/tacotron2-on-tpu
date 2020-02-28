@@ -19,8 +19,10 @@ class MonoAttention(nn.Module):
         self._num_mixtures = num_mixtures
         self.F = nn.Sequential(
             nn.Linear(attention_rnn_dim, attention_dim, bias=True),
-            nn.Tanh(),
-            nn.Linear(attention_dim, 3*num_mixtures, bias=False)
+            nn.LayerNorm(attention_dim),
+            nn.ReLU(),
+            nn.Linear(attention_dim, 3*num_mixtures, bias=True),
+            nn.LayerNorm(3*num_mixtures),
         )
 
         self.score_mask_value = 0
@@ -42,9 +44,9 @@ class MonoAttention(nn.Module):
         _t = self.F(attention_hidden_state.unsqueeze(1))
         w, delta, scale = _t.chunk(3, dim=-1)
 
-        delta = torch.sigmoid(delta - 1.4)
+        delta = torch.sigmoid(delta)
         loc = previous_location + delta
-        std = torch.nn.functional.softplus(scale + 5)
+        std = torch.nn.functional.softplus(scale + 10)
 
         pos = self.pos[:, :memory.shape[1], :]
         z1 = torch.erf((loc-pos+0.5) / std)
