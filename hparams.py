@@ -9,7 +9,7 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         # Experiment Parameters        #
         ################################
-        epochs=500,
+        epochs=5000,
         iters_per_checkpoint=1000,
         seed=42,
         dynamic_loss_scaling=False,
@@ -21,7 +21,7 @@ def create_hparams(hparams_string=None, verbose=False):
         cudnn_benchmark=False,
         ignore_layers=['embedding.weight'],
         use_monotonic_attention=True,
-        num_att_mixtures=1,
+        num_att_mixtures=5,
 
         ################################
         # Data Parameters             #
@@ -65,7 +65,7 @@ def create_hparams(hparams_string=None, verbose=False):
 
         # Attention parameters
         attention_rnn_dim=1024,
-        attention_dim=512,
+        attention_dim=128,
 
         # Location Layer parameters
         attention_location_n_filters=32,
@@ -80,7 +80,7 @@ def create_hparams(hparams_string=None, verbose=False):
         # Optimization Hyperparameters #
         ################################
         use_saved_learning_rate=False,
-        learning_rate=3e-4,
+        learning_rate=1e-3,
         weight_decay=1e-6,
         grad_clip_thresh=4.,
         batch_size=64,

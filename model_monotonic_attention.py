@@ -18,11 +18,10 @@ class GMMAttention(nn.Module):
         super(GMMAttention, self).__init__()
         self.num_mixtures = num_mixtures
         lin = nn.Linear(attention_dim, 3*num_mixtures, bias=False)
-        lin.weight.data.mul_(0.1)
-        self.F = nn.Sequential(LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='tanh'),
-                               nn.Tanh(),
-                               lin
-                               )
+        lin.weight.data.mul_(0.01)
+        self.F = nn.Sequential(LinearNorm(attention_rnn_dim, attention_dim, bias=True, w_init_gain='relu'),
+                               nn.ReLU(),
+                               lin)
 
         self.score_mask_value = 0
         self.register_buffer('pos', torch.arange(
@@ -45,17 +44,16 @@ class GMMAttention(nn.Module):
         # _t = scale_gradient(_t, 1e-1)
         w, delta, scale = _t.chunk(3, dim=-1)
 
-        delta = torch.sigmoid(delta - 1.4)
+        delta = torch.sigmoid(delta) + 1e-5
         loc = previous_location + delta
 
-        # torch.nn.functional.softplus(scale + 5)
-        scale = torch.sigmoid(scale - 1) * 5 + 0.2
+        std = torch.nn.functional.softplus(scale + 5) + 1e-5
 
         pos = self.pos[:, :memory.shape[1], :]
-        z1 = torch.erf((loc-pos+0.5) * scale)
-        z2 = torch.erf((loc-pos-0.5) * scale)
+        z1 = torch.tanh((loc-pos+0.5) / std)
+        z2 = torch.tanh((loc-pos-0.5) / std)
         z = (z1 - z2)*0.5
-        w = torch.softmax(w, dim=-1)
+        w = torch.softmax(w, dim=-1) + 1e-5
         z = torch.bmm(z, w.squeeze(1).unsqueeze(2)).squeeze(-1)
         return z, loc
 
@@ -248,7 +246,7 @@ class MonotonicDecoder(Decoder):
             gate_outputs += [gate_output]
             alignments += [alignment]
 
-            ## stop when the attention location is out of the memory
+            # stop when the attention location is out of the memory
             if self.previous_location.squeeze().item() + 1. > memory.shape[1]:
                 break
 
