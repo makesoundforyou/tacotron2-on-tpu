@@ -102,12 +102,6 @@ def loss_forward(x, y, config):
     return loss_fn(out, y)
 
 
-def net_validate(x, y, config):
-    out = forward(x, config)
-    loss = loss_fn(out, y)
-    return loss, out
-
-
 from typing import Dict, Tuple, Sequence
 
 
@@ -141,20 +135,16 @@ class Trainer:
         init_fn, f = hk.transform_with_state(loss_forward)
         vag = jax.value_and_grad(f, has_aux=True)
 
-        _, dm_val_fn = hk.transform_with_state(net_validate)
+        def net_validate(x, y):
+            out = forward(x, config)
+            loss = loss_fn(out, y)
+            return loss, out
 
-        def val_fn(hx: TrainerState, rng, x, y):
-            return dm_val_fn(hx.param, hx.state, rng, x, y, config=self.config)
-
-        self.val_fn = jax.jit(val_fn) if config.enable_jit else val_fn
+        f = hk.transform_with_state(net_validate)[1]
+        self.val_fn = jax.jit(f) if config.enable_jit else f
 
         def updater(hx: TrainerState, rng: jnp.ndarray, x, y):
-            (v, state), grads = vag(hx.param,
-                                    hx.state,
-                                    rng,
-                                    x,
-                                    y,
-                                    config=config)
+            (v, state), grads = vag(*hx[:2], rng, x, y, config)
             grads = jax.tree_multimap(lambda g, p: g + p * config.weight_decay,
                                       grads, hx.param)
 
@@ -169,8 +159,15 @@ class Trainer:
         self._rng = random.PRNGKey(config.seed)
 
     def validate(self, x, y):
-        (loss, y_predicted), _ = self.val_fn(self._hx, self.next_rng(), x, y)
-        return loss, y_predicted
+        return self.val_fn(*self._hx[:2], self.next_rng(), x, y)[0]
+
+    def inference(self, text):
+        def net_gen(text, config):
+            net = Tacotron2(config)
+            return net.inference(text)
+
+        f = hk.transform_with_state(net_gen)[1]
+        return f(*self._hx[:2], self.next_rng(), text, self.config)[0]
 
     def step(self, x, y):
         (f, gn), hx = self.updater(self._hx, self.next_rng(), x, y)
@@ -183,7 +180,11 @@ class Trainer:
         self._hx = hx
         self._step = step
         self._rng = rng
+        print("Remember to call trainer.to_device()")
         return step
+
+    def to_device(self):
+        self._hx = jax.device_put(self._hx)
 
     def save_checkpoint(self, path):
         torch.save((self._step, self._rng, self._hx), path)
@@ -203,8 +204,7 @@ class Trainer:
         x = (text, text_mask, mel, mel_mask)
         y = (mel, mel_mask)
 
-        netstate = NetState(
-            *init_fn(self.next_rng(), x, y, config=self.config))
+        netstate = NetState(*init_fn(self.next_rng(), x, y, self.config))
         opt_state = self.optimizer.init(netstate.param)
         self._hx = TrainerState(netstate.param, netstate.state, opt_state)
 

@@ -96,7 +96,7 @@ class BiLSTM(hk.Module):
         x = jnp.swapaxes(x, 0, 1)
 
         hx1 = self.lstm1.initial_state(bs)
-        hx2 = self.lstm1.initial_state(bs)
+        hx2 = self.lstm2.initial_state(bs)
 
         x1, _ = hk.dynamic_unroll(self.lstm1, x, hx1)
         x_rev = jnp.flip(x, axis=0)
@@ -236,7 +236,7 @@ class Postnet(hk.Module):
         self.training = hparams.is_training
 
         def batchnorm(x):
-            bn = hk.BatchNorm(True, True, 0.99, data_format="NCW")
+            bn = hk.BatchNorm(True, True, 0.9, data_format="NCW")
             return bn(x, self.training)
 
         self.convolutions.append(
@@ -281,6 +281,12 @@ class Postnet(hk.Module):
 
         return x
 
+    def inference(self, x):
+        for i in range(len(self.convolutions) - 1):
+            x = dropout(jnp.tanh(self.convolutions[i](x)), 0.5, False)
+        x = dropout(self.convolutions[-1](x), 0.5, False)
+        return x
+
 
 class Encoder(hk.Module):
     """Encoder module:
@@ -292,7 +298,7 @@ class Encoder(hk.Module):
         self.training = hparams.is_training
 
         def batchnorm(x):
-            bn = hk.BatchNorm(True, True, 0.99, data_format="NCW")
+            bn = hk.BatchNorm(True, True, 0.9, data_format="NCW")
             return bn(x, self.training)
 
         convolutions = []
@@ -344,7 +350,7 @@ class Encoder(hk.Module):
 
     def inference(self, x):
         for conv in self.convolutions:
-            x = dropout(jax.nn.relu(conv(x)), 0.5, self.training)
+            x = dropout(jax.nn.relu(conv(x)), 0.5, False)
 
         x = jnp.swapaxes(x, 1, 2)
 
@@ -599,24 +605,33 @@ class Decoder(hk.Module):
         """
         decoder_input = self.get_go_frame(memory)
 
-        self.initialize_decoder_states(memory, mask=None)
+        state = self.initialize_decoder_states(memory, mask=None)
+        rng1 = hk.next_rng_key()
+        rng2 = hk.next_rng_key()
 
         mel_outputs, gate_outputs, alignments = [], [], []
+        prenet_jit = hk.jit(lambda x: self.prenet(x))
+        decode_jit = hk.jit(lambda x, y: self.decode(x, y))
         while True:
-            decoder_input = self.prenet(decoder_input)
-            mel_output, gate_output, alignment = self.decode(decoder_input)
+            decoder_input = prenet_jit(decoder_input)
+            state, (mel_output, gate_output, alignment) = decode_jit(
+                (rng1, rng2, decoder_input), state)
 
-            mel_outputs += [mel_output.squeeze(1)]
-            gate_outputs += [gate_output]
-            alignments += [alignment]
+            mel_outputs.append(mel_output)
+            gate_outputs.append(gate_output)
+            alignments.append(alignment)
 
-            if torch.sigmoid(gate_output.data) > self.gate_threshold:
+            if jnp.all(jax.nn.sigmoid(gate_output) > self.gate_threshold):
                 break
             elif len(mel_outputs) == self.max_decoder_steps:
                 print("Warning! Reached max decoder steps")
                 break
 
             decoder_input = mel_output
+
+        mel_outputs = jnp.stack(mel_outputs)
+        gate_outputs = jnp.stack(gate_outputs)
+        alignments = jnp.stack(alignments)
 
         mel_outputs, gate_outputs, alignments = self.parse_decoder_outputs(
             mel_outputs, gate_outputs, alignments)
@@ -690,13 +705,13 @@ class Tacotron2(hk.Module):
             [mel_outputs, mel_outputs_postnet, gate_outputs, alignments],
             mel_mask)
 
-    def inference(self, inputs):
-        embedded_inputs = jnp.swapaxes(self.embedding(inputs), 1, 2)
+    def inference(self, text):
+        embedded_inputs = jnp.swapaxes(self.embedding(text), 1, 2)
         encoder_outputs = self.encoder.inference(embedded_inputs)
         mel_outputs, gate_outputs, alignments = self.decoder.inference(
             encoder_outputs)
 
-        mel_outputs_postnet = self.postnet(mel_outputs)
+        mel_outputs_postnet = self.postnet.inference(mel_outputs)
         mel_outputs_postnet = mel_outputs + mel_outputs_postnet
 
         outputs = self.parse_output(

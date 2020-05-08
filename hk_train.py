@@ -230,6 +230,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
             if hparams.use_saved_learning_rate:
                 learning_rate = _learning_rate
             """
+            print("Loading checkpoint:", checkpoint_path)
             iteration = trainer.load_checkpoint(checkpoint_path)
             iteration += 1  # next iteration is iteration + 1
             epoch_offset = max(0, int(iteration / len(train_loader)))
@@ -344,8 +345,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     hparams = create_hparams(args.hparams)
 
-    torch.backends.cudnn.enabled = hparams.cudnn_enabled
-    torch.backends.cudnn.benchmark = hparams.cudnn_benchmark
+    # torch.backends.cudnn.enabled = hparams.cudnn_enabled
+    # torch.backends.cudnn.benchmark = hparams.cudnn_benchmark
 
     print("FP16 Run:", hparams.fp16_run)
     print("Dynamic Loss Scaling:", hparams.dynamic_loss_scaling)
