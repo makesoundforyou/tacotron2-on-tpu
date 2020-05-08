@@ -1,23 +1,26 @@
-import tensorflow as tf
+# import tensorflow as tf
 from text import symbols
 
 
 def create_hparams(hparams_string=None, verbose=False):
     """Create model hyperparameters. Parse nondefault from given string."""
 
-    hparams = tf.contrib.training.HParams(
+    from hparam import HParams
+    hparams = HParams(
         ################################
         # Experiment Parameters        #
         ################################
         epochs=500,
+        is_training=True,
+        enable_jit=True,
         iters_per_checkpoint=1000,
         seed=1234,
-        dynamic_loss_scaling=True,
+        dynamic_loss_scaling=False,
         fp16_run=False,
         distributed_run=False,
         dist_backend="nccl",
         dist_url="tcp://localhost:54321",
-        cudnn_enabled=True,
+        cudnn_enabled=False,
         cudnn_benchmark=False,
         ignore_layers=['embedding.weight'],
 
@@ -86,10 +89,10 @@ def create_hparams(hparams_string=None, verbose=False):
     )
 
     if hparams_string:
-        tf.logging.info('Parsing command line hparams: %s', hparams_string)
+        print('Parsing command line hparams: %s' % hparams_string)
         hparams.parse(hparams_string)
 
     if verbose:
-        tf.logging.info('Final parsed hparams: %s', hparams.values())
+        print('Final parsed hparams: %s' % hparams.values())
 
     return hparams
