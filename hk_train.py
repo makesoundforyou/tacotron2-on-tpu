@@ -61,16 +61,17 @@ def validate(trainer, valset, iteration, batch_size, collate_fn, logger):
                             pin_memory=False,
                             collate_fn=collate_fn)
 
-    val_loss = 0.0
-    for i, batch in enumerate(val_loader):
+    total = 0.0
+    for batch in val_loader:
         x, y = trainer.parse_batch(batch)
-        reduced_val_loss, y_pred = trainer.validate(x, y)
-        val_loss += float(reduced_val_loss)
-    val_loss = val_loss / (i + 1)
+        loss, y_pred = trainer.validate(x, y)
+        total += loss
+    val_loss = total / len(val_loader)
 
     print("Validation loss {}: {:9f}  ".format(iteration, val_loss))
-    y_pred = jax.tree_map(lambda x: torch.tensor(np.copy(x)), y_pred)
-    y = jax.tree_map(lambda x: torch.tensor(np.copy(x)), y)
+
+    y_pred = jax.tree_map(lambda x: torch.tensor(np.copy(x[0])), y_pred)
+    y = jax.tree_map(lambda x: torch.tensor(np.copy(x[0])), y)
     logger.log_validation(val_loss, None, y, y_pred, iteration)
 
 
@@ -99,21 +100,19 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
 
     if checkpoint_path != None:
         if warm_start:
+            print( "Warm start with a pretrained model at", checkpoint_path)
             trainer.create_model()
-            print(
-                "Warm start the training with weights from a pretrained model at",
-                checkpoint_path)
             trainer.warm_start_model(checkpoint_path, hparams.hk_ignore_layers)
         else:
             print("Loading checkpoint at", checkpoint_path)
             iteration = trainer.load_checkpoint(checkpoint_path)
-            iteration += 1  # next iteration is iteration + 1
             epoch_offset = max(0, int(iteration / len(train_loader)))
     else:
         print("Create a new network with random weights")
         trainer.create_model()
 
     # ================ MAIN TRAINNIG LOOP! ===================
+    print(f"Number of cores: {jax.device_count()}")
     start = time.perf_counter()
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))

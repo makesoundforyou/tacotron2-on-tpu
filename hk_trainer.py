@@ -15,6 +15,15 @@ NetState = namedtuple("NetState", "param state")
 TrainerState = namedtuple("TrainerState", "param state opt_state")
 
 
+def replicate(x):
+    n = jax.device_count()
+    return jax.tree_map(lambda a: jnp.stack([a] * n), x)
+
+
+def treemap_first_elem(x):
+    return jax.tree_map(lambda a: a[0], x)
+
+
 class TextMelCollate():
     """ Zero-pads model inputs and targets based on number of frames per setep
     """
@@ -97,7 +106,8 @@ def forward(x, config):
     return out
 
 
-def loss_forward(x, y, config):
+@jax.curry
+def loss_forward(config, x, y):
     out = forward(x, config)
     return loss_fn(out, y)
 
@@ -139,18 +149,18 @@ class Trainer:
 
         # only transform once
         if self.val_fn is None:
-            f = hk.transform_with_state(net_validate)[1]
-            self.val_fn = jax.jit(f) if self.config.enable_jit else f
+            f = hk.transform_with_state(net_validate).apply
+            self.val_fn = jax.pmap(f, axis_name='i')
 
-        return self.val_fn(*self._hx[:2], self.next_rng(), x, y)[0]
+        rngs = random.split(self.next_rng(), jax.device_count())
+        loss, out = self.val_fn(*self._hx[:2], rngs, x, y)[0]
+        return float(jnp.mean(loss)), out
 
     def inference(self, text):
-        def net_gen(text, config):
-            net = Tacotron2(config)
-            return net.inference(text)
-
-        f = hk.transform_with_state(net_gen)[1]
-        return f(*self._hx[:2], self.next_rng(), text, self.config)[0]
+        f = lambda txt: Tacotron2(self.config).inference(txt)
+        f = hk.transform_with_state(f).apply
+        hx = treemap_first_elem(self._hx[:2])
+        return f(*hx, self.next_rng(), text)[0]
 
     def create_optimizer(self):
         def warmup_scheduler(init_step: int):
@@ -162,11 +172,12 @@ class Trainer:
                            optix.scale_by_schedule(warmup_scheduler(100)))
 
     def compile_updater(self):
-        init_fn, f = hk.transform_with_state(loss_forward)
+        f = hk.transform_with_state(loss_forward(self.config)).apply
         vag = jax.value_and_grad(f, has_aux=True)
 
         def updater(hx: TrainerState, rng: jnp.ndarray, x, y):
-            (v, state), grads = vag(*hx[:2], rng, x, y, self.config)
+            (v, state), grads = vag(*hx[:2], rng, x, y)
+            grads = jax.lax.pmean(grads, axis_name='i')
             grads = jax.tree_multimap(
                 lambda g, p: g + p * self.config.weight_decay, grads, hx.param)
 
@@ -175,18 +186,17 @@ class Trainer:
             param = optix.apply_updates(hx.param, grads)
             return (v, gn), TrainerState(param, state, opt_state)
 
-        self.updater = jax.jit(updater) if self.config.enable_jit else updater
+        self.updater = jax.pmap(updater, axis_name='i')
 
     def step(self, x, y):
-        (f, gn), hx = self.updater(self._hx, self.next_rng(), x, y)
-        self._hx = hx
+        rngs = random.split(self.next_rng(), jax.device_count())
+        (f, gn), self._hx = self.updater(self._hx, rngs, x, y)
         self._step += 1
-        return float(f), float(gn)
+        return float(jnp.mean(f)), float(gn[0])
 
     def load_checkpoint(self, path):
         step, lr, rng, hx = torch.load(path)
-        print("Remember to call trainer.to_device()")
-        self._hx = hx
+        self._hx = replicate(hx)
         self._step = step
         self._rng = rng
         self.config.learning_rate = lr
@@ -198,8 +208,9 @@ class Trainer:
         self._hx = jax.device_put(self._hx)
 
     def save_checkpoint(self, path):
-        torch.save(
-            (self._step, self.config.learning_rate, self._rng, self._hx), path)
+        hx = treemap_first_elem(self._hx)
+        torch.save((self._step, self.config.learning_rate, self._rng, hx),
+                   path)
 
     def next_rng(self):
         self._rng, rng = random.split(self._rng)
@@ -207,6 +218,7 @@ class Trainer:
 
     def warm_start_model(self, path, skip_layers):
         _, _, _, hx = torch.load(path)
+        self._hx = treemap_first_elem(self._hx)  # collapse to a single device
         param = hk.data_structures.to_mutable_dict(self._hx.param)
         for k in param.keys():
             print(f"Layer:{k:>80} ", end="\t")
@@ -220,13 +232,15 @@ class Trainer:
         param = hk.data_structures.to_immutable_dict(param)
         # Copy network state and optimizer state from the pretrained model
         self._hx = TrainerState(param, hx.state, self._hx.opt_state)
+        self._hx = replicate(self._hx)  # to multiple devices
+        self.compile_updater()
 
     def create_model(self):
         """Create a new random model
         Weights are randomly initialized
         """
-        init_fn, f = hk.transform_with_state(loss_forward)
-        vag = jax.value_and_grad(f, has_aux=True)
+        init_fn = hk.transform_with_state(loss_forward(self.config)).init
+        init_fn = jax.pmap(init_fn, axis_name='i')
 
         # dummy inputs
         mel = jnp.zeros((1, 80, 25))
@@ -235,9 +249,10 @@ class Trainer:
         mel_mask = to_mask([20], maxlen=25)
         x = (text, text_mask, mel, mel_mask)
         y = (mel, mel_mask)
-
-        netstate = NetState(*init_fn(self.next_rng(), x, y, self.config))
-        opt_state = self.optimizer.init(netstate.param)
+        rxy = replicate((self.next_rng(), x, y))
+        netstate = NetState(*init_fn(*rxy))
+        opt_state = self.optimizer.init(treemap_first_elem(netstate.param))
+        opt_state = replicate(opt_state)
         self._hx = TrainerState(netstate.param, netstate.state, opt_state)
 
     def parse_batch(self, batch):
@@ -256,5 +271,16 @@ class Trainer:
         mel_mask = to_mask(output_lengths, ol)
         # print(max_len, ol)
 
-        return ((text_padded, text_mask, mel_padded, mel_mask), (mel_padded,
+        x, y = ((text_padded, text_mask, mel_padded, mel_mask), (mel_padded,
                                                                  gate_padded))
+
+        n = jax.device_count()
+
+        def reshape(x):
+            ## [ [mini-batch1 for device 1],
+            #    [mini-batch2 for device 2], ...]
+            shape = [n, -1, *x.shape[1:]]
+            return x.reshape(shape)
+
+        x, y = jax.tree_map(reshape, (x, y))
+        return x, y

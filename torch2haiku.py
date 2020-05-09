@@ -89,7 +89,7 @@ def to_haiku_model(torch_model, hparams):
 
     trainer = Trainer(config=hparams)
     trainer.create_model()
-    hx = jax.tree_map(lambda x: np.copy(x), trainer._hx)
+    hx = jax.tree_map(lambda x: np.copy(x[0]), trainer._hx)
     state = torch_model['state_dict']
     step = state["postnet.convolutions.0.1.num_batches_tracked"].item()
 

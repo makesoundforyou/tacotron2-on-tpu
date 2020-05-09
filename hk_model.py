@@ -112,6 +112,18 @@ def dropout(x, p, training, rng=None):
     return x
 
 
+def batchnorm(training):
+    def bn(x):
+        f = hk.BatchNorm(True,
+                         True,
+                         0.9,
+                         data_format="NCW",
+                         cross_replica_axis='i')
+        return f(x, is_training=training)
+
+    return bn
+
+
 ###### START HERE ####
 
 
@@ -235,10 +247,6 @@ class Postnet(hk.Module):
         self.convolutions = []
         self.training = hparams.is_training
 
-        def batchnorm(x):
-            bn = hk.BatchNorm(True, True, 0.9, data_format="NCW")
-            return bn(x, self.training)
-
         self.convolutions.append(
             hk.Sequential([
                 ConvNorm(hparams.n_mel_channels,
@@ -247,7 +255,8 @@ class Postnet(hk.Module):
                          stride=1,
                          padding=int((hparams.postnet_kernel_size - 1) / 2),
                          dilation=1,
-                         w_init_gain='tanh'), batchnorm
+                         w_init_gain='tanh'),
+                batchnorm(self.training)
             ]))
 
         for i in range(1, hparams.postnet_n_convolutions - 1):
@@ -260,7 +269,8 @@ class Postnet(hk.Module):
                              padding=int(
                                  (hparams.postnet_kernel_size - 1) / 2),
                              dilation=1,
-                             w_init_gain='tanh'), batchnorm
+                             w_init_gain='tanh'),
+                    batchnorm(self.training)
                 ]))
 
         self.convolutions.append(
@@ -271,7 +281,8 @@ class Postnet(hk.Module):
                          stride=1,
                          padding=int((hparams.postnet_kernel_size - 1) / 2),
                          dilation=1,
-                         w_init_gain='linear'), batchnorm
+                         w_init_gain='linear'),
+                batchnorm(self.training)
             ]))
 
     def __call__(self, x):
@@ -297,10 +308,6 @@ class Encoder(hk.Module):
         super(Encoder, self).__init__()
         self.training = hparams.is_training
 
-        def batchnorm(x):
-            bn = hk.BatchNorm(True, True, 0.9, data_format="NCW")
-            return bn(x, self.training)
-
         convolutions = []
         for _ in range(hparams.encoder_n_convolutions):
             conv_layer = hk.Sequential([
@@ -310,7 +317,8 @@ class Encoder(hk.Module):
                          stride=1,
                          padding=int((hparams.encoder_kernel_size - 1) / 2),
                          dilation=1,
-                         w_init_gain='relu'), batchnorm
+                         w_init_gain='relu'),
+                batchnorm(self.training)
             ])
             convolutions.append(conv_layer)
         self.convolutions = convolutions
