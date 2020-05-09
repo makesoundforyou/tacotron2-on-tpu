@@ -178,7 +178,7 @@ def main(pt, hk):
     step, rng, hx = to_haiku_model(ck, hparams)
 
     print("Saving model to", hk)
-    torch.save((step, rng, hparams.learning_rate, hx), hk)
+    torch.save((step, hparams.learning_rate, rng, hx), hk)
 
 
 if __name__ == "__main__":

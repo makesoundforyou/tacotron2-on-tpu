@@ -153,9 +153,13 @@ class Trainer:
         return f(*self._hx[:2], self.next_rng(), text, self.config)[0]
 
     def create_optimizer(self):
+        def warmup_scheduler(init_step: int):
+            return lambda step: jnp.clip(step * 1.0 / init_step, a_max=1.0)
+
         return optix.chain(clip_by_global_norm(self.config.grad_clip_thresh),
                            optix.scale_by_adam(b1=0.9, b2=0.999, eps=1e-8),
-                           optix.scale(-self.config.learning_rate))
+                           optix.scale(-self.config.learning_rate),
+                           optix.scale_by_schedule(warmup_scheduler(100)))
 
     def compile_updater(self):
         init_fn, f = hk.transform_with_state(loss_forward)
@@ -180,7 +184,7 @@ class Trainer:
         return float(f), float(gn)
 
     def load_checkpoint(self, path):
-        step, rng, lr, hx = torch.load(path)
+        step, lr, rng, hx = torch.load(path)
         print("Remember to call trainer.to_device()")
         self._hx = hx
         self._step = step
@@ -215,7 +219,7 @@ class Trainer:
 
         param = hk.data_structures.to_immutable_dict(param)
         # Copy network state and optimizer state from the pretrained model
-        self._hx = TrainerState(param, hx.state, hx.opt_state)
+        self._hx = TrainerState(param, hx.state, self._hx.opt_state)
 
     def create_model(self):
         """Create a new random model
