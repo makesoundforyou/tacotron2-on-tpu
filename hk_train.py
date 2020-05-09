@@ -5,6 +5,7 @@ import math
 from numpy import finfo
 import numpy as np
 import jax
+from jax.config import config
 
 import torch
 from distributed import apply_gradient_allreduce
@@ -100,7 +101,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
 
     if checkpoint_path != None:
         if warm_start:
-            print( "Warm start with a pretrained model at", checkpoint_path)
+            print("Warm start with a pretrained model at", checkpoint_path)
             trainer.create_model()
             trainer.warm_start_model(checkpoint_path, hparams.hk_ignore_layers)
         else:
@@ -148,6 +149,11 @@ if __name__ == '__main__':
                         '--log_directory',
                         type=str,
                         help='directory to save tensorboard logs')
+    parser.add_argument('-t',
+                        '--tpu_address',
+                        type=str,
+                        default=None,
+                        help='grpc://1.2.3.4:8470')
     parser.add_argument('-c',
                         '--checkpoint_path',
                         type=str,
@@ -164,6 +170,12 @@ if __name__ == '__main__':
                         help='comma separated name=value pairs')
 
     args = parser.parse_args()
+
+    if args.tpu_address != None:
+        config.FLAGS.jax_xla_backend = "tpu_driver"
+        config.FLAGS.jax_backend_target = args.tpu_address
+        print("tpu backend at", config.FLAGS.jax_backend_target)
+
     hparams = create_hparams(args.hparams)
 
     train(args.output_directory, args.log_directory, args.checkpoint_path,
