@@ -1,15 +1,16 @@
 import jax
 import jax.numpy as jnp
+import numpy as np
 import jax.random as random
 import haiku as hk
 from hk_model import Tacotron2
 import torch
 
 from hparams import create_hparams
+from typing import Dict, Tuple, Sequence
 from collections import namedtuple
 from jax.experimental import optix
 
-import numpy as np
 NetState = namedtuple("NetState", "param state")
 TrainerState = namedtuple("TrainerState", "param state opt_state")
 
@@ -17,7 +18,7 @@ TrainerState = namedtuple("TrainerState", "param state opt_state")
 class TextMelCollate():
     """ Zero-pads model inputs and targets based on number of frames per setep
     """
-    def __init__(self, n_frames_per_step, text_len=200, mel_len=870):
+    def __init__(self, n_frames_per_step, text_len=20, mel_len=100):
         self.n_frames_per_step = n_frames_per_step
         self.text_len = text_len
         self.mel_len = mel_len
@@ -29,10 +30,8 @@ class TextMelCollate():
         batch: [text_normalized, mel_normalized]
         """
         # Right zero-pad all one-hot text sequences to max input length
-        # input_lengths, ids_sorted_decreasing = torch.sort(
-        #     torch.LongTensor([len(x[0]) for x in batch]),
-        #     dim=0, descending=True)
-        # max_input_len = input_lengths[0]
+        l = max([len(x[0]) for x in batch]) // 5 * 5 + 5
+        self.text_len = max(self.text_len, l)
 
         text_padded = torch.LongTensor(len(batch), self.text_len)
         text_padded.zero_()
@@ -43,15 +42,16 @@ class TextMelCollate():
 
         # Right zero-pad mel-spec
         num_mels = batch[0][1].size(0)
-        max_target_len = self.mel_len
-        if max_target_len % self.n_frames_per_step != 0:
-            max_target_len += self.n_frames_per_step - max_target_len % self.n_frames_per_step
-            assert max_target_len % self.n_frames_per_step == 0
+        l = max([x[1].size(1) for x in batch]) // 5 * 5 + 5
+        if l % self.n_frames_per_step != 0:
+            l += self.n_frames_per_step - l % self.n_frames_per_step
+            assert l % self.n_frames_per_step == 0
 
+        self.mel_len = max(self.mel_len, l)
         # include mel padded and gate padded
-        mel_padded = torch.FloatTensor(len(batch), num_mels, max_target_len)
+        mel_padded = torch.FloatTensor(len(batch), num_mels, self.mel_len)
         mel_padded.zero_()
-        gate_padded = torch.FloatTensor(len(batch), max_target_len)
+        gate_padded = torch.FloatTensor(len(batch), self.mel_len)
         gate_padded.zero_()
         output_lengths = torch.LongTensor(len(batch))
         for i in range(len(batch)):
@@ -71,16 +71,18 @@ def to_mask(ls, maxlen):
     return mask
 
 
-def bce(x, z):
-    l = -jax.nn.log_sigmoid(x) * z - jax.nn.log_sigmoid(-x) * (1 - z)
-    return jnp.mean(l)
-
-
-def mse(x, y):
-    return jnp.mean(jnp.square(x - y))
-
-
 def loss_fn(output, target):
+    def bce(x, z):
+        """Binary cross entropy loss
+        note that sigmoid(-x) = 1-sigmoid(x)
+        return -log(p) or -log(1-p)
+        """
+        l = -jax.nn.log_sigmoid(x) * z - jax.nn.log_sigmoid(-x) * (1 - z)
+        return jnp.mean(l)
+
+    def mse(x, y):
+        return jnp.mean(jnp.square(x - y))
+
     mel_target, gate_target = target
     mel_out, mel_out_postnet, gate_out, _ = output
     l1 = mse(mel_out, mel_target)
@@ -90,19 +92,14 @@ def loss_fn(output, target):
 
 
 def forward(x, config):
-    text, text_mask, mel, mel_mask = x
     net = Tacotron2(config)
-    inp = (text, text_mask, mel, mel_mask)
-    out = net(inp)
+    out = net(x)
     return out
 
 
 def loss_forward(x, y, config):
     out = forward(x, config)
     return loss_fn(out, y)
-
-
-from typing import Dict, Tuple, Sequence
 
 
 class ClipByGlobalNormState(optix.OptState):
@@ -125,40 +122,26 @@ def clip_by_global_norm(max_norm) -> optix.InitUpdate:
 class Trainer:
     def __init__(self, config):
         self.config = config
-        self.lr = config.learning_rate
 
-        self.optimizer = optix.chain(
-            clip_by_global_norm(config.grad_clip_thresh),
-            optix.scale_by_adam(b1=0.9, b2=0.999, eps=1e-8),
-            optix.scale(-(self.lr)))
+        self.optimizer = self.create_optimizer()
+        self.compile_updater()
 
-        init_fn, f = hk.transform_with_state(loss_forward)
-        vag = jax.value_and_grad(f, has_aux=True)
-
-        def net_validate(x, y):
-            out = forward(x, config)
-            loss = loss_fn(out, y)
-            return loss, out
-
-        f = hk.transform_with_state(net_validate)[1]
-        self.val_fn = jax.jit(f) if config.enable_jit else f
-
-        def updater(hx: TrainerState, rng: jnp.ndarray, x, y):
-            (v, state), grads = vag(*hx[:2], rng, x, y, config)
-            grads = jax.tree_multimap(lambda g, p: g + p * config.weight_decay,
-                                      grads, hx.param)
-
-            gn = optix.global_norm(grads)
-            grads, opt_state = self.optimizer.update(grads, hx.opt_state)
-            param = optix.apply_updates(hx.param, grads)
-            return (v, gn), TrainerState(param, state, opt_state)
-
-        self.updater = jax.jit(updater) if config.enable_jit else updater
         self._step = 0
         self._hx = None
         self._rng = random.PRNGKey(config.seed)
+        self.val_fn = None
 
     def validate(self, x, y):
+        def net_validate(x, y):
+            out = forward(x, self.config)
+            loss = loss_fn(out, y)
+            return loss, out
+
+        # only transform once
+        if self.val_fn is None:
+            f = hk.transform_with_state(net_validate)[1]
+            self.val_fn = jax.jit(f) if self.config.enable_jit else f
+
         return self.val_fn(*self._hx[:2], self.next_rng(), x, y)[0]
 
     def inference(self, text):
@@ -169,6 +152,27 @@ class Trainer:
         f = hk.transform_with_state(net_gen)[1]
         return f(*self._hx[:2], self.next_rng(), text, self.config)[0]
 
+    def create_optimizer(self):
+        return optix.chain(clip_by_global_norm(self.config.grad_clip_thresh),
+                           optix.scale_by_adam(b1=0.9, b2=0.999, eps=1e-8),
+                           optix.scale(-self.config.learning_rate))
+
+    def compile_updater(self):
+        init_fn, f = hk.transform_with_state(loss_forward)
+        vag = jax.value_and_grad(f, has_aux=True)
+
+        def updater(hx: TrainerState, rng: jnp.ndarray, x, y):
+            (v, state), grads = vag(*hx[:2], rng, x, y, self.config)
+            grads = jax.tree_multimap(
+                lambda g, p: g + p * self.config.weight_decay, grads, hx.param)
+
+            gn = optix.global_norm(grads)
+            grads, opt_state = self.optimizer.update(grads, hx.opt_state)
+            param = optix.apply_updates(hx.param, grads)
+            return (v, gn), TrainerState(param, state, opt_state)
+
+        self.updater = jax.jit(updater) if self.config.enable_jit else updater
+
     def step(self, x, y):
         (f, gn), hx = self.updater(self._hx, self.next_rng(), x, y)
         self._hx = hx
@@ -176,27 +180,51 @@ class Trainer:
         return float(f), float(gn)
 
     def load_checkpoint(self, path):
-        step, rng, hx = torch.load(path)
+        step, rng, lr, hx = torch.load(path)
+        print("Remember to call trainer.to_device()")
         self._hx = hx
         self._step = step
         self._rng = rng
-        print("Remember to call trainer.to_device()")
+        self.config.learning_rate = lr
+        self.optimizer = self.create_optimizer()
+        self.compile_updater()
         return step
 
     def to_device(self):
         self._hx = jax.device_put(self._hx)
 
     def save_checkpoint(self, path):
-        torch.save((self._step, self._rng, self._hx), path)
+        torch.save(
+            (self._step, self.config.learning_rate, self._rng, self._hx), path)
 
     def next_rng(self):
         self._rng, rng = random.split(self._rng)
         return rng
 
+    def warm_start_model(self, path, skip_layers):
+        _, _, _, hx = torch.load(path)
+        param = hk.data_structures.to_mutable_dict(self._hx.param)
+        for k in param.keys():
+            print(f"Layer:{k:>80} ", end="\t")
+            if k not in skip_layers:
+                # Copy weigths from the pretrained model
+                param[k] = hx.param[k]
+                print("  [ √ ]")
+            else:
+                print("  [ x ]")
+
+        param = hk.data_structures.to_immutable_dict(param)
+        # Copy network state and optimizer state from the pretrained model
+        self._hx = TrainerState(param, hx.state, hx.opt_state)
+
     def create_model(self):
+        """Create a new random model
+        Weights are randomly initialized
+        """
         init_fn, f = hk.transform_with_state(loss_forward)
         vag = jax.value_and_grad(f, has_aux=True)
 
+        # dummy inputs
         mel = jnp.zeros((1, 80, 25))
         text = jnp.zeros((1, 20), dtype='int32')
         text_mask = to_mask([5], maxlen=20)

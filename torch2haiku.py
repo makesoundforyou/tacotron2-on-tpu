@@ -170,14 +170,15 @@ def to_haiku_model(torch_model, hparams):
     return step, trainer._rng, hx
 
 
-def main(torch_checkpoint, hk_path):
+def main(pt, hk):
 
     hparams = create_hparams()
-    ck = torch.load(torch_checkpoint, map_location=torch.device("cpu"))
+    print("Loading model from", pt)
+    ck = torch.load(pt, map_location=torch.device("cpu"))
     step, rng, hx = to_haiku_model(ck, hparams)
 
-    print("Saving model to", hk_path)
-    torch.save((step, rng, hx), hk_path)
+    print("Saving model to", hk)
+    torch.save((step, rng, hparams.learning_rate, hx), hk)
 
 
 if __name__ == "__main__":
