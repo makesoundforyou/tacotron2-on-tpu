@@ -6,3 +6,4 @@ outdir/*
 *.pyc
 *.hk
 *.pt
+*.wav

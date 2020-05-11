@@ -12,7 +12,6 @@ def create_hparams(hparams_string=None, verbose=False):
         ################################
         epochs=500,
         is_training=True,
-        enable_jit=True,
         iters_per_checkpoint=1000,
         seed=1234,
         dynamic_loss_scaling=False,
@@ -22,7 +21,7 @@ def create_hparams(hparams_string=None, verbose=False):
         dist_url="tcp://localhost:54321",
         cudnn_enabled=False,
         cudnn_benchmark=False,
-        ignore_layers=['embedding.weight'], 
+        ignore_layers=['embedding.weight'],
         hk_ignore_layers=['tacotron2/~/embed'],
 
         ################################

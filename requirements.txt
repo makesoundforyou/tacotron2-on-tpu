@@ -1,8 +1,9 @@
-matplotlib
-tensorflow
-numpy
+dm-haiku
 inflect==0.2.5
 librosa==0.6.0
-scipy
-Unidecode==1.0.22
+matplotlib
+numpy
 pillow
+scipy
+tensorboard
+Unidecode==1.0.22

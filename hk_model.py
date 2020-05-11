@@ -1,15 +1,11 @@
+import math
 from math import sqrt
-import torch
-from torch.autograd import Variable
-from torch import nn
-from torch.nn import functional as F
-from utils import to_gpu, get_mask_from_lengths
+
 import haiku as hk
 import jax
 import jax.numpy as jnp
 import jax.random as random
-import math
-from haiku.initializers import Constant, TruncatedNormal, RandomUniform
+from haiku.initializers import RandomUniform
 
 
 def calculate_gain(fn: str) -> float:
@@ -31,9 +27,12 @@ class LinearNorm(hk.Module):
     def __init__(self, in_dim, out_dim, bias=True, w_init_gain='linear'):
         super(LinearNorm, self).__init__()
         val = calculate_gain(w_init_gain) * math.sqrt(6. / (in_dim + out_dim))
-        self.linear_layer = hk.Linear(output_size=out_dim,
-                                      with_bias=bias,
-                                      w_init=RandomUniform(-val, val))
+        bound = 1. / math.sqrt(in_dim)
+        self.linear_layer = hk.Linear(
+            output_size=out_dim,
+            with_bias=bias,
+            w_init=RandomUniform(-val, val),
+            b_init=RandomUniform(-bound, bound) if bias else None)
 
     def __call__(self, x: jnp.ndarray) -> jnp.ndarray:
         return self.linear_layer(x)
@@ -62,22 +61,17 @@ class ConvNorm(hk.Module):
         fanin = in_channels * kernel_size
         fanout = out_channels * kernel_size
         val = gain * math.sqrt(6. / (fanin + fanout))
-        self.conv = hk.Conv1D(output_channels=out_channels,
-                              kernel_shape=[kernel_size],
-                              stride=stride,
-                              rate=dilation,
-                              with_bias=bias,
-                              data_format="NCW",
-                              padding='SAME',
-                              w_init=RandomUniform(-val, val))
-
-        # self.conv = torch.nn.Conv1d(in_channels, out_channels,
-        #                             kernel_size=kernel_size, stride=stride,
-        #                             padding=padding, dilation=dilation,
-        #                             bias=bias)
-
-        # torch.nn.init.xavier_uniform_(
-        #     self.conv.weight, gain=torch.nn.init.calculate_gain(w_init_gain))
+        bound = 1. / math.sqrt(fanin)
+        self.conv = hk.Conv1D(
+            output_channels=out_channels,
+            kernel_shape=[kernel_size],
+            stride=stride,
+            rate=dilation,
+            with_bias=bias,
+            data_format="NCW",
+            padding='SAME',
+            w_init=RandomUniform(-val, val),
+            b_init=RandomUniform(-bound, bound) if bias else None)
 
     def __call__(self, signal):
         conv_signal = self.conv(signal)
@@ -124,7 +118,7 @@ def batchnorm(training):
     return bn
 
 
-###### START HERE ####
+#### START HERE ####
 
 
 class LocationLayer(hk.Module):
@@ -209,11 +203,7 @@ class Attention(hk.Module):
                                                 attention_weights_cat)
 
         if mask is not None:
-            alignment = jnp.where(mask, alignment,
-                                  self.score_mask_value)  ### - ( - mask)
-            """
-            alignment.data.masked_fill_(mask, self.score_mask_value)
-            """
+            alignment = jnp.where(mask, alignment, self.score_mask_value)
 
         attention_weights = jax.nn.softmax(alignment, axis=1)
         attention_context = jax.lax.batch_matmul(
@@ -324,34 +314,12 @@ class Encoder(hk.Module):
         self.convolutions = convolutions
 
         self.lstm = BiLSTM(hparams.encoder_embedding_dim // 2)
-        """
-        self.lstm = nn.LSTM(hparams.encoder_embedding_dim,
-                    int(hparams.encoder_embedding_dim / 2),
-                    1,
-                    batch_first=True,
-                    bidirectional=True)
-        """
 
     def __call__(self, x, mask):
         for conv in self.convolutions:
             x = dropout(jax.nn.relu(conv(x)), 0.5, self.training)
 
         x = jnp.swapaxes(x, 1, 2)
-        """
-        # pytorch tensor are not reversible, hence the conversion
-        input_lengths = input_lengths.cpu().numpy()
-        x = nn.utils.rnn.pack_padded_sequence(x,
-                                              input_lengths,
-                                              batch_first=True)
-
-        self.lstm.flatten_parameters()
-        outputs, _ = self.lstm(x)
-
-        outputs, _ = nn.utils.rnn.pad_packed_sequence(outputs,
-                                                      batch_first=True)
-
-        return outputs
-        """
         mask = jnp.expand_dims(mask, -1)
         output = jnp.where(mask, self.lstm(x), 0.0)
         return output
@@ -488,14 +456,12 @@ class Decoder(hk.Module):
         alignments:
         """
         # (T_out, B) -> (B, T_out) where B = 1
-        # alignments = jnp.swapaxes(alignments, 0, 1)
         alignments = jnp.expand_dims(alignments, 0)
         # (T_out, B) -> (B, T_out)
         gate_outputs = jnp.swapaxes(gate_outputs, 0, 1)
         gate_outputs = jnp.squeeze(gate_outputs, -1)
         # (T_out, B, n_mel_channels) -> (B, T_out, n_mel_channels)
         mel_outputs = jnp.swapaxes(mel_outputs, 0, 1)
-        # .transpose(0, 1).contiguous()
         # decouple frames per step
         mel_outputs = mel_outputs.reshape(
             (mel_outputs.shape[0], -1, self.n_mel_channels))
@@ -537,7 +503,7 @@ class Decoder(hk.Module):
             self_attention_hidden, self.memory, self.processed_memory,
             attention_weights_cat, self.mask)
 
-        self_attention_weights_cum = self_attention_weights_cum + self_attention_weights
+        self_attention_weights_cum += self_attention_weights
         decoder_input = jnp.concatenate(
             (self_attention_hidden, self_attention_context), axis=-1)
         self_decoder_hidden, self_decoder_cell = self.decoder_rnn(
@@ -663,30 +629,8 @@ class Tacotron2(hk.Module):
         self.decoder = Decoder(hparams)
         self.postnet = Postnet(hparams)
 
-    def parse_batch(self, batch):
-        text_padded, input_lengths, mel_padded, gate_padded, \
-            output_lengths = batch
-        text_padded = to_gpu(text_padded).long()
-        input_lengths = to_gpu(input_lengths).long()
-        max_len = torch.max(input_lengths.data).item()
-        mel_padded = to_gpu(mel_padded).float()
-        gate_padded = to_gpu(gate_padded).float()
-        output_lengths = to_gpu(output_lengths).long()
-
-        return ((text_padded, input_lengths, mel_padded, max_len,
-                 output_lengths), (mel_padded, gate_padded))
-
     def parse_output(self, outputs, mel_mask=None):
         if self.mask_padding and mel_mask is not None:
-            """
-            mask = ~get_mask_from_lengths(output_lengths)
-            mask = mask.expand(self.n_mel_channels, mask.size(0), mask.size(1))
-            mask = mask.permute(1, 0, 2)
-
-            outputs[0].data.masked_fill_(mask, 0.0)
-            outputs[1].data.masked_fill_(mask, 0.0)
-            outputs[2].data.masked_fill_(mask[:, 0, :], 1e3)  # gate energies
-            """
             mel_mask = jnp.expand_dims(mel_mask, 1)
             o0 = jnp.where(mel_mask, outputs[0], 0.0)
             o1 = jnp.where(mel_mask, outputs[1], 0.0)

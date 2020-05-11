@@ -1,24 +1,17 @@
+import argparse
 import os
 import time
-import argparse
-import math
-from numpy import finfo
-import numpy as np
-import jax
-from jax.config import config
 
+import jax
+import numpy as np
 import torch
-from distributed import apply_gradient_allreduce
-import torch.distributed as dist
-from torch.utils.data.distributed import DistributedSampler
+from jax.config import config
 from torch.utils.data import DataLoader
 
-from model import Tacotron2
 from data_utils import TextMelLoader
 from hk_trainer import TextMelCollate
-from loss_function import Tacotron2Loss
-from logger import Tacotron2Logger
 from hparams import create_hparams
+from logger import Tacotron2Logger
 
 
 def prepare_dataloaders(hparams):
@@ -27,17 +20,9 @@ def prepare_dataloaders(hparams):
     valset = TextMelLoader(hparams.validation_files, hparams)
     collate_fn = TextMelCollate(hparams.n_frames_per_step)
 
-    if hparams.distributed_run:
-        train_sampler = DistributedSampler(trainset)
-        shuffle = False
-    else:
-        train_sampler = None
-        shuffle = True
-
     train_loader = DataLoader(trainset,
                               num_workers=1,
-                              shuffle=shuffle,
-                              sampler=train_sampler,
+                              shuffle=True,
                               batch_size=hparams.batch_size,
                               pin_memory=False,
                               drop_last=True,
@@ -99,7 +84,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
     iteration = 0
     epoch_offset = 0
 
-    if checkpoint_path != None:
+    if checkpoint_path is not None:
         if warm_start:
             print("Warm start with a pretrained model at", checkpoint_path)
             trainer.create_model()
@@ -171,7 +156,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.tpu_address != None:
+    if args.tpu_address is not None:
         config.FLAGS.jax_xla_backend = "tpu_driver"
         config.FLAGS.jax_backend_target = args.tpu_address
         print("tpu backend at", config.FLAGS.jax_backend_target)

@@ -19,7 +19,7 @@ Haiku is based on Jax library which supports CPU/GPUs/TPUs all together!
 
 ## Features:
 
- - Most of features from the original repository. Please use files with `hk_` prefix  (e.g., `hk_train.py` and `hk_inference.ipynb`) for training/inference.
+ - Most of features from the original repository (only BatchNorm layers and LSTM layers are initialized differently from PyTorch model). Please use files with `hk_` prefix  (e.g., `hk_train.py` and `hk_inference.ipynb`) for training/inference.
  - Converting nvidia/tacotron2 pretrained model to haiku format. 
             
             $ python torch2haiku.py /path/to/pytorch/model.pt /path/to/output.hk
