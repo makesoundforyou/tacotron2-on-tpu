@@ -1,9 +1,6 @@
-import torch
 import jax
-import jax.numpy as np
-import haiku as hk
-from hk_model import *
-from hk_trainer import *
+import jax.numpy as jnp
+import torch
 
 
 def cv_embed(state, hx):
@@ -28,7 +25,7 @@ def cv_conv(name1, name2, state, hx, bias=True):
     hx.param[name2]['w'][:] = w
     if bias:
         b = state[name1 % "bias"].numpy()
-        hx.param[name2]['b'][:] = np.expand_dims(b, -1)
+        hx.param[name2]['b'][:] = jnp.expand_dims(b, -1)
 
 
 def cv_lstm(name1, name2, state, hx):
@@ -37,7 +34,7 @@ def cv_lstm(name1, name2, state, hx):
     bih = state[name1 % "bias_ih"].numpy()
     bhh = state[name1 % "bias_hh"].numpy()
 
-    wh = jnp.split(np.concatenate((wih, whh), -1).T, 4, axis=-1)
+    wh = jnp.split(jnp.concatenate((wih, whh), -1).T, 4, axis=-1)
     bh = jnp.split(bih + bhh, 4, axis=-1)
 
     # pytorch matrix: [i f g o] is different from haiku matrix: [i g f+1 o]
@@ -84,12 +81,11 @@ def cv_linear(name1, name2, state, hx, bias=True):
 
 
 def to_haiku_model(torch_model, hparams):
-    from hparams import create_hparams
     from hk_trainer import Trainer
 
     trainer = Trainer(config=hparams)
     trainer.create_model()
-    hx = jax.tree_map(lambda x: np.copy(x[0]), trainer._hx)
+    hx = jax.tree_map(lambda x: jnp.copy(x[0]), trainer._hx)
     state = torch_model['state_dict']
     step = state["postnet.convolutions.0.1.num_batches_tracked"].item()
 
@@ -171,7 +167,7 @@ def to_haiku_model(torch_model, hparams):
 
 
 def main(pt, hk):
-
+    from hparams import create_hparams
     hparams = create_hparams()
     print("Loading model from", pt)
     ck = torch.load(pt, map_location=torch.device("cpu"))

@@ -1,6 +1,7 @@
 import argparse
 import os
 import time
+import gc
 
 import jax
 import numpy as np
@@ -18,10 +19,12 @@ def prepare_dataloaders(hparams):
     # Get data, data loaders and collate function ready
     trainset = TextMelLoader(hparams.training_files, hparams)
     valset = TextMelLoader(hparams.validation_files, hparams)
-    collate_fn = TextMelCollate(hparams.n_frames_per_step)
+    collate_fn = TextMelCollate(hparams.n_frames_per_step,
+                                text_len=hparams.max_text_len,
+                                mel_len=hparams.max_mel_len)
 
     train_loader = DataLoader(trainset,
-                              num_workers=1,
+                              num_workers=2,
                               shuffle=True,
                               batch_size=hparams.batch_size,
                               pin_memory=False,
@@ -41,8 +44,9 @@ def prepare_directories_and_logger(output_directory, log_directory):
 def validate(trainer, valset, iteration, batch_size, collate_fn, logger):
     """Handles all the validation scoring and printing"""
     val_loader = DataLoader(valset,
-                            num_workers=1,
-                            shuffle=False,
+                            num_workers=2,
+                            shuffle=True,
+                            drop_last=True,
                             batch_size=batch_size,
                             pin_memory=False,
                             collate_fn=collate_fn)
@@ -103,6 +107,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
         for i, batch in enumerate(train_loader):
+            gc.collect()  # use too much memory?
             x, y = trainer.parse_batch(batch)
             reduced_loss, norm = trainer.step(x, y)
 

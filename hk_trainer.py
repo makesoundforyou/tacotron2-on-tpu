@@ -1,15 +1,15 @@
+from collections import namedtuple
+
+import haiku as hk
 import jax
 import jax.numpy as jnp
-import numpy as np
 import jax.random as random
-import haiku as hk
-from hk_model import Tacotron2
+import numpy as np
 import torch
-
-from hparams import create_hparams
-from typing import Dict, Tuple, Sequence
-from collections import namedtuple
 from jax.experimental import optix
+from jax.interpreters.pxla import replicate as rep
+
+from hk_model import Tacotron2
 
 NetState = namedtuple("NetState", "param state")
 TrainerState = namedtuple("TrainerState", "param state opt_state")
@@ -17,7 +17,7 @@ TrainerState = namedtuple("TrainerState", "param state opt_state")
 
 def replicate(x):
     n = jax.device_count()
-    return jax.tree_map(lambda a: jnp.stack([a] * n), x)
+    return jax.tree_map(lambda a: rep(a, n, n), x)
 
 
 def treemap_first_elem(x):
@@ -39,8 +39,8 @@ class TextMelCollate():
         batch: [text_normalized, mel_normalized]
         """
         # Right zero-pad all one-hot text sequences to max input length
-        l = max([len(x[0]) for x in batch]) // 5 * 5 + 5
-        self.text_len = max(self.text_len, l)
+        text_len = max([len(x[0]) for x in batch]) // 5 * 5 + 5
+        self.text_len = max(self.text_len, text_len)
 
         text_padded = torch.LongTensor(len(batch), self.text_len)
         text_padded.zero_()
@@ -51,12 +51,12 @@ class TextMelCollate():
 
         # Right zero-pad mel-spec
         num_mels = batch[0][1].size(0)
-        l = max([x[1].size(1) for x in batch]) // 5 * 5 + 5
-        if l % self.n_frames_per_step != 0:
-            l += self.n_frames_per_step - l % self.n_frames_per_step
-            assert l % self.n_frames_per_step == 0
+        mel_len = max([x[1].size(1) for x in batch]) // 5 * 5 + 5
+        if mel_len % self.n_frames_per_step != 0:
+            mel_len += self.n_frames_per_step - mel_len % self.n_frames_per_step
+            assert mel_len % self.n_frames_per_step == 0
 
-        self.mel_len = max(self.mel_len, l)
+        self.mel_len = max(self.mel_len, mel_len)
         # include mel padded and gate padded
         mel_padded = torch.FloatTensor(len(batch), num_mels, self.mel_len)
         mel_padded.zero_()
@@ -86,8 +86,8 @@ def loss_fn(output, target):
         note that sigmoid(-x) = 1-sigmoid(x)
         return -log(p) or -log(1-p)
         """
-        l = -jax.nn.log_sigmoid(x) * z - jax.nn.log_sigmoid(-x) * (1 - z)
-        return jnp.mean(l)
+        loss = -jax.nn.log_sigmoid(x) * z - jax.nn.log_sigmoid(-x) * (1 - z)
+        return jnp.mean(loss)
 
     def mse(x, y):
         return jnp.mean(jnp.square(x - y))
@@ -275,10 +275,16 @@ class Trainer:
                                                                  gate_padded))
 
         n = jax.device_count()
+        b = text_padded.shape[0]
+
+        if b % n != 0:
+            raise ValueError(
+                f"batch size ({b}) is not divisible by number of devices ({n})"
+            )
 
         def reshape(x):
-            ## [ [mini-batch1 for device 1],
-            #    [mini-batch2 for device 2], ...]
+            # [ [mini-batch1 for device 1],
+            #   [mini-batch2 for device 2], ...]
             shape = [n, -1, *x.shape[1:]]
             return x.reshape(shape)
 

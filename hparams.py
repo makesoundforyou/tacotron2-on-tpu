@@ -32,6 +32,11 @@ def create_hparams(hparams_string=None, verbose=False):
         validation_files='filelists/ljs_audio_text_val_filelist.txt',
         text_cleaners=['english_cleaners'],
 
+        # length of the padded text and padded mel
+        # change this to best fit your dataset
+        max_text_len=190,
+        max_mel_len=890,
+
         ################################
         # Audio Parameters             #
         ################################
