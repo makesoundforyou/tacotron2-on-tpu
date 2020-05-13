@@ -4,15 +4,39 @@ import time
 import gc
 
 import jax
-import numpy as np
+import jax.random as random
+import jax.numpy as jnp
 import torch
 from jax.config import config
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Sampler
 
 from data_utils import TextMelLoader
 from hk_trainer import TextMelCollate
 from hparams import create_hparams
 from logger import Tacotron2Logger
+
+
+class HkSampler(Sampler):
+    def __init__(self, data_source, start_epoch=0):
+        super().__init__(data_source)
+        self._data_source = data_source
+        self._epoch = start_epoch
+
+    def set_epoch(self, epoch):
+        self._epoch = epoch
+
+    def __iter__(self):
+        ids = jnp.arange(0, len(self._data_source), dtype=jnp.int32)
+
+        # use self._epoch as the rng to generate
+        # a random permutation of the data source
+        ids = random.permutation(random.PRNGKey(self._epoch), ids)
+        ids = list(ids)
+        self._epoch += 1
+        return iter(ids)
+
+    def __len__(self):
+        return len(self._data_source)
 
 
 def prepare_dataloaders(hparams):
@@ -25,7 +49,7 @@ def prepare_dataloaders(hparams):
 
     train_loader = DataLoader(trainset,
                               num_workers=2,
-                              shuffle=True,
+                              sampler=HkSampler(trainset),
                               batch_size=hparams.batch_size,
                               pin_memory=False,
                               drop_last=True,
@@ -45,7 +69,7 @@ def validate(trainer, valset, iteration, batch_size, collate_fn, logger):
     """Handles all the validation scoring and printing"""
     val_loader = DataLoader(valset,
                             num_workers=2,
-                            shuffle=True,
+                            sampler=HkSampler(valset),
                             drop_last=True,
                             batch_size=batch_size,
                             pin_memory=False,
@@ -60,8 +84,9 @@ def validate(trainer, valset, iteration, batch_size, collate_fn, logger):
 
     print("Validation loss {}: {:9f}  ".format(iteration, val_loss))
 
-    y_pred = jax.tree_map(lambda x: torch.tensor(np.copy(x[0])), y_pred)
-    y = jax.tree_map(lambda x: torch.tensor(np.copy(x[0])), y)
+    import numpy as onp
+    y_pred = jax.tree_map(lambda x: torch.tensor(onp.copy(x[0])), y_pred)
+    y = jax.tree_map(lambda x: torch.tensor(onp.copy(x[0])), y)
     logger.log_validation(val_loss, None, y, y_pred, iteration)
 
 
@@ -77,7 +102,6 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
     hparams (object): comma separated list of "name=value" pairs.
     """
 
-    torch.manual_seed(hparams.seed)
     logger = prepare_directories_and_logger(output_directory, log_directory)
     train_loader, valset, collate_fn = prepare_dataloaders(hparams)
 
@@ -101,11 +125,18 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
         print("Create a new network with random weights")
         trainer.create_model()
 
-    # ================ MAIN TRAINNIG LOOP! ===================
     print(f"Number of cores: {jax.device_count()}")
     start = time.perf_counter()
+
+    # use epoch as the random seed to shuffle the training data
+    # we want the network to be trained on the same sequence
+    # of mini-batches when we restart the training from a checkpoint
+    train_loader.sampler.set_epoch(epoch_offset)
+
+    # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
         print("Epoch: {}".format(epoch))
+
         for i, batch in enumerate(train_loader):
             gc.collect()  # use too much memory?
             x, y = trainer.parse_batch(batch)

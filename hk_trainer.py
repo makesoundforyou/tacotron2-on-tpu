@@ -21,6 +21,8 @@ def replicate(x):
 
 
 def treemap_first_elem(x):
+    """The inverse of `replicate` function
+    """
     return jax.tree_map(lambda a: a[0], x)
 
 
@@ -28,6 +30,8 @@ class TextMelCollate():
     """ Zero-pads model inputs and targets based on number of frames per setep
     """
     def __init__(self, n_frames_per_step, text_len=20, mel_len=100):
+        # we only support one frame per step
+        assert (n_frames_per_step == 1)
         self.n_frames_per_step = n_frames_per_step
         self.text_len = text_len
         self.mel_len = mel_len
@@ -52,11 +56,8 @@ class TextMelCollate():
         # Right zero-pad mel-spec
         num_mels = batch[0][1].size(0)
         mel_len = max([x[1].size(1) for x in batch]) // 5 * 5 + 5
-        if mel_len % self.n_frames_per_step != 0:
-            mel_len += self.n_frames_per_step - mel_len % self.n_frames_per_step
-            assert mel_len % self.n_frames_per_step == 0
-
         self.mel_len = max(self.mel_len, mel_len)
+
         # include mel padded and gate padded
         mel_padded = torch.FloatTensor(len(batch), num_mels, self.mel_len)
         mel_padded.zero_()
@@ -84,7 +85,8 @@ def loss_fn(output, target):
     def bce(x, z):
         """Binary cross entropy loss
         note that sigmoid(-x) = 1-sigmoid(x)
-        return -log(p) or -log(1-p)
+        return -log(p)   if z=1,
+           and -log(1-p) if z=0
         """
         loss = -jax.nn.log_sigmoid(x) * z - jax.nn.log_sigmoid(-x) * (1 - z)
         return jnp.mean(loss)
@@ -106,6 +108,7 @@ def forward(x, config):
     return out
 
 
+# we use currying to remove `config` from function calls
 @jax.curry
 def loss_forward(config, x, y):
     out = forward(x, config)
@@ -164,7 +167,20 @@ class Trainer:
 
     def create_optimizer(self):
         def warmup_scheduler(init_step: int):
-            return lambda step: jnp.clip(step * 1.0 / init_step, a_max=1.0)
+            """
+            warm-up the first `init_step`
+            """
+            def fn(step):
+                # reduce r1 by half for every 50_000 steps
+                p = jnp.floor(step * 1.0 / 50_000.)
+                p = jnp.clip(p, a_max=5.)
+                r1 = jnp.power(2., -p)
+
+                # increase r2 from 0. to 1. in `init_step`
+                r2 = jnp.clip(step * 1.0 / init_step, a_max=1.0)
+                return r1 * r2
+
+            return fn
 
         return optix.chain(clip_by_global_norm(self.config.grad_clip_thresh),
                            optix.scale_by_adam(b1=0.9, b2=0.999, eps=1e-8),
@@ -178,6 +194,9 @@ class Trainer:
         def updater(hx: TrainerState, rng: jnp.ndarray, x, y):
             (v, state), grads = vag(*hx[:2], rng, x, y)
             grads = jax.lax.pmean(grads, axis_name='i')
+
+            # the regularized loss function:
+            # L(w) = 1/n x SUM_i l(xi, w) + 1/2 x weight_decay x ||w||^2
             grads = jax.tree_multimap(
                 lambda g, p: g + p * self.config.weight_decay, grads, hx.param)
 
@@ -256,24 +275,21 @@ class Trainer:
         self._hx = TrainerState(netstate.param, netstate.state, opt_state)
 
     def parse_batch(self, batch):
-        text_padded, input_lengths, mel_padded, gate_padded, \
-            output_lengths = batch
-        text_padded = text_padded.long().numpy()
-        input_lengths = input_lengths.long()
-        max_len = text_padded.shape[1]  # input_lengths.max().item()
+        text_padded, input_lengths, \
+                mel_padded, gate_padded, output_lengths = batch
+        text_padded = text_padded.int().numpy()
+        input_lengths = input_lengths.int()
+        max_len = text_padded.shape[1]
         input_lengths = input_lengths.numpy()
         text_mask = to_mask(input_lengths, max_len)
-        # max_len = torch.max(input_lengths.data).item()
         mel_padded = mel_padded.float().numpy()
         gate_padded = gate_padded.float().numpy()
-        output_lengths = output_lengths.long().numpy()
-        ol = mel_padded.shape[2]  # output_lengths.max().item()
+        output_lengths = output_lengths.int().numpy()
+        ol = mel_padded.shape[2]
         mel_mask = to_mask(output_lengths, ol)
-        # print(max_len, ol)
 
-        x, y = ((text_padded, text_mask, mel_padded, mel_mask), (mel_padded,
-                                                                 gate_padded))
-
+        x = text_padded, text_mask, mel_padded, mel_mask
+        y = mel_padded, gate_padded
         n = jax.device_count()
         b = text_padded.shape[0]
 
@@ -285,7 +301,7 @@ class Trainer:
         def reshape(x):
             # [ [mini-batch1 for device 1],
             #   [mini-batch2 for device 2], ...]
-            shape = [n, -1, *x.shape[1:]]
+            shape = (n, -1, *x.shape[1:])
             return x.reshape(shape)
 
         x, y = jax.tree_map(reshape, (x, y))

@@ -1,4 +1,3 @@
-import math
 from math import sqrt
 
 import haiku as hk
@@ -15,19 +14,19 @@ def calculate_gain(fn: str) -> float:
         'identity': 1.,
         'sigmoid': 1.,
         'tanh': 5. / 3.,
-        'relu': math.sqrt(2)
+        'relu': sqrt(2)
     }
     if fn in dic:
         return dic[fn]
     else:
-        raise NotImplementedError("Not supported function")
+        raise NotImplementedError("Not supported activation function")
 
 
 class LinearNorm(hk.Module):
     def __init__(self, in_dim, out_dim, bias=True, w_init_gain='linear'):
         super(LinearNorm, self).__init__()
-        val = calculate_gain(w_init_gain) * math.sqrt(6. / (in_dim + out_dim))
-        bound = 1. / math.sqrt(in_dim)
+        val = calculate_gain(w_init_gain) * sqrt(6. / (in_dim + out_dim))
+        bound = 1. / sqrt(in_dim)
         self.linear_layer = hk.Linear(
             output_size=out_dim,
             with_bias=bias,
@@ -60,8 +59,8 @@ class ConvNorm(hk.Module):
         assert (kernel_size == 5 or kernel_size == 31)
         fanin = in_channels * kernel_size
         fanout = out_channels * kernel_size
-        val = gain * math.sqrt(6. / (fanin + fanout))
-        bound = 1. / math.sqrt(fanin)
+        val = gain * sqrt(6. / (fanin + fanout))
+        bound = 1. / sqrt(fanin)
         self.conv = hk.Conv1D(
             output_channels=out_channels,
             kernel_shape=[kernel_size],
@@ -401,25 +400,20 @@ class Decoder(hk.Module):
         B = memory.shape[0]
         MAX_TIME = memory.shape[1]
 
-        t = memory.dtype
+        # use the rnn initial_state funcion from haiku library
+        attention_hx = self.attention_rnn.initial_state(B)
+        decoder_hx = self.decoder_rnn.initial_state(B)
 
-        attention_hidden = jnp.zeros((B, self.attention_rnn_dim), dtype=t)
-        attention_cell = jnp.zeros((B, self.attention_rnn_dim), dtype=t)
-
-        decoder_hidden = jnp.zeros((B, self.decoder_rnn_dim), dtype=t)
-        decoder_cell = jnp.zeros((B, self.decoder_rnn_dim), dtype=t)
-
-        attention_weights = jnp.zeros((B, MAX_TIME), dtype=t)
-        attention_weights_cum = jnp.zeros((B, MAX_TIME), dtype=t)
-        attention_context = jnp.zeros((B, self.encoder_embedding_dim), dtype=t)
+        attention_weights = jnp.zeros((B, MAX_TIME))
+        attention_weights_cum = jnp.zeros((B, MAX_TIME))
+        attention_context = jnp.zeros((B, self.encoder_embedding_dim))
 
         self.memory = memory
         self.processed_memory = self.attention_layer.memory_layer(memory)
         self.mask = mask
-        return (attention_hidden,
-                attention_cell), (attention_context, attention_weights,
-                                  attention_weights_cum), (decoder_hidden,
-                                                           decoder_cell)
+
+        return attention_hx, (attention_context, attention_weights,
+                              attention_weights_cum), decoder_hx
 
     def parse_decoder_inputs(self, decoder_inputs):
         """ Prepares decoder inputs, i.e. mel outputs
