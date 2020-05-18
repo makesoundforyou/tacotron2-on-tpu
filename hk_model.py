@@ -77,12 +77,47 @@ class ConvNorm(hk.Module):
         return conv_signal
 
 
+class LSTM(hk.RNNCore):
+    def __init__(self, hidden_size, name=None):
+        super().__init__(name=name)
+        self.hidden_size = hidden_size
+
+    def __call__(self, inputs, state):
+        if len(inputs.shape) > 2 or not inputs.shape:
+            raise ValueError("LSTM input must be rank-1 or rank-2.")
+        prev_h, prev_c = state
+
+        b = sqrt(1. / self.hidden_size)
+        linear_ih = hk.Linear(4 * self.hidden_size,
+                              w_init=RandomUniform(-b, b),
+                              b_init=RandomUniform(-b, b))
+        linear_hh = hk.Linear(4 * self.hidden_size,
+                              w_init=RandomUniform(-b, b),
+                              b_init=RandomUniform(-b, b))
+        gated = linear_ih(inputs) + linear_hh(prev_h)
+
+        # i = input, g = cell_gate, f = forget_gate, o = output_gate
+        # hk-haiku: i, g, f, o
+        i, f, g, o = jnp.split(gated, indices_or_sections=4, axis=-1)
+        f = jax.nn.sigmoid(f)  # dm-haiku: (f+1)
+        c = f * prev_c + jax.nn.sigmoid(i) * jnp.tanh(g)
+        h = jax.nn.sigmoid(o) * jnp.tanh(c)
+        return h, (h, c)
+
+    def initial_state(self, batch_size):
+        state = (jnp.zeros([self.hidden_size]), jnp.zeros([self.hidden_size]))
+        if batch_size is not None:
+            fn = lambda x: jnp.broadcast_to(x, (batch_size, ) + x.shape)
+            state = jax.tree_map(fn, state)
+        return state
+
+
 class BiLSTM(hk.Module):
     def __init__(self, hidden_size: int):
         super().__init__()
 
-        self.lstm1 = hk.LSTM(hidden_size=hidden_size)
-        self.lstm2 = hk.LSTM(hidden_size=hidden_size)
+        self.lstm1 = LSTM(hidden_size=hidden_size)
+        self.lstm2 = LSTM(hidden_size=hidden_size)
 
     def __call__(self, x):
         bs = x.shape[0]
@@ -353,14 +388,14 @@ class Decoder(hk.Module):
             hparams.n_mel_channels * hparams.n_frames_per_step,
             [hparams.prenet_dim, hparams.prenet_dim])
 
-        self.attention_rnn = hk.LSTM(hparams.attention_rnn_dim)
+        self.attention_rnn = LSTM(hparams.attention_rnn_dim)
 
         self.attention_layer = Attention(
             hparams.attention_rnn_dim, hparams.encoder_embedding_dim,
             hparams.attention_dim, hparams.attention_location_n_filters,
             hparams.attention_location_kernel_size)
 
-        self.decoder_rnn = hk.LSTM(hparams.decoder_rnn_dim)
+        self.decoder_rnn = LSTM(hparams.decoder_rnn_dim)
 
         self.linear_projection = LinearNorm(
             hparams.decoder_rnn_dim + hparams.encoder_embedding_dim,

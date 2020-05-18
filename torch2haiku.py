@@ -34,20 +34,11 @@ def cv_lstm(name1, name2, state, hx):
     bih = state[name1 % "bias_ih"].numpy()
     bhh = state[name1 % "bias_hh"].numpy()
 
-    wh = jnp.split(jnp.concatenate((wih, whh), -1).T, 4, axis=-1)
-    bh = jnp.split(bih + bhh, 4, axis=-1)
-
-    # pytorch matrix: [i f g o] is different from haiku matrix: [i g f+1 o]
-    # so we need to reorder f and g, and decrease f's bias by 1.
-    wh[1], wh[2] = wh[2], wh[1]
-    bh[1], bh[2] = bh[2], bh[1]
-    bh[2] -= 1
-    wh = jnp.concatenate(wh, -1)
-    bh = jnp.concatenate(bh, -1)
-
     print(name2, hx.param[name2]['b'].shape, hx.param[name2]['w'].shape)
-    hx.param[name2]['b'][:] = bh
-    hx.param[name2]['w'][:] = wh
+    hx.param[name2]['b'][:] = bih
+    hx.param[name2]['w'][:] = wih.T
+    hx.param[name2 + '_1']['b'][:] = bhh
+    hx.param[name2 + '_1']['w'][:] = whh.T
 
 
 def cv_batchnorm(name1, name2, state, hx):
