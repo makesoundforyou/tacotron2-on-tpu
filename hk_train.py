@@ -82,7 +82,7 @@ def validate(trainer, valset, iteration, batch_size, collate_fn, logger):
         total += loss
     val_loss = total / len(val_loader)
 
-    print("Validation loss {}: {:9f}  ".format(iteration, val_loss))
+    print(f"Validation loss {iteration}: {val_loss:>9f}")
 
     import numpy as onp
     y_pred = jax.tree_map(lambda x: torch.tensor(onp.copy(x[0])), y_pred)
@@ -125,7 +125,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
         print("Create a new network with random weights")
         trainer.create_model()
 
-    print(f"Number of cores: {jax.device_count()}")
+    print("Number of cores:", jax.device_count())
     start = time.perf_counter()
 
     # use epoch as the random seed to shuffle the training data
@@ -135,26 +135,25 @@ def train(output_directory, log_directory, checkpoint_path, warm_start,
 
     # ================ MAIN TRAINNIG LOOP! ===================
     for epoch in range(epoch_offset, hparams.epochs):
-        print("Epoch: {}".format(epoch))
+        print("Epoch:", epoch)
 
         for i, batch in enumerate(train_loader):
             gc.collect()  # use too much memory?
             x, y = trainer.parse_batch(batch)
-            reduced_loss, norm = trainer.step(x, y)
+            loss, norm = trainer.step(x, y)
 
             duration = time.perf_counter() - start
             start = time.perf_counter()
-            print("Train loss {} {:.6f} Grad Norm {:.6f} {:.2f}s/it".format(
-                iteration, reduced_loss, norm, duration))
-            logger.log_training(reduced_loss, norm,
-                                trainer.config.learning_rate, duration,
-                                iteration)
+            print(f"Train loss {iteration} {loss:5.2f} "
+                  f"Grad Norm {norm:5.2f} {duration:5.2f}s/it")
+            logger.log_training(loss, norm, trainer.config.learning_rate,
+                                duration, iteration)
 
             if iteration % hparams.iters_per_checkpoint == 0:
                 validate(trainer, valset, iteration, hparams.batch_size,
                          collate_fn, logger)
-                checkpoint_path = os.path.join(
-                    output_directory, "checkpoint_{}.hk".format(iteration))
+                checkpoint_path = os.path.join(output_directory,
+                                               f"checkpoint_{iteration}.hk")
                 trainer.save_checkpoint(checkpoint_path)
 
             iteration += 1

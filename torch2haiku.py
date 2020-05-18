@@ -82,10 +82,11 @@ def cv_linear(name1, name2, state, hx, bias=True):
 
 def to_haiku_model(torch_model, hparams):
     from hk_trainer import Trainer
+    import numpy as onp
 
     trainer = Trainer(config=hparams)
     trainer.create_model()
-    hx = jax.tree_map(lambda x: jnp.copy(x[0]), trainer._hx)
+    hx = jax.tree_map(lambda x: onp.copy(x[0]), trainer._hx)
     state = torch_model['state_dict']
     step = state["postnet.convolutions.0.1.num_batches_tracked"].item()
 
